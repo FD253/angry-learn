@@ -16,16 +16,18 @@ using flixel.util.FlxSpriteUtil;
  */
 class BotonEnlace extends FlxButton
 {
-	private var _estadoDestino: FlxState;
+	private var _estadoDestino: FlxState;	// Referencia al estado al que el botón va a llevar
 	
-	private function cambiarEstado()
+	private function _cambiarEstado(): Void
 	{
-		//TODO
+		FlxG.switchState(this._estadoDestino);
 	}
 	
-	public function new(X:Float = 0, Y:Float = 0, ?Text:String, ?estadoDestino: FlxState); 
+	override public function new(texto: String, estadoDestino: FlxState)
 	{
-		super(X:Float = 0, Y:Float = 0, ?Text:String);
+		// Cuando creamos el botón, definimos a qué estado va a apuntar en el mismo botón
+		this._estadoDestino = estadoDestino;
+		super(0, 0, texto, _cambiarEstado);
 	}
 	
 }

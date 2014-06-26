@@ -20,11 +20,7 @@ class MenuGenerico extends FlxState
 	{
 	
 	}
-	public function new() 
-	{
-		super();
-	}
-	
+
 	override public function create():Void
 	{
 		_btnSecuencias = new FlxButton(0, 0, "Secuencias", clickSecuencias);

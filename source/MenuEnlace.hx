@@ -1,5 +1,6 @@
 package ;
 
+import flash.events.Event;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -9,32 +10,35 @@ import flixel.util.FlxMath;
 
 using flixel.util.FlxSpriteUtil;
 
+using BotonEnlace;
+
 /**
  * ...
  * @author 
  */
 class MenuEnlace extends MenuState
 {
-	private var _cuadricula: Bool;
-	private var _listaBotones: List<FlxButton>;
-	
-	private function _agregarBoton(texto: String, estadoDestino: FlxState)
-	{
-		var _botonNuevo : FlxButton;
+	private var _cuadricula: Bool = false;	// Mostrar los botones en forma de cuadrícula (Matriz) y no uno debajo de otro solamente
+	private var _listaBotones: List<BotonEnlace>;
 		
-		if (this._cuadricula) {
-			
-		}
-		else {
-			// Lo queremos en vertical
-			_botonNuevo = new BotonEnlace(0, 0, texto, estadoDestino);
-			_listaBotones.add(_botonNuevo);
-		}
+	private function _agregarBoton(texto: String, estadoDestino: FlxState): Void
+	{
+		_listaBotones.add(new BotonEnlace(texto, estadoDestino));
 	}
 
-	public function new() 
+	override public function create(): Void
 	{
-		super();
+		add(new BotonEnlace("popo", new MenuGenerico()));
+		
+		// TODO: Si descomento la siguiente línea no funciona. Arreglar debug primero!
+		/*this._agregarBoton("Probando", nuevoEstado);
+		
+		for (boton in this._listaBotones) {
+			boton.y = 20;
+			boton.screenCenter(true, false);
+			add(boton);
+		}*/
+		super.create();
 	}
 	
 }
