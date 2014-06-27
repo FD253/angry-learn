@@ -14,7 +14,7 @@ using flixel.util.FlxSpriteUtil;
  * ...
  * @author 
  */
-class BotonEnlace extends FlxButton
+class BotonMenu extends FlxButton
 {
 	private var _estadoDestino: FlxState;	// Referencia al estado al que el botón va a llevar
 	
