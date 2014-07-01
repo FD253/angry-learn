@@ -36,7 +36,8 @@ Y lo de ponerlas debajo de la instrucción que abre un bloque es para ver fácil
 			
 		if (condicion) {
 			unaLinea
-		}else {
+		}
+		else {
 			otraLinea
 		}
 	
