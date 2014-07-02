@@ -4,6 +4,7 @@ import flixel.FlxState;
 import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
+import openfl.events.MouseEvent;
 
 /**
  * ...
@@ -13,7 +14,7 @@ class Nivel1 extends FlxState
 {
 	var _acumulador = 0;
 	// Creamos un array para grabar lo que hace el usuario
-	var _usuario : Array<Int>; // = [for (x in 0...Niveles.nivel1.length) 0];
+	var _secuenciaUsuario : Array<Int> = [for (x in 0...Niveles.nivel1.length) 0];
 	
 	private function _avanceReproduccion(Timer : FlxTimer): Void
 	{
@@ -26,12 +27,28 @@ class Nivel1 extends FlxState
 	
 	private function _avanceGrabacion(Timer : FlxTimer): Void
 	{
-		// Definimos un array de la misma duración para grabar lo que hace el usuario
-		
+		if (Timer.loopsLeft == 0)
+		{
+			trace("Terminó");
+			trace(_acumulador);
+			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, _queHacerCuandoHaceClick);
+		}
+		else
+		{
+			_acumulador += 1;
+		}
+	}
+	
+	private function _queHacerCuandoHaceClick(e : MouseEvent): Void
+	{
+		_secuenciaUsuario[_acumulador] = 1;
+		trace("click");
 	}
 	
 	private function _testJuego(): Void
 	{
+		_acumulador = 0;
+		FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, _queHacerCuandoHaceClick);
 		new FlxTimer(Niveles.duracionSlot, _avanceGrabacion, Niveles.nivel1.length);
 	}
 
@@ -39,6 +56,7 @@ class Nivel1 extends FlxState
 	{
 		super.create();
 		// Creamos un timer para que reproduzca el sonido definido para el nivel
+		_acumulador = 0;
 		new FlxTimer(Niveles.duracionSlot, _avanceReproduccion, Niveles.nivel1.length);
 		add(new FlxButton(10, 10, "Jugar", _testJuego));
 	}
