@@ -12,21 +12,22 @@ using flixel.util.FlxSpriteUtil;
 
 /**
  * ...
- * @author 
+ * @author
  */
 class BotonMenu extends FlxButton
 {
-	private var _estadoDestino: FlxState;	// Referencia al estado al que el botón va a llevar
+	private var _estadoDestino: Class<FlxState>;	// Referencia al estado al que el botón va a llevar
 	
 	private function _cambiarEstado(): Void
 	{
-		FlxG.switchState(this._estadoDestino);
+		FlxG.switchState(Type.createInstance(_estadoDestino, []));
 	}
 	
-	override public function new(texto: String, estadoDestino: FlxState)
+	override public function new(texto: String, estadoDestino: Class<FlxState>)
 	{
+		
 		// Cuando creamos el botón, definimos a qué estado va a apuntar en el mismo botón
-		this._estadoDestino = estadoDestino;
+		_estadoDestino = estadoDestino;
 		super(0, 0, texto, _cambiarEstado);
 	}
 	
