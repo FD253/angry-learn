@@ -8,5 +8,10 @@ import flixel.FlxState;
  */
 class MenuCoordinacionVisomotriz extends MenuDeEnlace
 {
-	
+	override public function create():Void 
+	{
+		super.create();
+		_agregarBoton("VOLVER");
+		_ordenarBotones();
+	}	
 }

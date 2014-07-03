@@ -18,17 +18,31 @@ using BotonMenu;
  */
 class MenuDeEnlace extends FlxState
 {
-	private var _botonesDeMenu: List<BotonMenu> = new List<BotonMenu>();
+	private var _botonesDeMenu: List<FlxButton> = new List<FlxButton>();
 	
 	/*
 	 * Devuelve además el botón que acaba de crear por si se lo quiere modificar 
 	 */
-	private function _agregarBoton(texto: String, estadoDestino: FlxState): BotonMenu
+	private static function _volver():Void
 	{
-		var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
-		this._botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
-		//this.add(botonNuevo);	// No lo agregamos ahora porque puede mostrarse en la esquina 0,0 y moverse cuando se ejecuta this._ordenarBotones()
-		return botonNuevo;
+		FlxG.switchState(new MenuPrincipal());
+		//FlxG.switchState(Reg.MenuPrincipal);
+	}
+	private function _agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton
+	{
+		if (estadoDestino != null)
+		{
+			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
+			_botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
+			//this.add(botonNuevo);	// No lo agregamos ahora porque puede mostrarse en la esquina 0,0 y moverse cuando se ejecuta this._ordenarBotones()
+			return botonNuevo;
+		}
+		else
+		{
+			var botonNuevo = new FlxButton(0, 0, texto, _volver);
+			_botonesDeMenu.add(botonNuevo);
+			return botonNuevo;
+		}
 	}
 	
 	/*
@@ -37,17 +51,17 @@ class MenuDeEnlace extends FlxState
 	private function _ordenarBotones(): Void
 	{
 		var alturaBotones: Float = Lambda.fold( // Parecido a map() de Python
-			this._botonesDeMenu,
+			_botonesDeMenu,
 			function(a, b)
 			{
 				return (a.height + b);
 			},
 			0
 		);
-		var espacioIntermedio: Float = (FlxG.game.height - alturaBotones) / (this._botonesDeMenu.length + 1);
+		var espacioIntermedio: Float = (FlxG.game.height - alturaBotones) / (_botonesDeMenu.length + 1);
 		
 		Lambda.mapi(	// Esto es lo más parecido a un <for index, elemento in ennumerate(lista):> de Python, sólo que empleando map()
-			this._botonesDeMenu,
+			_botonesDeMenu,
 			function(index, boton)
 			{
 				boton.y = (index + 1) * espacioIntermedio; //- boton.height;
