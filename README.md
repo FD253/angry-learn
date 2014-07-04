@@ -3,55 +3,52 @@ angry-learn
 
 Estándar:
 ---------
+
+
+Se va a emplear el estilo de codificación definido por la misma comunidad de HaxeFlixel (Aunque con exepciones):
+http://haxeflixel.com/documentation/code-style/
 	
-- Para los tipos de datos de los identificadores (Y cualquier otro lugar que lelve el ":") que quede así:
-	... var identificador: TipoDato;
-	... function identificador(param1: TipoDato, param2: TipoDato)
+
+Modificaciones:
+---------------
+
+
+- Las llaves para los bloques de código van SIEMPRE (por más que sea una sola línea), y de la siguiente manera:
 	
+	if (condicion) {
+		unaLinea
+	}
+	else {
+		otraLinea
+	}
+
+	
+- Para los tipos de datos de los identificadores (Y cualquier otro lugar que lleve el ":") que quede así, siempre separado:
+	... var identificador : TipoDato;
+	... function identificador(param1: TipoDato, param2 : TipoDato)
+	
+	NUNCA explicitar que un método devuelve Void. Se asume que devuelve Void siempre.
+
 
 Variables, parametros de función: 		notacionCamello
 Clases: 								NotacionPascal
 	
-	
 
-Para las declaraciones de estructuras (for, if, function, class, etc) usar SIEMPRE llaves que abren y cierran DEBAJO de la declaración.
-Lo de poner las llaves siempre es para evitar olvidarse de agregarlas si en lugar de tener que ejecutar una línea luego tenemos que agregar otra(s).
-Y lo de ponerlas debajo de la instrucción que abre un bloque es para ver fácilmente dónde empieza y termina un bloque. (Aunque no se si conviene por el espacio que ocupa)
-
-	Bien:
-		if (condicion)
-		{
-			unaLinea
-		}
-		else
-		{
-			otraLinea
-		}
-	
-	MAL:
-		if (condicion)
-			unaLinea
-		else
-			otraLinea
-			
-		if (condicion) {
-			unaLinea
-		}
-		else {
-			otraLinea
-		}
-	
-
-Ser explícitos SIEMPRE al momento de llamar un método de clase... O sea, si tenemos:
+- En cuanto a los modificadores de acceso...
+	A menos que un atributo de clase o método sea PÚBLICO no se pone el modificador de acceso ya que son todos por defecto "private"
+	Aunque quedaría mejor emplear el "this" en una clase para referirse a sus atributos de instancia, no lo vamos a emplear
+	(Pero hay que tener cuidado porque no podríamos diferenciar a simple vista un atributo "static" de clase, de uno de instancia!)
 	
 	class Cosa
 	{
-		private function _unMetodoPrivado(): Void
+		public static cosaParaUsarEnCreate: Int;
+		
+		function _unMetodoPrivado(): Void	// Es private por defecto
 		{
 			...
 		}
 		
-		public function unMetodoPublico(): Void
+		public function unMetodoPublico(): Void		// Explicitamos que es público
 		{
 			// Usar SIEMPRE así:
 			this._unMetodoPrivado();
