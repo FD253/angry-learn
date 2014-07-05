@@ -8,6 +8,10 @@ import flixel.util.FlxTimer;
 import openfl.events.MouseEvent;
 import flixel.util.FlxColor;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
+
 /**
  * 
  * Para entender la estructura de datos que maneja este ejercicio ver la documentación en ritmo.Niveles
@@ -36,6 +40,8 @@ class Ejercicio extends FlxState
 	var _botonEscuchar : FlxButton;
 	var _botonJugar : FlxButton;
 	var _marcadorRitmo : FlxSprite;
+	var _marcadorRitmoTO : TweenOptions = { type: FlxTween.ONESHOT, ease: FlxEase.quartInOut };
+	var _marcadorRitmoTween : FlxTween;
 	
 	
 	// PUCLIC METHODS
@@ -48,10 +54,8 @@ class Ejercicio extends FlxState
 		var alturaBotones = FlxG.stage.stageHeight * 0.75;
 		
 		_marcadorRitmo = new FlxSprite();
-		_marcadorRitmo.makeGraphic(15, 15, FlxColor.WHITE);
-		_marcadorRitmo.setPosition(mitadAncho - _marcadorRitmo.width / 2, 20);
-		add(_marcadorRitmo);
-		
+		_marcadorRitmo.makeGraphic(150, 150, FlxColor.WHITE);
+		_marcadorRitmo.setPosition(mitadAncho - _marcadorRitmo.width / 2, 20);		
 		
 		_botonEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", _escuchar);
 		add(_botonEscuchar);
@@ -60,15 +64,14 @@ class Ejercicio extends FlxState
 		_botonJugar.x -= _botonJugar.width;
 		add(_botonJugar);
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		_botonJugar.active = false;
-		
-		
-		
+		_botonJugar.active = false;		
 	}
 	
 	
 	// PRIVATE METHODS
 	function _avanceReproduccion(Timer : FlxTimer) {
+		add(_marcadorRitmo);
+		
 		if (Timer.loopsLeft == 0) {
 			// Habilitar boton jugar
 			_botonJugar.active = true;
@@ -76,6 +79,7 @@ class Ejercicio extends FlxState
 		}
 		if (_nivel[_acumulador] == 1) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+			FlxTween.color(_marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, _marcadorRitmoTO);
 		}
 		_acumulador += 1;
 	}
@@ -94,7 +98,9 @@ class Ejercicio extends FlxState
 	
 	function _registrarPulsacion(e : MouseEvent) {
 		// Grabamos en un array
-		_secuenciaUsuario[_acumulador] = 1;
+		_secuenciaUsuario[_acumulador] += 1;
+		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+		_marcadorRitmoTween = FlxTween.color(_marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, _marcadorRitmoTO);
 		trace("click");
 	}
 	
@@ -102,6 +108,7 @@ class Ejercicio extends FlxState
 		_botonJugar.active = false;
 		_botonEscuchar.active = false;
 		_acumulador = 0;
+		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
 		new FlxTimer(_duracionSlot, _avanceReproduccion, _nivel.length);
 	}
@@ -110,6 +117,7 @@ class Ejercicio extends FlxState
 		_acumulador = 0;
 		_secuenciaUsuario = [for (x in 0..._nivel.length) 0];
 		// Escuchamos el click para "grabar" lo que hace el usuario
+		// TODO: Agregar algo que le permita al usuario saber que va a comenzar la secuencia
 		FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
 		new FlxTimer(_duracionSlot, _avanceGrabacion, _nivel.length);
 	}
