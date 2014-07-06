@@ -3,6 +3,7 @@ package ritmo;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxG;
+import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 import openfl.events.MouseEvent;
@@ -39,6 +40,7 @@ class Ejercicio extends FlxState
 	
 	var _botonEscuchar : FlxButton;
 	var _botonJugar : FlxButton;
+	var _textoRetardo : FlxText;
 	var _marcadorRitmo : FlxSprite;
 	var _marcadorRitmoTO : TweenOptions = { type: FlxTween.ONESHOT, ease: FlxEase.quartInOut };
 	var _marcadorRitmoTween : FlxTween;
@@ -63,8 +65,18 @@ class Ejercicio extends FlxState
 		_botonJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", _jugar);
 		_botonJugar.x -= _botonJugar.width;
 		add(_botonJugar);
+		
+		_textoRetardo = new FlxText();
+		_textoRetardo.wordWrap = false;
+		_textoRetardo.autoSize = false;
+		_textoRetardo.fieldWidth = 300;
+		_textoRetardo.size = 30;
+		_textoRetardo.setPosition(mitadAncho - _textoRetardo.fieldWidth / 2, alturaBotones - 50);
+		_textoRetardo.alignment = "center";
+		add(_textoRetardo);
+		
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		_botonJugar.active = false;		
+		_botonJugar.active = false;
 	}
 	
 	
@@ -90,6 +102,9 @@ class Ejercicio extends FlxState
 			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
 			trace(_nivel);
 			trace(_secuenciaUsuario);
+			_botonJugar.active = true;
+			_botonEscuchar.active = true;
+			_textoRetardo.text = "";
 		}
 		else {
 			_acumulador += 1;
@@ -113,13 +128,31 @@ class Ejercicio extends FlxState
 		new FlxTimer(_duracionSlot, _avanceReproduccion, _nivel.length);
 	}
 	
+	function _inicioRetardado(Timer : FlxTimer) {
+		if (Timer.loopsLeft == 0) {
+			trace('inicio de juego');
+			_textoRetardo.text += " Go! ";
+			// Escuchamos el click para "grabar" lo que hace el usuario
+			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
+			new FlxTimer(_duracionSlot, _avanceGrabacion, _nivel.length);
+		}
+		else {
+			_textoRetardo.text += " . ";
+		}
+	}
+	
 	function _jugar() {
+		_botonJugar.active = false;
+		_botonEscuchar.active = false;
 		_acumulador = 0;
 		_secuenciaUsuario = [for (x in 0..._nivel.length) 0];
-		// Escuchamos el click para "grabar" lo que hace el usuario
-		// TODO: Agregar algo que le permita al usuario saber que va a comenzar la secuencia
-		FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
-		new FlxTimer(_duracionSlot, _avanceGrabacion, _nivel.length);
+		
+		trace('inicio de retardo');
+		new FlxTimer(
+			1,	// Delay en segundos
+			_inicioRetardado,	// Handler
+			4	// Loops
+		);
 	}
 
 
