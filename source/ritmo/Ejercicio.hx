@@ -102,6 +102,12 @@ class Ejercicio extends FlxState
 			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
 			trace(_nivel);
 			trace(_secuenciaUsuario);
+			
+			// TODO: Contabilizar el acierto
+			for (i in 0..._nivel.length) {
+				
+			}
+			
 			_botonJugar.active = true;
 			_botonEscuchar.active = true;
 			_textoRetardo.text = "";
