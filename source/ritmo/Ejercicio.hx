@@ -24,139 +24,139 @@ class Ejercicio extends FlxState
 	// STATIC ATRIBUTES
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
-	public static var nivel : Array<Int>;
-	public static var duracionSlot : Float = 0.5;	// Determina la duración de un slot de tiempo en el array de la secuencia
+	public static var nivelInicio : Array<Int>;
+	public static var duracionSlotInicio : Float = 0.5;	// Determina la duración de un slot de tiempo en el array de la secuencia
 	
 	
 	// PUBLIC ATRIBUTES
 	
 	
 	// PRIVATE ATRIBUTES
-	var _nivel : Array<Int>;
-	var _duracionSlot : Float;
+	var nivel : Array<Int>;
+	var duracionSlot : Float;
 	
-	var _acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
-	var _secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
+	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
+	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
-	var _botonEscuchar : FlxButton;
-	var _botonJugar : FlxButton;
-	var _textoRetardo : FlxText;
-	var _marcadorRitmo : FlxSprite;
-	var _marcadorRitmoTO : TweenOptions = { type: FlxTween.ONESHOT, ease: FlxEase.quartInOut };
-	var _marcadorRitmoTween : FlxTween;
+	var botonEscuchar : FlxButton;
+	var botonJugar : FlxButton;
+	var textoRetardo : FlxText;
+	var marcadorRitmo : FlxSprite;
+	var marcadorRitmoTO : TweenOptions = { type: FlxTween.ONESHOT, ease: FlxEase.quartInOut };
+	var marcadorRitmoTween : FlxTween;
 	
 	
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		_nivel = nivel;	// Pasamos a la instancia el nivel que antes de instanciar se debe haber definido en la clase para que se ejecute
-		_duracionSlot = duracionSlot; // Mismo caso que para el _nivel...
+		nivel = nivelInicio;	// Pasamos a la instancia el nivel que antes de instanciar se debe haber definido en la clase para que se ejecute
+		duracionSlot = duracionSlotInicio; // Mismo caso que para el nivel...
 		
 		var mitadAncho = FlxG.stage.stageWidth / 2;
 		var alturaBotones = FlxG.stage.stageHeight * 0.75;
 		
-		_marcadorRitmo = new FlxSprite();
-		_marcadorRitmo.makeGraphic(150, 150, FlxColor.WHITE);
-		_marcadorRitmo.setPosition(mitadAncho - _marcadorRitmo.width / 2, 20);		
+		marcadorRitmo = new FlxSprite();
+		marcadorRitmo.makeGraphic(150, 150, FlxColor.WHITE);
+		marcadorRitmo.setPosition(mitadAncho - marcadorRitmo.width / 2, 20);		
 		
-		_botonEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", _escuchar);
-		add(_botonEscuchar);
+		botonEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", escuchar);
+		add(botonEscuchar);
 		
-		_botonJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", _jugar);
-		_botonJugar.x -= _botonJugar.width;
-		add(_botonJugar);
+		botonJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", jugar);
+		botonJugar.x -= botonJugar.width;
+		add(botonJugar);
 		
-		_textoRetardo = new FlxText();
-		_textoRetardo.wordWrap = false;
-		_textoRetardo.autoSize = false;
-		_textoRetardo.fieldWidth = 300;
-		_textoRetardo.size = 30;
-		_textoRetardo.setPosition(mitadAncho - _textoRetardo.fieldWidth / 2, alturaBotones - 50);
-		_textoRetardo.alignment = "center";
-		add(_textoRetardo);
+		textoRetardo = new FlxText();
+		textoRetardo.wordWrap = false;
+		textoRetardo.autoSize = false;
+		textoRetardo.fieldWidth = 300;
+		textoRetardo.size = 30;
+		textoRetardo.setPosition(mitadAncho - textoRetardo.fieldWidth / 2, alturaBotones - 50);
+		textoRetardo.alignment = "center";
+		add(textoRetardo);
 		
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		_botonJugar.active = false;
+		botonJugar.active = false;
 	}
 	
 	
 	// PRIVATE METHODS
-	function _avanceReproduccion(Timer : FlxTimer) {
-		add(_marcadorRitmo);
+	function avanceReproduccion(timer : FlxTimer) {
+		add(marcadorRitmo);
 		
-		if (Timer.loopsLeft == 0) {
+		if (timer.loopsLeft == 0) {
 			// Habilitar boton jugar
-			_botonJugar.active = true;
-			_botonEscuchar.active = true;
+			botonJugar.active = true;
+			botonEscuchar.active = true;
 		}
-		if (_nivel[_acumulador] == 1) {
+		if (nivel[acumulador] == 1) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-			FlxTween.color(_marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, _marcadorRitmoTO);
+			FlxTween.color(marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, marcadorRitmoTO);
 		}
-		_acumulador += 1;
+		acumulador += 1;
 	}
 	
-	function _avanceGrabacion(Timer : FlxTimer) {
-		if (Timer.loopsLeft == 0) {
+	function avanceGrabacion(timer : FlxTimer) {
+		if (timer.loopsLeft == 0) {
 			trace("terminó");
-			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
-			trace(_nivel);
-			trace(_secuenciaUsuario);
+			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
+			trace(nivel);
+			trace(secuenciaUsuario);
 			
 			// TODO: Contabilizar el acierto
-			for (i in 0..._nivel.length) {
+			for (i in 0...nivel.length) {
 				
 			}
 			
-			_botonJugar.active = true;
-			_botonEscuchar.active = true;
-			_textoRetardo.text = "";
+			botonJugar.active = true;
+			botonEscuchar.active = true;
+			textoRetardo.text = "";
 		}
 		else {
-			_acumulador += 1;
+			acumulador += 1;
 		}
 	}
 	
-	function _registrarPulsacion(e : MouseEvent) {
+	function registrarPulsacion(e : MouseEvent) {
 		// Grabamos en un array
-		_secuenciaUsuario[_acumulador] += 1;
+		secuenciaUsuario[acumulador] += 1;
 		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-		_marcadorRitmoTween = FlxTween.color(_marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, _marcadorRitmoTO);
+		marcadorRitmoTween = FlxTween.color(marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, marcadorRitmoTO);
 		trace("click");
 	}
 	
-	function _escuchar() {
-		_botonJugar.active = false;
-		_botonEscuchar.active = false;
-		_acumulador = 0;
+	function escuchar() {
+		botonJugar.active = false;
+		botonEscuchar.active = false;
+		acumulador = 0;
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		new FlxTimer(_duracionSlot, _avanceReproduccion, _nivel.length);
+		new FlxTimer(duracionSlot, avanceReproduccion, nivel.length);
 	}
 	
-	function _inicioRetardado(Timer : FlxTimer) {
-		if (Timer.loopsLeft == 0) {
+	function inicioRetardado(timer : FlxTimer) {
+		if (timer.loopsLeft == 0) {
 			trace('inicio de juego');
-			_textoRetardo.text += " Go! ";
+			textoRetardo.text += " Go! ";
 			// Escuchamos el click para "grabar" lo que hace el usuario
-			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, _registrarPulsacion);
-			new FlxTimer(_duracionSlot, _avanceGrabacion, _nivel.length);
+			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
+			new FlxTimer(duracionSlot, avanceGrabacion, nivel.length);
 		}
 		else {
-			_textoRetardo.text += " . ";
+			textoRetardo.text += " . ";
 		}
 	}
 	
-	function _jugar() {
-		_botonJugar.active = false;
-		_botonEscuchar.active = false;
-		_acumulador = 0;
-		_secuenciaUsuario = [for (x in 0..._nivel.length) 0];
+	function jugar() {
+		botonJugar.active = false;
+		botonEscuchar.active = false;
+		acumulador = 0;
+		secuenciaUsuario = [for (x in 0...nivel.length) 0];
 		
 		trace('inicio de retardo');
 		new FlxTimer(
 			1,	// Delay en segundos
-			_inicioRetardado,	// Handler
+			inicioRetardado,	// Handler
 			4	// Loops
 		);
 	}

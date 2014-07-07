@@ -12,10 +12,10 @@ class MenuRitmoLector extends MenuDeEnlace
 	override public function create():Void 
 	{
 		super.create();
-		_agregarBoton("SEGUIR EL RITMO", ritmo.MenuNiveles);
-		_agregarBoton("KARAOKE", karaoke.MenuNiveles);
-		//_agregarBoton("TETRIS CON PALABRAS", new tetris.MenuNiveles());
-		_agregarBoton("VOLVER");
-		_ordenarBotones();
+		agregarBoton("SEGUIR EL RITMO", ritmo.MenuNiveles);
+		agregarBoton("KARAOKE", karaoke.MenuNiveles);
+		//agregarBoton("TETRIS CON PALABRAS", new tetris.MenuNiveles());
+		agregarBoton("VOLVER");
+		ordenarBotones();
 	}
 }

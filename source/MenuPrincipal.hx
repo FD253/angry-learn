@@ -15,9 +15,9 @@ class MenuPrincipal extends MenuDeEnlace
 	override public function create():Void 
 	{
 		super.create();
-		_agregarBoton("RITMO LECTOR", MenuRitmoLector);
-		_agregarBoton("COORDINACIÓN VISOMOTRIZ", MenuCoordinacionVisomotriz);
-		_ordenarBotones();
+		agregarBoton("RITMO LECTOR", MenuRitmoLector);
+		agregarBoton("COORDINACIÓN VISOMOTRIZ", MenuCoordinacionVisomotriz);
+		ordenarBotones();
 	}
 	
 }
