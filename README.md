@@ -13,6 +13,9 @@ Modificaciones:
 ---------------
 
 
+- Los identificadores de variables van todos en notaciónCamello. Sin excepción. Total, para saber si algo es público o privado tenemos IDEs, no?
+
+
 - Las llaves para los bloques de código van SIEMPRE (por más que sea una sola línea), y de la siguiente manera:
 	
 	if (condicion) {
@@ -43,7 +46,7 @@ Clases: 								NotacionPascal
 	{
 		public static cosaParaUsarEnCreate: Int;
 		
-		function _unMetodoPrivado(): Void	// Es private por defecto
+		function unMetodoPrivado(): Void	// Es private por defecto
 		{
 			...
 		}
@@ -51,9 +54,9 @@ Clases: 								NotacionPascal
 		public function unMetodoPublico(): Void		// Explicitamos que es público
 		{
 			// Usar SIEMPRE así:
-			this._unMetodoPrivado();
+			unMetodoPrivado();
 			
 			Y NO así:
-			_unMetodoPrivado();
+			this.unMetodoPrivado();
 		}
 	}
