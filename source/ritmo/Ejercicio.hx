@@ -25,7 +25,9 @@ class Ejercicio extends FlxState
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
 	public static var nivelInicio : Array<Int>;
-	public static var duracionSlotInicio : Float = 0.5;	// Determina la duración de un slot de tiempo en el array de la secuencia
+	public static var duracionSlotInicio : Float = 1;	// Determina la duración (En segundos) de un slot de tiempo en el array de la secuencia
+		// Tener en cuenta que por el método que usamos para calcular el error, el tiempo asignado a cada slot influye mucho
+		// Un tiempo muy corto hace que sea muy sensible a errores y un tiempo muy largo hace que el un mal ritmo se compute bien
 	
 	
 	// PUBLIC ATRIBUTES
@@ -103,14 +105,22 @@ class Ejercicio extends FlxState
 			trace(nivel);
 			trace(secuenciaUsuario);
 			
+			var errores = 0;
 			// TODO: Contabilizar el acierto
 			for (i in 0...nivel.length) {
-				
+				if (nivel[i] != secuenciaUsuario[i]) {
+					errores += 1;
+				}
 			}
+			var resultado = 100 - (errores / nivel.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
+			trace("resultado: ", resultado);
 			
 			botonJugar.active = true;
 			botonEscuchar.active = true;
 			textoRetardo.text = "";
+			
+			FinNivel.resultadoInicio = resultado;	// Seteamos el static para que create() lo use para mostrarlo
+			FlxG.switchState(new FinNivel());
 		}
 		else {
 			acumulador += 1;
@@ -155,7 +165,7 @@ class Ejercicio extends FlxState
 		
 		trace('inicio de retardo');
 		new FlxTimer(
-			1,	// Delay en segundos
+			0.2,	// Delay en segundos
 			inicioRetardado,	// Handler
 			4	// Loops
 		);
