@@ -24,18 +24,13 @@ class Ejercicio extends FlxState
 	// STATIC ATRIBUTES
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
-	public static var nivelInicio : Array<Int>;
-	public static var duracionSlotInicio : Float = 1;	// Determina la duración (En segundos) de un slot de tiempo en el array de la secuencia
-		// Tener en cuenta que por el método que usamos para calcular el error, el tiempo asignado a cada slot influye mucho
-		// Un tiempo muy corto hace que sea muy sensible a errores y un tiempo muy largo hace que el un mal ritmo se compute bien
-	
+	public static var nivelInicio : Nivel;	
 	
 	// PUBLIC ATRIBUTES
 	
 	
 	// PRIVATE ATRIBUTES
-	var nivel : Array<Int>;
-	var duracionSlot : Float;
+	var nivel : Nivel;
 	
 	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
@@ -51,8 +46,7 @@ class Ejercicio extends FlxState
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		nivel = nivelInicio;	// Pasamos a la instancia el nivel que antes de instanciar se debe haber definido en la clase para que se ejecute
-		duracionSlot = duracionSlotInicio; // Mismo caso que para el nivel...
+		nivel = nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		
 		var mitadAncho = FlxG.stage.stageWidth / 2;
 		var alturaBotones = FlxG.stage.stageHeight * 0.75;
@@ -91,7 +85,7 @@ class Ejercicio extends FlxState
 			botonJugar.active = true;
 			botonEscuchar.active = true;
 		}
-		if (nivel[acumulador] == 1) {
+		if (nivel.secuencia[acumulador] == 1) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 			FlxTween.color(marcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, marcadorRitmoTO);
 		}
@@ -102,17 +96,17 @@ class Ejercicio extends FlxState
 		if (timer.loopsLeft == 0) {
 			trace("terminó");
 			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
-			trace(nivel);
+			trace(nivel.secuencia);
 			trace(secuenciaUsuario);
 			
 			var errores = 0;
 			// TODO: Contabilizar el acierto
-			for (i in 0...nivel.length) {
-				if (nivel[i] != secuenciaUsuario[i]) {
+			for (i in 0...nivel.secuencia.length) {
+				if (nivel.secuencia[i] != secuenciaUsuario[i]) {
 					errores += 1;
 				}
 			}
-			var resultado = 100 - (errores / nivel.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
+			var resultado = 100 - (errores / nivel.secuencia.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			trace("resultado: ", resultado);
 			
 			botonJugar.active = true;
@@ -141,7 +135,7 @@ class Ejercicio extends FlxState
 		acumulador = 0;
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		new FlxTimer(duracionSlot, avanceReproduccion, nivel.length);
+		new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length);
 	}
 	
 	function inicioRetardado(timer : FlxTimer) {
@@ -150,7 +144,7 @@ class Ejercicio extends FlxState
 			textoRetardo.text += " Go! ";
 			// Escuchamos el click para "grabar" lo que hace el usuario
 			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
-			new FlxTimer(duracionSlot, avanceGrabacion, nivel.length);
+			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
 		}
 		else {
 			textoRetardo.text += " . ";
@@ -161,7 +155,7 @@ class Ejercicio extends FlxState
 		botonJugar.active = false;
 		botonEscuchar.active = false;
 		acumulador = 0;
-		secuenciaUsuario = [for (x in 0...nivel.length) 0];
+		secuenciaUsuario = [for (x in 0...nivel.secuencia.length) 0];
 		
 		trace('inicio de retardo');
 		new FlxTimer(
