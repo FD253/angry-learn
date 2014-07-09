@@ -35,6 +35,8 @@ class Ejercicio extends FlxState
 	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
+	var botonMenuVolver : FlxButton;
+	
 	var botonEscuchar : FlxButton;
 	var botonJugar : FlxButton;
 	var textoRetardo : FlxText;
@@ -47,6 +49,10 @@ class Ejercicio extends FlxState
 	override public function create() {
 		super.create();
 		nivel = nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		
+		// Botones del menú de juego
+		botonMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
+		add(botonMenuVolver);
 		
 		var mitadAncho = FlxG.stage.stageWidth / 2;
 		var alturaBotones = FlxG.stage.stageHeight * 0.75;
@@ -77,6 +83,10 @@ class Ejercicio extends FlxState
 	
 	
 	// PRIVATE METHODS
+	function botonMenuVolverOnClick() {
+		FlxG.switchState(new MenuNiveles());
+	}
+	
 	function avanceReproduccion(timer : FlxTimer) {
 		add(marcadorRitmo);
 		
