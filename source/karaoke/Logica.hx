@@ -1,3 +1,5 @@
+package karaoke;
+
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxG;

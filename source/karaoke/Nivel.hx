@@ -50,7 +50,7 @@ class Item
 	 * 	- Espacios ( ) separan palabras
 	 *  - Puntos (.) separan sílabas
 	*/
-	var texto : Array<String>;
+	var texto : String;
 	
 	public function new(Texto : String) {
 		texto = Texto.toUpperCase();

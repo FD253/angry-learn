@@ -1,5 +1,9 @@
 package karaoke;
 
+import flixel.FlxG;
+import flixel.ui.FlxButton;
+
+
 /**
  * ...
  * @author
