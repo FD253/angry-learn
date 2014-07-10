@@ -14,11 +14,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-<<<<<<< HEAD
-	<window width="1024" height="600" fps="60" background="#000000" hardware="true" vsync="true" />
-=======
 	<window width="640" height="360" fps="60" background="#000000" hardware="true" vsync="true" />
->>>>>>> develop
 	
 	<!--Web-specific-->
 	<window if="web" orientation="portrait"  />
