@@ -7,7 +7,7 @@ import flixel.FlxG;
  * ...
  * @author Gabriel
  */
-class Nivel3 extends FlxState
+class Niveles extends FlxState
 {
 	override public function create():Void 
 	{
