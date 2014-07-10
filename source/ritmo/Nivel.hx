@@ -7,7 +7,7 @@ import flixel.addons.editors.ogmo.FlxOgmoLoader;
  */
 class Nivel
 {
-	// REFERENCIA A LAS CARACTERÍSTICAS DE LOS NIVELES DEFINIDOS PARA ESTE EJERCICIO
+	// REFERENCIAS A LAS CARACTERÍSTICAS DE LOS NIVELES DEFINIDOS PARA ESTE EJERCICIO
 	public static var nivel1 = new Nivel(
 		[1,0,0,1],
 		1

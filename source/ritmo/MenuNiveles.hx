@@ -11,16 +11,16 @@ import flixel.FlxG;
 class MenuNiveles extends MenuDeEnlace
 {
 	static function nivel1OnClick()	{
-		Ejercicio.nivelInicio = Nivel.nivel1;
-		FlxG.switchState(new Ejercicio());
+		Logica.nivelInicio = Nivel.nivel1;
+		FlxG.switchState(new Logica());
 	}
 	static function nivel2OnClick()	{
-		Ejercicio.nivelInicio = Nivel.nivel2;
-		FlxG.switchState(new Ejercicio());
+		Logica.nivelInicio = Nivel.nivel2;
+		FlxG.switchState(new Logica());
 	}
 	static function nivel3OnClick()	{
-		Ejercicio.nivelInicio = Nivel.nivel3;
-		FlxG.switchState(new Ejercicio());
+		Logica.nivelInicio = Nivel.nivel3;
+		FlxG.switchState(new Logica());
 	}
 	
 	override public function create():Void 
