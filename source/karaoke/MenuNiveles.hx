@@ -10,8 +10,16 @@ import flixel.ui.FlxButton;
  */
 class MenuNiveles extends MenuDeEnlace
 {
-	function nivel1OnClick() {
+	static function nivel1OnClick()	{
 		Logica.nivelInicio = Nivel.nivel1;
+		FlxG.switchState(new Logica());
+	}
+	static function nivel2OnClick()	{
+		Logica.nivelInicio = Nivel.nivel2;
+		FlxG.switchState(new Logica());
+	}
+	static function nivel3OnClick()	{
+		Logica.nivelInicio = Nivel.nivel3;
 		FlxG.switchState(new Logica());
 	}
 	
@@ -20,7 +28,9 @@ class MenuNiveles extends MenuDeEnlace
 		super.create();
 		
 		botonesDeMenu.add(new FlxButton(0, 0, "1", nivel1OnClick));
-		
+		botonesDeMenu.add(new FlxButton(0, 0, "2", nivel2OnClick));
+		botonesDeMenu.add(new FlxButton(0, 0, "3", nivel3OnClick));
+				
 		agregarBoton("VOLVER", MenuRitmoLector);
 		agregarBoton("Reiniciar");
 		ordenarBotones();
