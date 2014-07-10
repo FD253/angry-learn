@@ -8,24 +8,22 @@ package karaoke;
  */
 class Nivel
 {
+
 	public static var nivel1 = new Nivel([
-		new Item("AA"),
-		new Item("EE"),
-		new Item("IA"),
+		new Item("A.A E.E I.I O.O U.U"),
+		new Item("A.E U.I E.A I.A U.A"),
 		new Item("UA"),
 	]);
 	public static var nivel2 = new Nivel([
-		new Item("MA"),
-		new Item("LI"),
-		new Item("CO"),
+		new Item("MA ME MI MO "),
 	]);
 	public static var nivel3 = new Nivel([
 		new Item("O.JO"),
 		new Item("PA.TO"),
 		new Item("CA.RA"),
-		new Item("LA CA.SA"),
-		new Item("EL PE.RRO"),
-		new Item("EL CA.RA.ME.LO ES DUL.CE"),
+		new Item("LA CASA"),
+		new Item("EL PERRO"),
+		new Item("EL CARAMELO ES DULCE"),
 	]);
 	
 	

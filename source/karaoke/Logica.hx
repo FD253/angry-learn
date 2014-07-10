@@ -27,11 +27,16 @@ class Logica extends FlxState
 
 	
 	// PRIVATE METHODS
-
+	function resaltarItem() {
+		
+	}
+	
 	
 	// CLASS OVERRIDES
 	override public function create() {
-
+		super.create();
+		nivel = nivelInicio;
+		
 		var btnCorrecto = new FlxUIButton(560, 220 , "CORRECTO");
 		add(btnCorrecto); 
 		
