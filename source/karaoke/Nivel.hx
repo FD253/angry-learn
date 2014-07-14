@@ -27,7 +27,7 @@ class Nivel
 	]);
 	
 	
-	var items : Array<Item>;
+	public var items : Array<Item>;
 
 	public function new(Items : Array<Item>) {
 		items = Items;
@@ -48,7 +48,7 @@ class Item
 	 * 	- Espacios ( ) separan palabras
 	 *  - Puntos (.) separan sílabas
 	*/
-	var texto : String;
+	public var texto : String;
 	
 	public function new(Texto : String) {
 		texto = Texto.toUpperCase();

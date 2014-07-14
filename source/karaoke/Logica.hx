@@ -7,6 +7,7 @@ import flixel.FlxSubState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
+import karaoke.Nivel.Item;
 import openfl.events.MouseEvent;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
@@ -27,16 +28,32 @@ class Logica extends FlxState
 
 	
 	// PRIVATE METHODS
-	function resaltarItem() {
+	function resaltarParteItem() {
 		
 	}
-	
+	function quitarPuntosItem(item:Item):String {
+		var todo : String;
+		todo = "";
+		var partes = item.texto.split(".");
+		for (i in 0...partes.length) {
+			todo += partes[i];
+		}
+		return todo;
+	}
+	function mostrarSiguienteItem() {
+			//var textItem = new FlxText(80, 80, 480, null, 16);
+			//add(textItem);
+			//textItem.alignment = "center";
+			//textItem.text = nivel.items[0].texto;
+		}
+
 	
 	// CLASS OVERRIDES
 	override public function create() {
 		super.create();
 		nivel = nivelInicio;
-		
+		var item : Item = nivel.items[0];
+
 		var btnCorrecto = new FlxUIButton(560, 220 , "CORRECTO");
 		add(btnCorrecto); 
 		
@@ -67,9 +84,7 @@ class Logica extends FlxState
 		var textItem = new FlxText(80, 80, 480, null, 16);
 		add(textItem);
 		textItem.alignment = "center";
+		textItem.text = quitarPuntosItem(item);
 		//textItem.systemFont = "Arial";
-		
-		
 	}
-	
 }
