@@ -1,6 +1,7 @@
 package ritmo;
 
 import flixel.FlxSprite;
+import flixel.group.FlxTypedGroup;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.text.FlxText;
@@ -35,13 +36,18 @@ class Logica extends FlxState
 	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
-	var botonMenuVolver : FlxButton;
+	var botonCancelar : FlxButton;
 	
+	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
+	
+	var botonMenuVolver : FlxButton;
 	var botonEscuchar : FlxButton;
 	var botonJugar : FlxButton;
+	var timerPrincipal : FlxTimer;	// Esta referencia sirve para el timer tanto de juego como de escucha
+	
 	var textoRetardo : FlxText;
 	var marcadorRitmo : FlxSprite;
-	var marcadorRitmoTO : TweenOptions = { type: FlxTween.ONESHOT, ease: FlxEase.quartInOut };
+	var marcadorRitmoTO : TweenOptions = { type: FlxTween.BACKWARD, ease: FlxEase.quartInOut };
 	var marcadorRitmoTween : FlxTween;
 	
 	
@@ -52,33 +58,42 @@ class Logica extends FlxState
 		
 		// Botones del menú de juego
 		botonMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
-		add(botonMenuVolver);
+		botonesInterfaz.add(botonMenuVolver);
+		
+		botonCancelar = new FlxButton(40, 10, "Detener", botonCancelarOnClick);
+		botonCancelar.x = FlxG.stage.stageWidth - botonCancelar.width - 10;
+		botonCancelar.visible = false;
+		//botonesInterfaz.add(botonCancelar);
+		add(botonCancelar); // No lo tomamos como botón del grupo interfaz
 		
 		var mitadAncho = FlxG.stage.stageWidth / 2;
-		var alturaBotones = FlxG.stage.stageHeight * 0.75;
+		var alturaBotones = 10; //FlxG.stage.stageHeight * 0.2;
 		
 		marcadorRitmo = new FlxSprite();
 		marcadorRitmo.makeGraphic(150, 150, FlxColor.WHITE);
-		marcadorRitmo.setPosition(mitadAncho - marcadorRitmo.width / 2, 20);		
+		marcadorRitmo.setPosition(mitadAncho - marcadorRitmo.width / 2, FlxG.stage.stageHeight * 0.4);
+		add(marcadorRitmo);
 		
-		botonEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", escuchar);
-		add(botonEscuchar);
+		botonEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", botonEscucharOnClick);
+		botonesInterfaz.add(botonEscuchar);
 		
-		botonJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", jugar);
+		botonJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", botonJugarOnClick);
 		botonJugar.x -= botonJugar.width;
-		add(botonJugar);
+		botonesInterfaz.add(botonJugar);
 		
 		textoRetardo = new FlxText();
 		textoRetardo.wordWrap = false;
 		textoRetardo.autoSize = false;
 		textoRetardo.fieldWidth = 300;
 		textoRetardo.size = 30;
-		textoRetardo.setPosition(mitadAncho - textoRetardo.fieldWidth / 2, alturaBotones - 50);
+		textoRetardo.setPosition(mitadAncho - textoRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
 		textoRetardo.alignment = "center";
 		add(textoRetardo);
 		
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		botonJugar.active = false;
+		botonJugar.visible = false;
+		
+		add(botonesInterfaz);
 	}
 	
 	
@@ -87,13 +102,18 @@ class Logica extends FlxState
 		FlxG.switchState(new MenuNiveles());
 	}
 	
+	function botonCancelarOnClick() {
+		timerPrincipal.destroy();
+		botonCancelar.visible = false;
+		botonesInterfaz.setAll("visible", true);
+	}
+	
 	function avanceReproduccion(timer : FlxTimer) {
 		add(marcadorRitmo);
 		
 		if (timer.loopsLeft == 0) {
-			// Habilitar boton jugar
-			botonJugar.active = true;
-			botonEscuchar.active = true;
+			botonesInterfaz.setAll("visible", true);
+			botonCancelar.visible = false;
 		}
 		if (nivel.secuencia[acumulador] == 1) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
@@ -120,7 +140,7 @@ class Logica extends FlxState
 			trace("resultado: ", resultado);
 			
 			botonJugar.active = true;
-			botonEscuchar.active = true;
+			botonEscuchar.visible = true;
 			textoRetardo.text = "";
 			
 			FinNivel.resultadoInicio = resultado;	// Seteamos el static para que create() lo use para mostrarlo
@@ -139,13 +159,14 @@ class Logica extends FlxState
 		trace("click");
 	}
 	
-	function escuchar() {
-		botonJugar.active = false;
-		botonEscuchar.active = false;
+	function botonEscucharOnClick() {
+		botonCancelar.visible = true;
+		botonesInterfaz.setAll("visible", false);
+		
 		acumulador = 0;
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length);
+		timerPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length);
 	}
 	
 	function inicioRetardado(timer : FlxTimer) {
@@ -161,14 +182,14 @@ class Logica extends FlxState
 		}
 	}
 	
-	function jugar() {
+	function botonJugarOnClick() {
 		botonJugar.active = false;
-		botonEscuchar.active = false;
+		botonEscuchar.visible = false;
 		acumulador = 0;
 		secuenciaUsuario = [for (x in 0...nivel.secuencia.length) 0];
 		
 		trace('inicio de retardo');
-		new FlxTimer(
+		timerPrincipal = new FlxTimer(
 			0.2,	// Delay en segundos
 			inicioRetardado,	// Handler
 			4	// Loops
