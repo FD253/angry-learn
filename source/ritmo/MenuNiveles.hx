@@ -11,15 +11,15 @@ import flixel.FlxG;
 class MenuNiveles extends MenuDeEnlace
 {
 	static function nivel1OnClick()	{
-		Logica.nivelInicio = Nivel.nivel1;
+		Logica.nivelInicio = Nivel.niveles[0];
 		FlxG.switchState(new Logica());
 	}
 	static function nivel2OnClick()	{
-		Logica.nivelInicio = Nivel.nivel2;
+		Logica.nivelInicio = Nivel.niveles[1];
 		FlxG.switchState(new Logica());
 	}
 	static function nivel3OnClick()	{
-		Logica.nivelInicio = Nivel.nivel3;
+		Logica.nivelInicio = Nivel.niveles[2];
 		FlxG.switchState(new Logica());
 	}
 	

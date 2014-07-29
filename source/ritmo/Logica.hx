@@ -1,5 +1,6 @@
 package ritmo;
 
+import Reg;
 import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
 import flixel.FlxState;
@@ -54,7 +55,8 @@ class Logica extends FlxState
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		nivel = nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		nivel = nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
 		// Botones del menú de juego
 		btnMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
