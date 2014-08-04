@@ -1,5 +1,6 @@
 package ritmo;
 import flixel.ui.FlxButton;
+import flixel.addons.ui.FlxUICheckBox;
 import haxe.macro.Type;
 import flixel.FlxG;
 
@@ -10,16 +11,21 @@ import flixel.FlxG;
  */
 class MenuNiveles extends MenuDeEnlace
 {
-	static function nivel1OnClick()	{
+	var chkFeedbackVisual : FlxUICheckBox;
+	
+	function nivel1OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[0];
+		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
-	static function nivel2OnClick()	{
+	function nivel2OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[1];
+		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
-	static function nivel3OnClick()	{
+	function nivel3OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[2];
+		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
 	
@@ -27,12 +33,17 @@ class MenuNiveles extends MenuDeEnlace
 	{
 		super.create();
 		
+		
 		botonesDeMenu.add(new FlxButton(0, 0, "1", nivel1OnClick));
 		botonesDeMenu.add(new FlxButton(0, 0, "2", nivel2OnClick));
 		botonesDeMenu.add(new FlxButton(0, 0, "3", nivel3OnClick));
 		agregarBoton("VOLVER", MenuRitmoLector);
 		agregarBoton("Reiniciar");
 		ordenarBotones();
+		
+		chkFeedbackVisual = new FlxUICheckBox(10, 10, null, null,"asdad");
+		//chkFeedbackVisual.setLabel("ASDASD");
+		add(chkFeedbackVisual);
 	}
 	
 }

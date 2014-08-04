@@ -27,12 +27,14 @@ class Logica extends FlxState
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
 	public static var nivelInicio : Nivel;
+	public static var feedbackVisualInicio : Bool;
 	
 	// PUBLIC ATRIBUTES
 	
 	
 	// PRIVATE ATRIBUTES
 	var nivel : Nivel;
+	var feedbackVisual : Bool;
 	
 	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
@@ -60,6 +62,7 @@ class Logica extends FlxState
 	override public function create() {
 		super.create();
 		nivel = nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		feedbackVisual = feedbackVisualInicio;
 		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
 		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"
@@ -86,7 +89,10 @@ class Logica extends FlxState
 		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, "1", "0");	// Ponemos "círculos" en cada sonido
 		txtRepresentacionSecuencia.size = 40;
 		txtRepresentacionSecuencia.setPosition(mitadAncho - txtRepresentacionSecuencia.fieldWidth / 2, FlxG.height * 0.4);
-		add(txtRepresentacionSecuencia);
+		
+		if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
+			add(txtRepresentacionSecuencia);
+		}
 		
 		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", botonEscucharOnClick);
 		botonesInterfaz.add(btnEscuchar);
