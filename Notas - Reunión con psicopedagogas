@@ -1,0 +1,29 @@
+Actividad 1
+	Las repeticiones deben ser cortas, como están en el ejemplo (no más de 5 segundos).
+	Deberían ser dos fases para cada ejercicio: Una en la que el programa demuestre lo que hay que hacer y otra en la que el chico lo repita pero sin ayuda del programa.
+
+Actividad 2
+	Deben ser sencillos al principio. El programa tiene que mostrar 2 letras "con color aburrido" al principio, lentamente, restalta una para que el chico la pronuncie. Se desresalta, pasa un breve lapso de tiempo y la otra letra que está al lado se resalta para hacer lo mismo.
+		Al nivel 3, en la parte en que se introducen palabras se muestra la palabra y se van resaltando las sílabas para que el chico pronuncie.
+		Y cuando se introducen los artículos, lo que se resaltan son las palabras completas en lugar de las sílabas.
+			Acá en el nivel 3 luego de que el chico lea la palabra entera, se le presentan imégenes con sílabas parecidas para que el chico elija cuál es la que está bien.
+
+Ejercicios de trazos
+	En todos estos ejercicios la idea es que una vez que el chico conienza a hacer el trazo no pueda volver a hacerlo si levanta el trazo. -> Cuando se levanta el trazo se corta el juego. Para poder hacerlo debe reiniciarse todo el ejercicio.
+
+
+==========================
+Segunda reunión
+
+Ritmo:
+	DEBE haber una diferenciación clara entre la fase de reproducción y la parte del juego (Como cambioen el color de fondo)
+
+	Habría dos modalidades
+		
+		La primera es:
+			Se ven en pantalla algo como esto: "000" que básicamente significa que son 3 pulsaciones.
+			Cuando se le da escuchar esos círculos que representan cada pulso de la secuencia deben parpadear o pintarse (Como el cuadrado blanco)
+			El cuadrado blanco ya no está más.
+		
+		La segunda modalidad:
+			La principal diferencia es que son los mismos ejercicios pero no está ese feedback visual. Sólo el sonido.
