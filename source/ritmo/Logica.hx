@@ -62,6 +62,8 @@ class Logica extends FlxState
 		nivel = nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
+		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con "color de reproducción"
+		
 		// Botones del menú de juego
 		btnMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
 		botonesInterfaz.add(btnMenuVolver);
@@ -171,6 +173,7 @@ class Logica extends FlxState
 		secuenciaUsuario[acumulador] += 1;
 		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 		//tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
+		txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 		trace("click");
 	}
 	
@@ -182,16 +185,18 @@ class Logica extends FlxState
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1);
+		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
 	}
 	
 	function inicioRetardado(timer : FlxTimer) {
 		if (timer.loopsLeft == 0) {
 			trace('inicio de juego');
 			txtRetardo.text += " Go! ";
+			FlxG.state.bgColor = FlxColor.CRIMSON; // Color "grabando"
+			
 			// Escuchamos el click para "grabar" lo que hace el usuario
 			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
-			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
+			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
 		}
 		else {
 			txtRetardo.text += " . ";
@@ -199,9 +204,11 @@ class Logica extends FlxState
 	}
 	
 	function botonJugarOnClick() {
+		FlxG.state.bgColor = FlxColor.GRAY; // Color "preparando"
 		btnJugar.active = false;
 		btnEscuchar.visible = false;
 		acumulador = 0;
+		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		secuenciaUsuario = [for (x in 0...nivel.secuencia.length) 0];
 		
 		trace('inicio de retardo');
