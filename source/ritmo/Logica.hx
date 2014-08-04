@@ -62,7 +62,7 @@ class Logica extends FlxState
 		nivel = nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
-		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con "color de reproducción"
+		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"
 		
 		// Botones del menú de juego
 		btnMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
@@ -180,6 +180,7 @@ class Logica extends FlxState
 	function botonEscucharOnClick() {
 		btnCancelar.visible = true;
 		botonesInterfaz.setAll("visible", false);
+		FlxG.state.bgColor = FlxColor.OLIVE;	// Color "reproduciendo"
 		
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
