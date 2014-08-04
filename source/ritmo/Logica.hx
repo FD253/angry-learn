@@ -26,7 +26,7 @@ class Logica extends FlxState
 	// STATIC ATRIBUTES
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
-	public static var nivelInicio : Nivel;	
+	public static var nivelInicio : Nivel;
 	
 	// PUBLIC ATRIBUTES
 	
@@ -41,13 +41,17 @@ class Logica extends FlxState
 	
 	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
 	
+	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
+	var formatoTween : FlxTextFormat;
+
+	
 	var btnMenuVolver : FlxButton;
 	var btnEscuchar : FlxButton;
 	var btnJugar : FlxButton;
 	var tmrPrincipal : FlxTimer;	// Esta referencia sirve para el timer tanto de juego como de escucha
 	
 	var txtRetardo : FlxText;
-	var sptMarcadorRitmo : FlxSprite;
+	//var sptMarcadorRitmo : FlxSprite;
 	var tweenOptionsRitmo : TweenOptions = { type: FlxTween.BACKWARD, ease: FlxEase.quartInOut };
 	var tweenMarcadorRitmo : FlxTween;
 	
@@ -63,18 +67,24 @@ class Logica extends FlxState
 		botonesInterfaz.add(btnMenuVolver);
 		
 		btnCancelar = new FlxButton(40, 10, "Detener", botonCancelarOnClick);
-		btnCancelar.x = FlxG.stage.stageWidth - btnCancelar.width - 10;
+		btnCancelar.x = FlxG.width - btnCancelar.width - 10;
 		btnCancelar.visible = false;
-		//botonesInterfaz.add(botonCancelar);
+		
 		add(btnCancelar); // No lo tomamos como botón del grupo interfaz
 		
-		var mitadAncho = FlxG.stage.stageWidth / 2;
-		var alturaBotones = 10; //FlxG.stage.stageHeight * 0.2;
+		var mitadAncho = FlxG.width / 2;
+		var alturaBotones = 10;
 		
-		sptMarcadorRitmo = new FlxSprite();
-		sptMarcadorRitmo.makeGraphic(150, 150, FlxColor.WHITE);
-		sptMarcadorRitmo.setPosition(mitadAncho - sptMarcadorRitmo.width / 2, FlxG.stage.stageHeight * 0.4);
-		add(sptMarcadorRitmo);
+		txtRepresentacionSecuencia = new FlxText();
+		txtRepresentacionSecuencia.wordWrap = false;
+		txtRepresentacionSecuencia.alignment = "center";
+		txtRepresentacionSecuencia.text = nivel.secuencia.toString();
+		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, ",", ""); 	// Quitamos las comas
+		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, "0", " ");	// Ponemos espacios en los silencios
+		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, "1", "0");	// Ponemos "círculos" en cada sonido
+		txtRepresentacionSecuencia.size = 40;
+		txtRepresentacionSecuencia.setPosition(mitadAncho - txtRepresentacionSecuencia.fieldWidth / 2, FlxG.height * 0.4);
+		add(txtRepresentacionSecuencia);
 		
 		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", botonEscucharOnClick);
 		botonesInterfaz.add(btnEscuchar);
@@ -111,16 +121,19 @@ class Logica extends FlxState
 	}
 	
 	function avanceReproduccion(timer : FlxTimer) {
-		add(sptMarcadorRitmo);
 		
 		if (timer.loopsLeft == 0) {
 			botonesInterfaz.setAll("visible", true);
 			btnCancelar.visible = false;
+			//txtRepresentacionSecuencia.removeFormat(formatoTween);
+			txtRepresentacionSecuencia.clearFormats();
 		}
-		if (nivel.secuencia[acumulador] == 1) {
+		if (nivel.secuencia[acumulador] == 1 && timer.loopsLeft > 0) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-			FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
+			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
+			//FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
 		}
+		
 		acumulador += 1;
 	}
 	
@@ -157,7 +170,7 @@ class Logica extends FlxState
 		// Grabamos en un array
 		secuenciaUsuario[acumulador] += 1;
 		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-		tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
+		//tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
 		trace("click");
 	}
 	
@@ -166,9 +179,10 @@ class Logica extends FlxState
 		botonesInterfaz.setAll("visible", false);
 		
 		acumulador = 0;
+		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length);
+		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1);
 	}
 	
 	function inicioRetardado(timer : FlxTimer) {
@@ -177,7 +191,7 @@ class Logica extends FlxState
 			txtRetardo.text += " Go! ";
 			// Escuchamos el click para "grabar" lo que hace el usuario
 			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
-			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
+			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
 		}
 		else {
 			txtRetardo.text += " . ";
@@ -191,7 +205,7 @@ class Logica extends FlxState
 		secuenciaUsuario = [for (x in 0...nivel.secuencia.length) 0];
 		
 		trace('inicio de retardo');
-		tmrPrincipal = new FlxTimer(
+		tmrPrincipal = new FlxTimer(		// Esto es sólo para mostrar el texto 1 .. 2 .. 3 .. Go!
 			0.2,	// Delay en segundos
 			inicioRetardado,	// Handler
 			4	// Loops
