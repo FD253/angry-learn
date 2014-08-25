@@ -176,11 +176,13 @@ class Logica extends FlxState
 	
 	function registrarPulsacion(e : MouseEvent) {
 		// Grabamos en un array
-		secuenciaUsuario[acumulador] += 1;
-		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-		//tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
-		txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
-		trace("click");
+		if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
+			secuenciaUsuario[acumulador] += 1;
+			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+			//tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
+			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
+			trace("click");
+		}
 	}
 	
 	function botonEscucharOnClick() {
