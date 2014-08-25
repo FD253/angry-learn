@@ -41,8 +41,7 @@ class MenuNiveles extends MenuDeEnlace
 		agregarBoton("Reiniciar");
 		ordenarBotones();
 		
-		chkFeedbackVisual = new FlxUICheckBox(10, 10, null, null,"asdad");
-		//chkFeedbackVisual.setLabel("ASDASD");
+		chkFeedbackVisual = new FlxUICheckBox(10, 10, null, null,"Visualizar secuencia");
 		add(chkFeedbackVisual);
 	}
 	
