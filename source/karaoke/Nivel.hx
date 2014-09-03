@@ -21,6 +21,8 @@ class Nivel
 		new Item("O.JO"),
 		new Item("PA.TO"),
 		new Item("CA.RA"),
+	]);
+	public static var nivel4 = new Nivel([
 		new Item("LA CASA"),
 		new Item("EL PERRO"),
 		new Item("EL CARAMELO ES DULCE"),

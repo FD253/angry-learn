@@ -22,15 +22,18 @@ class MenuNiveles extends MenuDeEnlace
 		Logica.nivelInicio = Nivel.nivel3;
 		FlxG.switchState(new Logica());
 	}
-	
+	static function nivel4OnClick()	{
+		Logica.nivelInicio = Nivel.nivel4;
+		FlxG.switchState(new Logica());
+	}
 	override public function create():Void 
 	{
 		super.create();
 		
-		botonesDeMenu.add(new FlxButton(0, 0, "1", nivel1OnClick));
-		botonesDeMenu.add(new FlxButton(0, 0, "2", nivel2OnClick));
-		botonesDeMenu.add(new FlxButton(0, 0, "3", nivel3OnClick));
-				
+		botonesDeMenu.add(new FlxButton(0, 0, "VOCALES", nivel1OnClick));
+		botonesDeMenu.add(new FlxButton(0, 0, "SILABAS", nivel2OnClick));
+		botonesDeMenu.add(new FlxButton(0, 0, "PALABRAS", nivel3OnClick));
+		botonesDeMenu.add(new FlxButton(0, 0, "FRASES", nivel4OnClick));		
 		agregarBoton("VOLVER", MenuRitmoLector);
 		agregarBoton("Reiniciar");
 		ordenarBotones();
