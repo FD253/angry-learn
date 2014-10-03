@@ -12,20 +12,25 @@ class Nivel
 	public static var nivel1 = new Nivel([
 		new Item("A.A E.E I.I O.O U.U"),
 		new Item("A.E U.I E.A I.A U.A"),
-		new Item("UA"),
+		new Item("[[AGREGAR MAS]]"),
 	]);
 	public static var nivel2 = new Nivel([
 		new Item("MA ME MI MO "),
+		new Item("MA SO RI TU PO"),
+		new Item("[[AGREGAR MAS]]"),
+		
 	]);
 	public static var nivel3 = new Nivel([
 		new Item("O.JO"),
 		new Item("PA.TO"),
 		new Item("CA.RA"),
+		new Item("[[AGREGAR MAS]]"),
 	]);
 	public static var nivel4 = new Nivel([
 		new Item("LA CASA"),
 		new Item("EL PERRO"),
 		new Item("EL CARAMELO ES DULCE"),
+		new Item("[[AGREGAR MAS]]"),
 	]);
 	
 	

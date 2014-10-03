@@ -130,13 +130,32 @@ class Logica extends FlxState
 		}
 		return todo;
 	}
-
-	function resaltarItem() {
+	
+	function obtenerPartesItem(item:Item):List<String> {
+		var partes = new List();
+		var subparte : String;
+		var bandera : Bool;
+		bandera = false;
+		subparte = "";
+		for ( i in 0...item.texto.length) {
+			if (item.texto.substring(i,i) != "." && item.texto.substring(i,i) != " ") {
+				subparte += item.texto.substring(i, i);
+				bandera = true;
+			}
+			else {
+				partes.add(subparte);
+				subparte = "";
+			}
+		}
+		return partes;
+	}
+	
+	function resaltarParteItem(partes:List<String>, parte :String) { //marca las partes del item por funcion del tiempo, según el largo
 		
 	}
 	
 	function repetirItem() {
-		
+	//
 	}
 	
 	function asignarNivelDeMaldad() {
