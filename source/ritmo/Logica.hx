@@ -61,8 +61,9 @@ class Logica extends FlxState
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		nivel = nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		nivel = Logica.nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		feedbackVisual = feedbackVisualInicio;
+		
 		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
 		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"

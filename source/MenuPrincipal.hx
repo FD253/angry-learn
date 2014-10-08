@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.util.FlxPoint;
 import MenuCoordinacionVisomotriz;
 import MenuRitmoLector;
+import MenuTrazos;
 
 /**
  * ...
@@ -17,6 +18,7 @@ class MenuPrincipal extends MenuDeEnlace
 		super.create();
 		agregarBoton("RITMO LECTOR", MenuRitmoLector);
 		agregarBoton("COORDINACIÓN VISOMOTRIZ", MenuCoordinacionVisomotriz);
+		agregarBoton("TRAZOS", MenuTrazos);
 		ordenarBotones();
 	}
 	
