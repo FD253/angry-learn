@@ -12,7 +12,7 @@ class MenuNiveles extends MenuDeEnlace
 
 	
 	function nivel1OnClick() {
-		var lvl = Nivel.niveles[0];
+		var lvl = new Nivel(Nivel.niveles[0]);
 		Logica.nivelInicio = lvl;
 		FlxG.switchState(new Logica());
 	}

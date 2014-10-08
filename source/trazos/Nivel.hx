@@ -11,16 +11,16 @@ import flixel.util.FlxColor;
  */
 class Nivel
 {
-	public static var niveles = [	// Array<Nivel>
-		//new Nivel(
-			//null,
-			//null,
-			//new FlxShapeCircle(185, 276, 7.5, { thickness: 1 }, { color: FlxColor.RED }),
-			//new FlxShapeCircle(488, 65, 7.5, { thickness: 1 }, { color: FlxColor.RED })
-		//)
-	];
+	//public static var niveles = [	// Array<Nivel>
+		//{
+			//trazo:  AssetPaths.test_trace__png,
+			//fondo:  null,
+			//inicio: new FlxShapeCircle(185, 276, 15, { thickness: 1 }, { color: FlxColor.RED }),
+			//fin:    new FlxShapeCircle(488, 65, 15, { thickness: 1 }, { color: FlxColor.RED })
+		//},
+	//];
 	
-	public var spriteTrazo : 	FlxSprite;
+	public var spriteTrazo : 	FlxSprite;	// La idea es que tengan el mismo tamaño que el escenario!
 	public var spriteFondo : 	FlxSprite;
 
 	public var areaInicio 	: FlxShapeCircle;
