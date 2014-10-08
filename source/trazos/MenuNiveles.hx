@@ -9,9 +9,10 @@ import flixel.addons.display.shapes.FlxShapeCircle;
  */
 class MenuNiveles extends MenuDeEnlace
 {
+
 	
 	function nivel1OnClick() {
-		var lvl = new Nivel(AssetPaths.test_trace__png, AssetPaths.test_trace__png, new FlxShapeCircle(185, 276, 7.5), new FlxShapeCircle(488, 65, 7.5));
+		var lvl = Nivel.niveles[0];
 		Logica.nivelInicio = lvl;
 		FlxG.switchState(new Logica());
 	}
