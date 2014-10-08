@@ -1,17 +1,26 @@
 package karaoke;
 
+import flixel.FlxG;
+import flixel.ui.FlxButton;
+
+
 /**
  * ...
  * @author
  */
 class MenuNiveles extends MenuDeEnlace
 {
+	function nivel1OnClick() {
+		Logica.nivelInicio = Nivel.nivel1;
+		FlxG.switchState(new Logica());
+	}
+	
 	override public function create():Void 
 	{
 		super.create();
-		agregarBoton("1", Nivel1);
-		agregarBoton("2", Nivel2);
-		agregarBoton("2", Nivel3);
+		
+		botonesDeMenu.add(new FlxButton(0, 0, "1", nivel1OnClick));
+		
 		agregarBoton("VOLVER", MenuRitmoLector);
 		agregarBoton("Reiniciar");
 		ordenarBotones();
