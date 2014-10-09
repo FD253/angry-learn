@@ -11,19 +11,33 @@ import flixel.util.FlxColor;
  */
 class Nivel
 {
-	//public static var niveles = [	// Array<Nivel>
-		//{
+	//static var estiloLinea = ( Reg.debug )? { thickness: 1 } : { thickness: null, color: FlxColor.TRANSPARENT };
+	static var estiloFondo = ( Reg.debug )? { color: FlxColor.RED } : { color: FlxColor.WHITE };
+	public static var niveles = [	// Array<Nivel>
+		{	// Nivel 1
+			trazo:  AssetPaths.test_trace__png,
+			fondo:  null,
+			inicio: new FlxShapeCircle(185, 276, 15, { thickness: 1 }, estiloFondo),
+			fin:    new FlxShapeCircle(488, 65, 15, { thickness: 1 }, estiloFondo),
+		},
+		//{	// Nivel 2
 			//trazo:  AssetPaths.test_trace__png,
 			//fondo:  null,
-			//inicio: new FlxShapeCircle(185, 276, 15, { thickness: 1 }, { color: FlxColor.RED }),
-			//fin:    new FlxShapeCircle(488, 65, 15, { thickness: 1 }, { color: FlxColor.RED })
+			//inicio: new FlxShapeCircle(185, 276, 15, estiloLinea, estiloFondo),
+			//fin:    new FlxShapeCircle(488, 65, 15, estiloLinea, estiloFondo),
 		//},
-	//];
+		//{	// Nivel 3
+			//trazo:  AssetPaths.test_trace__png,
+			//fondo:  null,
+			//inicio: new FlxShapeCircle(185, 276, 15, estiloLinea, estiloFondo),
+			//fin:    new FlxShapeCircle(488, 65, 15, estiloLinea, estiloFondo),
+		//},
+	];
 	
 	public var spriteTrazo : 	FlxSprite;	// La idea es que tengan el mismo tamaño que el escenario!
 	public var spriteFondo : 	FlxSprite;
 
-	public var areaInicio 	: FlxShapeCircle;
+	public var areaInicio 	: FlxShapeCircle;	// Las areas DEBEN entrar COMPLETAMENTE dentro del trazo!
 	public var areaFin		: FlxShapeCircle;
 	
 	public function new(trazo : String,

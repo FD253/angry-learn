@@ -10,6 +10,9 @@ import flixel.util.FlxSave;
 class Reg
 {
 	public static var MenuPrincipal = new MenuPrincipal();
+	public static var debug = false;
+	
+	
 	public static var levels:Array<Dynamic> = [];
 	/**
 	 * Generic level variable that can be used for cross-state stuff.
