@@ -28,20 +28,23 @@ class Logica extends FlxState
 	
 	// PRIVATE ATRIBUTES
 	var nivel : Nivel;
+	var posicionNivel : Int; //posicion en el array de niveles
+	var timer : FlxTimer; //avanzador por silabas
 	
-	var posicionNivel : Int;
-	
-	
+	var textItem : FlxText;
+	var formatoTween : FlxTextFormat;
+	var contador : Int;
 	
 	override public function create() {
 	
 		super.create();
 		nivel = nivelInicio;
-		posicionNivel = 0;
+		posicionNivel = 0; //deberia ser random
 		var item : Item = nivel.items[posicionNivel];
-		
-		var textItem = new FlxText(80, 40, 480, null, 26);
+		//textItem = new FlxText();
+		textItem = new FlxText(80, 40, 480, null, 26);
 		add(textItem);
+		
 				
 		function mostrarPopUp() {
 			var popup = new FlxUIPopup();
@@ -76,14 +79,7 @@ class Logica extends FlxState
 		var btnMinusculas = new FlxUIButton(0, 250 , "MINUSCULAS", cambiarPorMinusculas);
 		add(btnMinusculas);		
 		
-		function siguienteItem() {
-		if (posicionNivel < (nivel.items.length - 1)) {
-			posicionNivel += 1;
-			var item : Item = nivel.items[posicionNivel];
-			textItem.text = "";
-			textItem.text = quitarPuntosItem(item);
-		}
-		}
+		
 		
 		var btnCorrecto = new FlxUIButton(560, 220 , "CORRECTO", siguienteItem);
 		add(btnCorrecto); 
@@ -115,7 +111,6 @@ class Logica extends FlxState
 		textItem.alignment = "center";
 		textItem.text = quitarPuntosItem(item);
 		textItem.systemFont = "Courrier New";
-		
 
 	}
 	
@@ -131,31 +126,30 @@ class Logica extends FlxState
 		return todo;
 	}
 	
-	function obtenerPartesItem(item:Item):List<String> {
-		var partes = new List();
+	function obtenerPartesItem(item:Item):Array<String> {
+		var partes = new Array();
 		var subparte : String;
-		var bandera : Bool;
-		bandera = false;
+		//var bandera : Bool;
+		//bandera = false; por default es false
 		subparte = "";
 		for ( i in 0...item.texto.length) {
-			if (item.texto.substring(i,i) != "." && item.texto.substring(i,i) != " ") {
-				subparte += item.texto.substring(i, i);
-				bandera = true;
+			if (item.texto.substring(i, i + 1) != "." && item.texto.substring(i, i + 1) != " ") {
+				subparte += item.texto.substring(i, i+1);
+				var a : String;
+				a = item.texto.substring(i, i+1);
+				//bandera = true;
 			}
 			else {
-				partes.add(subparte);
+				partes.insert(partes.length, subparte);
+				//partes.add(subparte);
 				subparte = "";
 			}
 		}
 		return partes;
 	}
 	
-	function resaltarParteItem(partes:List<String>, parte :String) { //marca las partes del item por funcion del tiempo, según el largo
-		
-	}
-	
 	function repetirItem() {
-	//
+	// si lo hizo mal, repetir el item
 	}
 	
 	function asignarNivelDeMaldad() {
@@ -166,5 +160,48 @@ class Logica extends FlxState
 		FlxG.switchState(new MenuNiveles());
 	}
 
+	function siguienteItem() {
+		if (posicionNivel < (nivel.items.length - 1)) {
+			posicionNivel += 1;
+			var item : Item = nivel.items[posicionNivel];
+			formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
+			textItem.clearFormats();
+			textItem.text = "";
+			textItem.text = quitarPuntosItem(item);
+			timer = new FlxTimer(0.5, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
+		}
+	}
 
+	function resaltarSilabas(timer :FlxTimer) {
+		contador = 0;
+		var silabas = new Array();
+		silabas = obtenerPartesItem(nivel.items[posicionNivel]);
+		var silaba : String;
+		silaba = silabas[timer.elapsedLoops-1];
+
+		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
+		
+		for (i in 0...silabas.length) {
+			if (i +1 == timer.elapsedLoops) {
+				if (textItem.text.charAt(contador + silabas[i].length) == " ") {
+					textItem.addFormat(formatoTween, contador, contador + silabas[i].length);
+				}
+				else {
+					textItem.addFormat(formatoTween, contador, contador + silabas[i].length);
+				}
+				break;
+			}
+			else {
+				if (textItem.text.charAt(contador + silabas[i].length) == " "){
+					contador += silabas[i].length+1;
+				}
+				else {
+					contador += silabas[i].length;
+				}
+			}
+		}
+
+			
+			//textItem.addFormat(formatoTween,
+	}
 }
