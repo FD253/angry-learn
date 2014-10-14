@@ -17,8 +17,8 @@ class Nivel
 		{	// Nivel 1
 			trazo:  AssetPaths.test_trace__png,
 			fondo:  null,
-			inicio: new FlxShapeCircle(185, 276, 15, { thickness: 1 }, estiloFondo),
-			fin:    new FlxShapeCircle(488, 65, 15, { thickness: 1 }, estiloFondo),
+			inicio: new FlxShapeCircle(185, 276, 12, { thickness: 1 }, estiloFondo),
+			fin:    new FlxShapeCircle(488, 65, 12, { thickness: 1 }, estiloFondo),
 		},
 		//{	// Nivel 2
 			//trazo:  AssetPaths.test_trace__png,

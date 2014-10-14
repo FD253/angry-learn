@@ -7,6 +7,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxColor;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -25,6 +26,9 @@ class MenuDeEnlace extends FlxState
 	}
 	
 	function agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton {
+		// No importa dónde nos lleve, el fondo tiene que ser el mismo:
+		FlxG.state.bgColor = FlxColor.BLACK;
+		
 		if (estadoDestino != null) {
 			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
 			botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
