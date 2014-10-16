@@ -1,4 +1,5 @@
 package karaoke;
+import haxe.macro.Expr.Var;
 
 /**
  * Esta clase define un nivel para el ejercicio Karaoke
@@ -9,30 +10,32 @@ package karaoke;
 class Nivel
 {
 	public static var nivel1 = new Nivel([
-		new Item("AA"),
-		new Item("EE"),
-		new Item("IA"),
-		new Item("UA"),
+		new Item("A.A E.E I.I O.O U.U "),
+		new Item("A.E U.I E.A I.A U.A "),
 	]);
 	public static var nivel2 = new Nivel([
-		new Item("MA"),
-		new Item("LI"),
-		new Item("CO"),
+		new Item("MA ME MI MO "),
+		new Item("MA SO RI TU PO "),
+		
 	]);
 	public static var nivel3 = new Nivel([
-		new Item("O.JO"),
-		new Item("PA.TO"),
-		new Item("CA.RA"),
-		new Item("LA CA.SA"),
-		new Item("EL PE.RRO"),
-		new Item("EL CA.RA.ME.LO ES DUL.CE"),
+		new Item("O.JO "),
+		new Item("PA.TO "),
+		new Item("CA.RA "),
 	]);
+	public static var nivel4 = new Nivel([
+		new Item("LA CA.SA "),
+		new Item("EL PE.RRO "),
+		new Item("EL CA.RA.ME.LO ES DUL.CE "),
+	],true);
 	
 	
-	var items : Array<Item>;
+	
+	public var items : Array<Item>;
 
-	public function new(Items : Array<Item>) {
+	public function new(Items : Array<Item>, ?L4 : Bool){
 		items = Items;
+		L4 = false;
 	}
 }
 
@@ -50,9 +53,11 @@ class Item
 	 * 	- Espacios ( ) separan palabras
 	 *  - Puntos (.) separan sílabas
 	*/
-	var texto : String;
+	public var texto : String;
 	
 	public function new(Texto : String) {
 		texto = Texto.toUpperCase();
 	}
+	
+
 }
