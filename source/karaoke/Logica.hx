@@ -35,10 +35,8 @@ class Logica extends FlxState
 	var textItem : FlxText;
 	var color : FlxTextFormat; //pseudotween
 	
-
-	var bandera: Bool;
-	
 	var btnCorrecto : FlxUIButton;
+	var btnIncorrecto : FlxUIButton;
 	var btnComenzar: FlxUIButton;
 	
 
@@ -52,8 +50,10 @@ class Logica extends FlxState
 		textItem = new FlxText(80, 40, 480, null, 26);
 		add(textItem);
 		textItem.text = quitarPuntosItem(item);
+		textItem.color = 0; // poner el mismo color que el fondo así parece que va apareciendo cada silaba
 		
-		var btnIncorrecto = new FlxUIButton(560, 280 , "INCORRECTO", itemIncorrecto);
+		btnIncorrecto = new FlxUIButton(560, 280 , "INCORRECTO", itemIncorrecto);
+		btnIncorrecto.visible = false;
 		add(btnIncorrecto); 
 				
 		function cambiarPorMayusculas() {
@@ -127,8 +127,13 @@ class Logica extends FlxState
 		return partes;
 	}
 	
-	function repetirItem() {
-	// SI LO HIZO MAL, REPETIR EL ITEM
+	function reproducirItem() {
+		textItem.clearFormats();
+		var item : Item = nivel.items[posicionNivel];
+		color = new FlxTextFormat(FlxColor.AZURE);
+		textItem.systemFont = "Calibri";
+		textItem.text = quitarPuntosItem(item);
+		btnComenzar.visible = true;
 	}
 	
 	function irAtras()	{	
@@ -147,23 +152,25 @@ class Logica extends FlxState
 	}
 	
 	function itemCorrecto() {
-		btnCorrecto.visible = false;
+		ocultarBtnCorrectoIncorrecto();
 		if (posicionNivel < (nivel.items.length - 1)) {
 			posicionNivel += 1;
-			btnComenzar.visible = true;
-			textItem.clearFormats();
+			reproducirItem();
 			
-			var item : Item = nivel.items[posicionNivel];
-			color = new FlxTextFormat(FlxColor.AZURE);
-			textItem.systemFont = "Calibri";
-			textItem.text = quitarPuntosItem(item);
-			
-			//LOGICA DE QUE HACER SI ES CORRECTO
+			//GUARDAR DATA
+			//PREGUNTAR SI QUIERE REPETIR
 		}
 	}
 
+	function ocultarBtnCorrectoIncorrecto() {
+		btnCorrecto.visible = false;
+		btnIncorrecto.visible = false;
+	}
+	
 	function itemIncorrecto() {
-		//LOGICA DE INCORRECTO (repetir? popup?)
+		ocultarBtnCorrectoIncorrecto();
+		reproducirItem();
+		
 	}
 	
 	function resaltarSilabas(timer :FlxTimer) {
@@ -188,6 +195,7 @@ class Logica extends FlxState
 		}		
 		if (timer.loopsLeft == 0) {
 			btnCorrecto.visible = true;
+			btnIncorrecto.visible = true;
 		}
 	}
 }
