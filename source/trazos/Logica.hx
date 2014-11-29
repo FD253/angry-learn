@@ -40,6 +40,10 @@ class Logica extends FlxState
 	var draw_style:DrawStyle;
 	var ult_pos:FlxPoint;
 	
+	var p_acierto:Int = 0;
+	var p_fallido:Int = 0;
+	
+	
 	override public function create() {
 		super.create();
 		//nivel = Logica.nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
@@ -91,21 +95,28 @@ class Logica extends FlxState
 		}
 		
 		if (enCurso) {
-			// Si el juego está en curso el mouse NO puede dejar de tocar la línea hasta que llegue al areaFin
-			if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
-				// Si no toca el trazo pierde
-				trace("Juego perdido");
-				//enCurso = false;
-			}
-			if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
-				// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
-				trace("Juego ganado");
-				enCurso = false;
-			}
 			
-			canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
-			ult_pos.x = FlxG.mouse.x;
-			ult_pos.y = FlxG.mouse.y;
+			// solo actuo en caso de que se haya movido, por un tema de puntaje
+			if (FlxG.mouse.x != ult_pos.x || FlxG.mouse.y != ult_pos.y) {			
+				
+				// Si el juego está en curso el mouse NO puede dejar de tocar la línea hasta que llegue al areaFin
+				if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
+					// Si no toca el trazo pierde
+					//trace("Juego perdido");
+					//enCurso = false;
+					p_fallido++;
+				} else 	if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
+					// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
+					//trace("Juego ganado");
+					enCurso = false;
+					trace("p_acierto " + p_acierto + " p_fallido " + p_fallido + " porcentaje " + (p_acierto / (p_fallido + p_acierto) * 100));
+				} else {
+					p_acierto++;
+					canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
+					ult_pos.x = FlxG.mouse.x;
+					ult_pos.y = FlxG.mouse.y;
+				}
+			}
 		}
 	}
 	
