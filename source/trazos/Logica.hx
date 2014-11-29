@@ -1,5 +1,8 @@
 package trazos;
 
+
+import flash.display.JointStyle;
+import flixel.util.FlxPoint;
 import flixel.util.FlxSpriteUtil;
 import Reg;
 import flixel.FlxSprite;
@@ -15,6 +18,7 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.util.FlxColor;
 import openfl.events.MouseEvent;
 
+using flixel.util.FlxSpriteUtil;
 
 
 /**
@@ -30,6 +34,12 @@ class Logica extends FlxState
 	var nivel : Nivel;
 	var enCurso : Bool;
 	
+	//donde vamos a mostrar lo que dibuja el usuario.
+	var canvas:FlxSprite;
+	var line_style:LineStyle;
+	var draw_style:DrawStyle;
+	var ult_pos:FlxPoint;
+	
 	override public function create() {
 		super.create();
 		//nivel = Logica.nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
@@ -39,14 +49,21 @@ class Logica extends FlxState
 		nivel = new Nivel(
 			AssetPaths.test_trace__png,
 			null,
-			new FlxShapeCircle(185, 276, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.WHITE }),
-			new FlxShapeCircle(488, 65, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.WHITE })
+			new FlxShapeCircle(185, 276, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED }),
+			new FlxShapeCircle(488, 65, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED })
 		);
 		
 		add(nivel.spriteTrazo);
 		add(nivel.spriteFondo);
 		add(nivel.areaFin);
 		add(nivel.areaInicio);
+		
+		canvas = new FlxSprite();
+		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+		add(canvas);
+		line_style = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
+		draw_style = { smoothing: true };
+		ult_pos = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
 		
 		enCurso = false;	// Indicamos que el usuario no está jugando (para que update() no cuente)
 		
@@ -61,7 +78,6 @@ class Logica extends FlxState
 		//add(lvl.areaInicio);
 		//add(lvl.areaFin);
 		//add(new FlxShapeCircle(185, 276, 7.5, { thickness: 1 }, { color: FlxColor.RED } ));
-
 	}
 	
 	override public function update() {
@@ -69,6 +85,8 @@ class Logica extends FlxState
 		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio)) {
 			// Si el juego no arrancó y se pisó el area de inicio
 			trace("Juego iniciado");
+			ult_pos.x = FlxG.mouse.x;
+			ult_pos.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
 		}
 		
@@ -77,13 +95,17 @@ class Logica extends FlxState
 			if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
 				// Si no toca el trazo pierde
 				trace("Juego perdido");
-				enCurso = false;
+				//enCurso = false;
 			}
 			if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
 				// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
 				trace("Juego ganado");
 				enCurso = false;
 			}
+			
+			canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
+			ult_pos.x = FlxG.mouse.x;
+			ult_pos.y = FlxG.mouse.y;
 		}
 	}
 	
