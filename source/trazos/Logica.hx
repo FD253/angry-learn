@@ -112,10 +112,11 @@ class Logica extends FlxState
 					trace("p_acierto " + p_acierto + " p_fallido " + p_fallido + " porcentaje " + (p_acierto / (p_fallido + p_acierto) * 100));
 				} else {
 					p_acierto++;
-					canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
-					ult_pos.x = FlxG.mouse.x;
-					ult_pos.y = FlxG.mouse.y;
 				}
+				
+				canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
+				ult_pos.x = FlxG.mouse.x;
+				ult_pos.y = FlxG.mouse.y;
 			}
 		}
 	}
