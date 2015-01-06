@@ -7,6 +7,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxColor;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -25,10 +26,14 @@ class MenuDeEnlace extends FlxState
 	}
 	
 	function agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton {
+		// No importa dónde nos lleve, el fondo tiene que ser el mismo:
+		FlxG.state.bgColor = FlxColor.BLACK;
+		
 		if (estadoDestino != null) {
 			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
 			botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
 			//this.add(botonNuevo);	// No lo agregamos ahora porque puede mostrarse en la esquina 0,0 y moverse cuando se ejecuta this._ordenarBotones()
+			botonNuevo.loadGraphic(AssetPaths.boton_azul__png, true, 190, 49);
 			return botonNuevo;
 		}
 		else {
@@ -42,22 +47,24 @@ class MenuDeEnlace extends FlxState
 	 * Ordena los botones que fueron asignados al estado como botones de menú y los aagrega al estado en sí para que estén disponibles
 	 */
 	function ordenarBotones() {
-		var alturaBotones: Float = Lambda.fold( // Parecido a map() de Python
-			botonesDeMenu,
-			function(a, b) {
-				return (a.height + b);
-			},
-			0
-		);
-		var espacioIntermedio: Float = (FlxG.game.height - alturaBotones) / (botonesDeMenu.length + 1);
+		var suma_alturas_botones:Float = 0;
+		for (i in botonesDeMenu) {
+			suma_alturas_botones += i.height;
+		}
+		trace("suma_altura_botones " + suma_alturas_botones);
+		var espacioIntermedio: Float = (FlxG.height - suma_alturas_botones) / (botonesDeMenu.length + 1);
+		trace("espacioIntermedio " + espacioIntermedio);
+		trace("FlxG.height " + FlxG.height);
+		trace("FlxG.game.height " + FlxG.game.height);
 		
-		Lambda.mapi(	// Esto es lo más parecido a un <for index, elemento in ennumerate(lista):> de Python, sólo que empleando map()
-			botonesDeMenu,
-			function(index, boton) {
-				boton.y = (index + 1) * espacioIntermedio; //- boton.height;
-				boton.screenCenter(true, false);
-				this.add(boton);	// Esto es un efecto secundario y no debería estar en un map... Pero bueh
-			}
-		);
+		trace("botonesDeMenu.length " + botonesDeMenu.length );
+		var y_acum = espacioIntermedio;
+		for (j in botonesDeMenu) {
+			j.y = y_acum; 
+			trace("boton y " + j.y);
+			j.screenCenter(true, false);
+			add(j);
+			y_acum += j.height + espacioIntermedio;
+		}
 	}	
 }
