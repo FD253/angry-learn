@@ -27,7 +27,7 @@ class Logica extends FlxState
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
 	public static var nivelInicio : Nivel;
-	public static var feedbackVisualInicio : Bool;
+	public static var feedbackVisualInicio : Bool = false;
 	
 	// PUBLIC ATRIBUTES
 	
