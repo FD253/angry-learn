@@ -35,10 +35,10 @@ class Logica extends FlxState
 	var enCurso : Bool;
 	
 	//donde vamos a mostrar lo que dibuja el usuario.
-	var canvas:FlxSprite;
-	var line_style:LineStyle;
-	var draw_style:DrawStyle;
-	var ult_pos:FlxPoint;
+	var canvas : FlxSprite;
+	var estiloLinea : LineStyle;
+	var estiloDibujo : DrawStyle;
+	var ultimaPosicion : FlxPoint;
 	
 	var p_acierto:Int = 0;
 	var p_fallido:Int = 0;
@@ -63,41 +63,33 @@ class Logica extends FlxState
 		add(nivel.areaInicio);
 		
 		canvas = new FlxSprite();
+		
+		// Definimos al canvas como un cuadrado que ocupa toda la pantalla
 		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 		add(canvas);
-		line_style = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
-		draw_style = { smoothing: true };
-		ult_pos = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
+		
+		estiloLinea = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
+		estiloDibujo = { smoothing: true };
+		ultimaPosicion = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
 		
 		enCurso = false;	// Indicamos que el usuario no está jugando (para que update() no cuente)
-		
-		//var lvl = new Nivel(
-			//AssetPaths.test_trace__png,
-			//null,
-			//new FlxShapeCircle(185, 276, 15, { thickness: 1 }, { color: FlxColor.RED }),
-			//new FlxShapeCircle(488, 65, 15, { thickness: 1 }, { color: FlxColor.RED })
-		//);
-		//nivel = lvl;
-		//add(lvl.spriteTrazo);
-		//add(lvl.areaInicio);
-		//add(lvl.areaFin);
-		//add(new FlxShapeCircle(185, 276, 7.5, { thickness: 1 }, { color: FlxColor.RED } ));
 	}
 	
 	override public function update() {
 		super.update();
+		
 		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio)) {
 			// Si el juego no arrancó y se pisó el area de inicio
 			trace("Juego iniciado");
-			ult_pos.x = FlxG.mouse.x;
-			ult_pos.y = FlxG.mouse.y;
+			ultimaPosicion.x = FlxG.mouse.x;
+			ultimaPosicion.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
 		}
 		
 		if (enCurso) {
 			
 			// solo actuo en caso de que se haya movido, por un tema de puntaje
-			if (FlxG.mouse.x != ult_pos.x || FlxG.mouse.y != ult_pos.y) {			
+			if (FlxG.mouse.x != ultimaPosicion.x || FlxG.mouse.y != ultimaPosicion.y) {			
 				
 				// Si el juego está en curso el mouse NO puede dejar de tocar la línea hasta que llegue al areaFin
 				if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
@@ -114,9 +106,9 @@ class Logica extends FlxState
 					p_acierto++;
 				}
 				
-				canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
-				ult_pos.x = FlxG.mouse.x;
-				ult_pos.y = FlxG.mouse.y;
+				canvas.drawLine(ultimaPosicion.x, ultimaPosicion.y, FlxG.mouse.x, FlxG.mouse.y, estiloLinea, estiloDibujo);
+				ultimaPosicion.x = FlxG.mouse.x;
+				ultimaPosicion.y = FlxG.mouse.y;
 			}
 		}
 	}
