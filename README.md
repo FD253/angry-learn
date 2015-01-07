@@ -1,11 +1,28 @@
 angry-learn
 ===========
 
+
+El flujo de trabajo que empleamos es [GitHub Flow](https://guides.github.com/introduction/flow/index.html). Si el trabajo que se hace en una rama viene de algún issue del backlog, el nombre de esa rama debe empezar con el número correspondiente a ese issue.
+Si el issue es complejo y tiene varias tasks:
+
+```
+99-branch-de-un-issue
+|
+|-------
+|      |
+|      99-15-quince-siendo-el-numero-de-una-task-del-issue-noventa-y-nueve
+|
+99-14-catorce-siendo-el-numero-de-una-task-del-issue-noventa-y-nueve
+```
+
+Hacer pull requests entre las ramas de las tasks y la rama del issue al que pertenecen.
+
+
 Estándar:
 ---------
 
 
-Se va a emplear el estilo de codificación definido por la misma comunidad de HaxeFlixel (Aunque con exepciones):
+Se va a emplear el estilo de codificación definido por la misma comunidad de HaxeFlixel (Aunque con excepciones):
 http://haxeflixel.com/documentation/code-style/
 	
 
