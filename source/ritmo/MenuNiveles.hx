@@ -15,17 +15,14 @@ class MenuNiveles extends MenuDeEnlace
 	
 	function nivel1OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[0];
-		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
 	function nivel2OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[1];
-		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
 	function nivel3OnClick()	{
 		Logica.nivelInicio = Nivel.niveles[2];
-		Logica.feedbackVisualInicio = chkFeedbackVisual.checked;
 		FlxG.switchState(new Logica());
 	}
 	
@@ -40,9 +37,6 @@ class MenuNiveles extends MenuDeEnlace
 		agregarBoton("VOLVER", MenuRitmoLector);
 		agregarBoton("Reiniciar");
 		ordenarBotones();
-		
-		chkFeedbackVisual = new FlxUICheckBox(10, 10, null, null,"Visualizar secuencia");
-		add(chkFeedbackVisual);
 	}
 	
 }
