@@ -122,7 +122,6 @@ class Logica extends FlxState
 			textItem.text =	textItem.text.toLowerCase();
 			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
 			textItem.font = "assets/fonts/LCALLIG.TTF";
-
 		}
 		
 	function switchTipoDeLetra() {
@@ -143,8 +142,6 @@ class Logica extends FlxState
 		textItem.systemFont = "Calibri";
 		textItem.text = quitarPuntosItem(item);
 		btnComenzar.visible = true;
-		
-
 	}
 	
 	function irAtras()	{	
@@ -154,10 +151,6 @@ class Logica extends FlxState
 	function comenzar() {
 		btnComenzar.visible = false;
 		if (posicionNivel < (nivel.items.length)) {
-			//var item : Item = nivel.items[posicionNivel];
-			//color = new FlxTextFormat(FlxColor.AZURE);
-			//
-			//textItem.text = quitarPuntosItem(item);
 			timer = new FlxTimer(0.1, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
 			switchTipoDeLetra();
 		}
@@ -167,8 +160,7 @@ class Logica extends FlxState
 		ocultarBtnCorrectoIncorrecto();
 		if (posicionNivel < (nivel.items.length - 1)) {
 			posicionNivel += 1;
-			reproducirItem();
-			
+			reproducirItem();	
 			//GUARDAR DATA
 			//PREGUNTAR SI QUIERE REPETIR
 		}
@@ -182,7 +174,6 @@ class Logica extends FlxState
 	function itemIncorrecto() {
 		ocultarBtnCorrectoIncorrecto();
 		reproducirItem();
-		
 	}
 	
 	function resaltarSilabas(timer :FlxTimer) {
@@ -209,6 +200,5 @@ class Logica extends FlxState
 			btnCorrecto.visible = true;
 			btnIncorrecto.visible = true;
 		}
-		
 	}
 }
