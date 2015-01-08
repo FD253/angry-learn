@@ -16,7 +16,9 @@ import flixel.util.FlxCollision.pixelPerfectPointCheck;
 import flixel.addons.display.shapes.FlxShapeBox;
 import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.util.FlxColor;
-import openfl.events.MouseEvent;
+import openfl.events.TouchEvent;
+import openfl.events.EventDispatcher;
+import flixel.plugin.MouseEventManager;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -24,7 +26,7 @@ using flixel.util.FlxSpriteUtil;
 /**
  * ...
  * @author ...
- */
+ */ 
 class Logica extends FlxState
 {
 	// Se debe asignar el nivel acá antes de instanciar Logica
@@ -92,6 +94,7 @@ class Logica extends FlxState
 			ult_pos.x = FlxG.mouse.x;
 			ult_pos.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
+			FlxG.stage.addEventListener(TouchEvent.TOUCH_ROLL_OUT, stageOnMouseEnd);
 		}
 		
 		if (enCurso) {
@@ -121,9 +124,10 @@ class Logica extends FlxState
 		}
 	}
 	
-	function areaInicioOnMouseOver(e : MouseEvent) {
-		// Se pasó el mouse sobre el area de inicio, por lo que...
-		enCurso = true;
+	function stageOnMouseEnd(e : TouchEvent) {
+		// Se dejó de tocar el canvas...
+		enCurso = false;
+		trace("Juego perdido");		
 	}
 
 }
