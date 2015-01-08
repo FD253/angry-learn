@@ -40,8 +40,8 @@ class Logica extends FlxState
 	var estiloDibujo : DrawStyle;
 	var ultimaPosicion : FlxPoint;
 	
-	var p_acierto:Int = 0;
-	var p_fallido:Int = 0;
+	var puntosAcertados : Int = 0;	// Por cada punto dibujado dentro del trazo, se suma
+	var puntosFallados : Int = 0;	// Por cada punto dibujado fuera del trazo, se resta
 	
 	
 	override public function create() {
@@ -96,14 +96,14 @@ class Logica extends FlxState
 					// Si no toca el trazo pierde
 					//trace("Juego perdido");
 					//enCurso = false;
-					p_fallido++;
+					puntosFallados++;
 				} else 	if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
 					// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
 					//trace("Juego ganado");
 					enCurso = false;
-					trace("p_acierto " + p_acierto + " p_fallido " + p_fallido + " porcentaje " + (p_acierto / (p_fallido + p_acierto) * 100));
+					trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
 				} else {
-					p_acierto++;
+					puntosAcertados++;
 				}
 				
 				canvas.drawLine(ultimaPosicion.x, ultimaPosicion.y, FlxG.mouse.x, FlxG.mouse.y, estiloLinea, estiloDibujo);
