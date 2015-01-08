@@ -1,0 +1,39 @@
+ritmo
+	interfaz. que se puede mejorar (asumiendo que lo que hicimos está bien)
+	calculo de resultados. (como lo evaluan en la realidad)
+
+	MEJORAS: Diferenciar bien el modo escuchar del modo jugar!
+
+
+karaoke
+	como calcular el tiempo de demora (para ver como poner los botones, jugar, pausa siguiente, bien ,mal)
+	el parpadeo es automatico. el correcto / incorrecto es por secuencia de sílabas (O palabras, frases).
+	Cuando inicia el juego se empueza a contar el tiempo. Las palábras o sílabas se marcan solas por el programa y cuando el chico termine el docente marca correcto / incorrecto según haya tenido algún error o no en la secuencia completa. Si hubo error la idea es que la repita toda la secuencia completa del ejercicio. Si lo hizo bien dar la posibilidad de repetirlo.
+	Hacer que se pueda cuantificar qué tan mal se hizo una secuencia (Presentar al docente algo que le permita seleccionar el número de errores (Palabras o sílabas mal pronunciadas). La idea es que se guarde el porcentaje de error.
+
+	NOTA: El restaltado de las palabras es automático dependiendo de la cantidad de letras / sílabas.
+		
+
+tetris
+	que onda? 0 idea de que hacer. (hacer que haga un dibujo o algo para que sea mas entendible, pedir muchos ejemplos)
+
+	NOTA: Tener en cuenta que se debería poder controlar que se muestre o no la imagen, el tiempo que dispone el chico para completarlo y es importante controlar el tiempo que le lleva al chico resolver el ejercicio.
+
+
+
+
+Notas: Que quede claro que lo que se mide es lo que se tarda en hacer las cosas. En el caso del ritmo serían los "reintentos", en el caso del karaoke sería el tiempo que tarda en hacer el ejercicio (O sea el tiempo que tarda desde que "comienza a leer el chico" y el docente indica si está bien o mal).
+
+
+
+
+
+notas reunion 18/7
+Las tipografías son todas en mayúsculas, excepto en el ejercicio de karaoke que depende de cada frase.
+
+definir flujos de pantallas (hablarlo con la psicopedagoga)
+
+definir sonidos (bien mal otros) vibraciones
+
+definir modo zurdo , derecho. usar dedo o usar lapiz.
+

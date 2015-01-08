@@ -18,7 +18,7 @@ import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUIButton;
 import karaoke.MenuNiveles;
 //import karaoke.PopUp;
-
+import flixel.addons.ui.FlxUIRadioGroup;
 
 class Logica extends FlxState
 {
@@ -39,10 +39,17 @@ class Logica extends FlxState
 	var btnIncorrecto : FlxUIButton;
 	var btnComenzar: FlxUIButton;
 	
-
+	var tipoDeLetra : FlxUIRadioGroup;
 	
 	override public function create() {
-	
+		
+		tipoDeLetra = new FlxUIRadioGroup(20, 220, 
+		["Mayúscula", "Minúscula", "Cursiva"],
+		["Mayúscula", "Minúscula", "Cursiva"]);
+		add(tipoDeLetra);
+		
+		tipoDeLetra.selectedId = "Mayúscula";
+		
 		super.create();
 		nivel = nivelInicio;
 		posicionNivel = 0; //deberia ser random
@@ -55,23 +62,6 @@ class Logica extends FlxState
 		btnIncorrecto = new FlxUIButton(560, 280 , "INCORRECTO", itemIncorrecto);
 		btnIncorrecto.visible = false;
 		add(btnIncorrecto); 
-				
-		function cambiarPorMayusculas() {
-			textItem.systemFont = "Calibri";
-			textItem.text = textItem.text.toUpperCase();
-		}
-		
-		function cambiarPorMinusculas() {
-			textItem.systemFont = "Calibri";
-			textItem.text =	textItem.text.toLowerCase();
-			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
-		}
-		
-		var btnMayusculas = new FlxUIButton(0, 220 , "MAYUSCULAS", cambiarPorMayusculas);
-		add(btnMayusculas); 
-		
-		var btnMinusculas = new FlxUIButton(0, 250 , "MINUSCULAS", cambiarPorMinusculas);
-		add(btnMinusculas);		
 		
 		btnComenzar = new FlxUIButton(560, 220 , "COMENZAR", comenzar);
 		add(btnComenzar);
@@ -79,15 +69,6 @@ class Logica extends FlxState
 		btnCorrecto = new FlxUIButton(560, 220 , "CORRECTO", itemCorrecto);
 		btnCorrecto.visible = false;
 		add(btnCorrecto);
-		
-		function cambiarPorCursiva() {
-			textItem.text =	textItem.text.toLowerCase();
-			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
-			textItem.systemFont = "Lucida Handwriting Cursiva";
-		}
-		
-		var btnCursiva = new FlxUIButton(0, 280 , "CURSIVA", cambiarPorCursiva);
-		add(btnCursiva);
 		
 		var btnAtras = new FlxUIButton(0, 330 , "ATRAS", irAtras);
 		add(btnAtras);
@@ -126,6 +107,33 @@ class Logica extends FlxState
 		}
 		return partes;
 	}
+		function cambiarPorMayusculas() {
+			textItem.systemFont = "Calibri";
+			textItem.text = textItem.text.toUpperCase();
+		}
+		
+		function cambiarPorMinusculas() {
+			textItem.systemFont = "Calibri";
+			textItem.text =	textItem.text.toLowerCase();
+			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
+		}
+				
+		function cambiarPorCursiva() {
+			textItem.text =	textItem.text.toLowerCase();
+			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
+			textItem.systemFont = "Lucida Handwriting Cursiva";
+		}
+		
+	function switchTipoDeLetra() {
+		switch( tipoDeLetra.selectedId ) {			
+			case "Mayúscula":
+				cambiarPorMayusculas();
+			case "Minúscula":
+				cambiarPorMinusculas();
+			case "Cursiva":
+				cambiarPorCursiva();
+		}
+	}
 	
 	function reproducirItem() {
 		textItem.clearFormats();
@@ -134,6 +142,8 @@ class Logica extends FlxState
 		textItem.systemFont = "Calibri";
 		textItem.text = quitarPuntosItem(item);
 		btnComenzar.visible = true;
+		
+
 	}
 	
 	function irAtras()	{	
@@ -148,6 +158,7 @@ class Logica extends FlxState
 			//
 			//textItem.text = quitarPuntosItem(item);
 			timer = new FlxTimer(0.1, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
+			switchTipoDeLetra();
 		}
 	}
 	
@@ -197,5 +208,6 @@ class Logica extends FlxState
 			btnCorrecto.visible = true;
 			btnIncorrecto.visible = true;
 		}
+		
 	}
 }
