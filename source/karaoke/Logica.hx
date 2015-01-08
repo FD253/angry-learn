@@ -108,12 +108,12 @@ class Logica extends FlxState
 		return partes;
 	}
 		function cambiarPorMayusculas() {
-			textItem.systemFont = "Calibri";
+			textItem.font = "assets/fonts/calibri.ttf";
 			textItem.text = textItem.text.toUpperCase();
 		}
 		
 		function cambiarPorMinusculas() {
-			textItem.systemFont = "Calibri";
+			textItem.font = "assets/fonts/calibri.ttf";
 			textItem.text =	textItem.text.toLowerCase();
 			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
 		}
@@ -121,7 +121,8 @@ class Logica extends FlxState
 		function cambiarPorCursiva() {
 			textItem.text =	textItem.text.toLowerCase();
 			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
-			textItem.systemFont = "Lucida Handwriting Cursiva";
+			textItem.font = "assets/fonts/LCALLIG.TTF";
+
 		}
 		
 	function switchTipoDeLetra() {
