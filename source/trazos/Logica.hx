@@ -37,13 +37,13 @@ class Logica extends FlxState
 	var enCurso : Bool;
 	
 	//donde vamos a mostrar lo que dibuja el usuario.
-	var canvas:FlxSprite;
-	var line_style:LineStyle;
-	var draw_style:DrawStyle;
-	var ult_pos:FlxPoint;
+	var canvas : FlxSprite;
+	var estiloLinea : LineStyle;
+	var estiloDibujo : DrawStyle;
+	var ultimaPosicion : FlxPoint;
 	
-	var p_acierto:Int = 0;
-	var p_fallido:Int = 0;
+	var puntosAcertados : Int = 0;	// Por cada punto dibujado dentro del trazo, se suma
+	var puntosFallados : Int = 0;	// Por cada punto dibujado fuera del trazo, se resta
 	
 	
 	override public function create() {
@@ -65,34 +65,26 @@ class Logica extends FlxState
 		add(nivel.areaInicio);
 		
 		canvas = new FlxSprite();
+		
+		// Definimos al canvas como un cuadrado que ocupa toda la pantalla
 		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 		add(canvas);
-		line_style = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
-		draw_style = { smoothing: true };
-		ult_pos = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
+		
+		estiloLinea = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
+		estiloDibujo = { smoothing: true };
+		ultimaPosicion = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
 		
 		enCurso = false;	// Indicamos que el usuario no está jugando (para que update() no cuente)
-		
-		//var lvl = new Nivel(
-			//AssetPaths.test_trace__png,
-			//null,
-			//new FlxShapeCircle(185, 276, 15, { thickness: 1 }, { color: FlxColor.RED }),
-			//new FlxShapeCircle(488, 65, 15, { thickness: 1 }, { color: FlxColor.RED })
-		//);
-		//nivel = lvl;
-		//add(lvl.spriteTrazo);
-		//add(lvl.areaInicio);
-		//add(lvl.areaFin);
-		//add(new FlxShapeCircle(185, 276, 7.5, { thickness: 1 }, { color: FlxColor.RED } ));
 	}
 	
 	override public function update() {
 		super.update();
+		
 		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio)) {
 			// Si el juego no arrancó y se pisó el area de inicio
 			trace("Juego iniciado");
-			ult_pos.x = FlxG.mouse.x;
-			ult_pos.y = FlxG.mouse.y;
+			ultimaPosicion.x = FlxG.mouse.x;
+			ultimaPosicion.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
 			FlxG.stage.addEventListener(TouchEvent.TOUCH_ROLL_OUT, stageOnMouseEnd);
 		}
@@ -100,26 +92,26 @@ class Logica extends FlxState
 		if (enCurso) {
 			
 			// solo actuo en caso de que se haya movido, por un tema de puntaje
-			if (FlxG.mouse.x != ult_pos.x || FlxG.mouse.y != ult_pos.y) {			
+			if (FlxG.mouse.x != ultimaPosicion.x || FlxG.mouse.y != ultimaPosicion.y) {			
 				
 				// Si el juego está en curso el mouse NO puede dejar de tocar la línea hasta que llegue al areaFin
 				if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
 					// Si no toca el trazo pierde
 					//trace("Juego perdido");
 					//enCurso = false;
-					p_fallido++;
+					puntosFallados++;
 				} else 	if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
 					// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
 					//trace("Juego ganado");
 					enCurso = false;
-					trace("p_acierto " + p_acierto + " p_fallido " + p_fallido + " porcentaje " + (p_acierto / (p_fallido + p_acierto) * 100));
+					trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
 				} else {
-					p_acierto++;
+					puntosAcertados++;
 				}
 				
-				canvas.drawLine(ult_pos.x, ult_pos.y, FlxG.mouse.x, FlxG.mouse.y, line_style, draw_style);
-				ult_pos.x = FlxG.mouse.x;
-				ult_pos.y = FlxG.mouse.y;
+				canvas.drawLine(ultimaPosicion.x, ultimaPosicion.y, FlxG.mouse.x, FlxG.mouse.y, estiloLinea, estiloDibujo);
+				ultimaPosicion.x = FlxG.mouse.x;
+				ultimaPosicion.y = FlxG.mouse.y;
 			}
 		}
 	}
