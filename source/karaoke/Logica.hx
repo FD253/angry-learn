@@ -17,11 +17,10 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUIButton;
 import karaoke.MenuNiveles;
-//import karaoke.PopUp;
+
 import flixel.addons.ui.FlxUIRadioGroup;
 
-class Logica extends FlxState
-{
+class Logica extends FlxState {
 	// STATIC ATRIBUTES
 	public static var nivelInicio : Nivel;
 	
