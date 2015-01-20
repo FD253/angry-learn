@@ -61,17 +61,14 @@ Clases: 								NotacionPascal
 	(Pero hay que tener cuidado porque no podríamos diferenciar a simple vista un atributo "static" de clase, de uno de instancia!)
 	
 	
-		class Cosa
-		{
+		class Cosa {
 			public static cosaParaUsarEnCreate: Int;
 			
-			function unMetodoPrivado(): Void	// Es private por defecto
-			{
+			function unMetodoPrivado(): Void { 	// Es private por defecto
 				...
 			}
 			
-			public function unMetodoPublico(): Void		// Explicitamos que es público
-			{
+			public function unMetodoPublico(): Void	{	// Explicitamos que es público
 				// Usar SIEMPRE así:
 				unMetodoPrivado();
 				
