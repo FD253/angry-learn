@@ -2,11 +2,6 @@ package trazos;
 import flixel.util.FlxPoint;
 import flixel.addons.display.shapes.FlxShapeCircle;
 
-
-/**
- * ...
- * @author ...
- */
 class MenuNiveles extends MenuDeEnlace
 {
 

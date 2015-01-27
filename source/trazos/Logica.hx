@@ -1,32 +1,26 @@
 package trazos;
 
+import flixel.FlxG;
+import Reg;
 
 import flash.display.JointStyle;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSpriteUtil;
-import Reg;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
-import openfl.events.MouseEvent;
 import flixel.util.FlxCollision.pixelPerfectPointCheck;
 import flixel.addons.display.shapes.FlxShapeBox;
 import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.util.FlxColor;
-import openfl.events.TouchEvent;
-import openfl.events.EventDispatcher;
-import flixel.plugin.MouseEventManager;
+
+import openfl.events.MouseEvent;
+import flixel.input.touch.FlxTouch;
 
 using flixel.util.FlxSpriteUtil;
 
-
-/**
- * ...
- * @author ...
- */ 
 class Logica extends FlxState
 {
 	// Se debe asignar el nivel acá antes de instanciar Logica
@@ -45,6 +39,10 @@ class Logica extends FlxState
 	var puntosAcertados : Int = 0;	// Por cada punto dibujado dentro del trazo, se suma
 	var puntosFallados : Int = 0;	// Por cada punto dibujado fuera del trazo, se resta
 	
+	private function iniciarJuego()
+	{
+		
+	}
 	
 	override public function create() {
 		super.create();
@@ -54,7 +52,7 @@ class Logica extends FlxState
 		//	Es la solución que se me ocurre y aún falta probar
 		nivel = new Nivel(
 			AssetPaths.test_trace__png,
-			null,
+			null, // Sin fondo
 			new FlxShapeCircle(185, 276, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED }),
 			new FlxShapeCircle(488, 65, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED })
 		);
@@ -63,6 +61,8 @@ class Logica extends FlxState
 		add(nivel.spriteFondo);
 		add(nivel.areaFin);
 		add(nivel.areaInicio);
+		
+		add(new FlxButton(10, 10, "Menu", function () { FlxG.switchState(new MenuTrazos() ); } ));
 		
 		canvas = new FlxSprite();
 		
@@ -77,6 +77,12 @@ class Logica extends FlxState
 		enCurso = false;	// Indicamos que el usuario no está jugando (para que update() no cuente)
 	}
 	
+	private function finalizarJuego()
+	{
+		enCurso = false;
+		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
+	}
+	
 	override public function update() {
 		super.update();
 		
@@ -86,7 +92,8 @@ class Logica extends FlxState
 			ultimaPosicion.x = FlxG.mouse.x;
 			ultimaPosicion.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
-			FlxG.stage.addEventListener(TouchEvent.TOUCH_ROLL_OUT, stageOnMouseEnd);
+			puntosAcertados = 0;
+			puntosFallados = 0;
 		}
 		
 		if (enCurso) {
@@ -96,15 +103,11 @@ class Logica extends FlxState
 				
 				// Si el juego está en curso el mouse NO puede dejar de tocar la línea hasta que llegue al areaFin
 				if (!pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.spriteTrazo)) {
-					// Si no toca el trazo pierde
-					//trace("Juego perdido");
-					//enCurso = false;
+					// Si no toca el trazo se penaliza
 					puntosFallados++;
-				} else 	if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
-					// Si no toca el trazo, el juego termina (Porque antes debería tocarse el areaFin ya que se solapa)
-					//trace("Juego ganado");
-					enCurso = false;
-					trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
+				} else if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
+					// Si toca el areaFin se finaliza
+					finalizarJuego();
 				} else {
 					puntosAcertados++;
 				}
@@ -113,13 +116,15 @@ class Logica extends FlxState
 				ultimaPosicion.x = FlxG.mouse.x;
 				ultimaPosicion.y = FlxG.mouse.y;
 			}
+			
+			for (touch in FlxG.touches.list) {
+				if (touch.justReleased) {
+					// Si deja de tocar la pantalla pierde
+					trace('juego perdido');
+					puntosAcertados = 0;
+					finalizarJuego();
+				}
+			}
 		}
 	}
-	
-	function stageOnMouseEnd(e : TouchEvent) {
-		// Se dejó de tocar el canvas...
-		enCurso = false;
-		trace("Juego perdido");		
-	}
-
 }
