@@ -110,7 +110,11 @@ class Logica extends FlxState
 				if (touch.justReleased) {
 					// Si deja de tocar la pantalla pierde
 					trace('juego perdido');
+					
+					// Damos estos valores mínimos para que el porcentaje no sea div por cero
 					puntosAcertados = 0;
+					puntosFallados = 1;
+					
 					finalizarJuego();
 				}
 			}
