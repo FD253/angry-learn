@@ -2,6 +2,7 @@ package ;
 
 import flixel.FlxState;
 import trazos.Logica;
+import trazos.MenuNiveles;
 
 /**
  * ...
@@ -13,7 +14,7 @@ class MenuTrazos extends MenuDeEnlace
 	override public function create():Void 
 	{
 		super.create();
-		agregarBoton("TEST", Logica);
+		agregarBoton("TEST", MenuNiveles);
 		
 		agregarBoton("VOLVER");
 		ordenarBotones();

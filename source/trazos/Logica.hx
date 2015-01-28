@@ -2,6 +2,7 @@ package trazos;
 
 import flixel.FlxG;
 import Reg;
+import trazos.Nivel.ParamNivel;
 
 import flash.display.JointStyle;
 import flixel.util.FlxPoint;
@@ -23,9 +24,9 @@ using flixel.util.FlxSpriteUtil;
 
 class Logica extends FlxState
 {
-	// Se debe asignar el nivel acá antes de instanciar Logica
-	//	para que así tome de acá el nivel que tiene que ejecutar
-	//public static var nivelInicio : Nivel;
+	// Se debe asignar el número de nivel acá antes de instanciar Logica
+	//	para que así en create() sepa qué datos usar para mostrar el nivel
+	public static var numeroNivel : Int;
 	
 	var nivel : Nivel;
 	var enCurso : Bool;
@@ -39,23 +40,11 @@ class Logica extends FlxState
 	var puntosAcertados : Int = 0;	// Por cada punto dibujado dentro del trazo, se suma
 	var puntosFallados : Int = 0;	// Por cada punto dibujado fuera del trazo, se resta
 	
-	private function iniciarJuego()
-	{
-		
-	}
-	
 	override public function create() {
 		super.create();
-		//nivel = Logica.nivelInicio;	// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
-		
-		// TODO: Para tener los niveles codificados usar un TypeDef e ir instanciándolos acá.
-		//	Es la solución que se me ocurre y aún falta probar
-		nivel = new Nivel(
-			AssetPaths.test_trace__png,
-			null, // Sin fondo
-			new FlxShapeCircle(185, 276, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED }),
-			new FlxShapeCircle(488, 65, 10, { thickness: null, color: FlxColor.TRANSPARENT }, { color: FlxColor.RED })
-		);
+
+		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
+
 		
 		add(nivel.spriteTrazo);
 		add(nivel.spriteFondo);
