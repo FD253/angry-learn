@@ -17,11 +17,12 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUIButton;
 import karaoke.MenuNiveles;
-//import karaoke.PopUp;
+import sys.db.Types.STimeStamp;
+
 import flixel.addons.ui.FlxUIRadioGroup;
 
-class Logica extends FlxState
-{
+
+class Logica extends FlxState {
 	// STATIC ATRIBUTES
 	public static var nivelInicio : Nivel;
 	
@@ -31,6 +32,9 @@ class Logica extends FlxState
 	var posicionNivel : Int;
 	var timer : FlxTimer;
 	var item : Item;
+	
+	var timeInicio : Date;
+	var timeFin : Date;
 	
 	var textItem : FlxText;
 	var color : FlxTextFormat; //pseudotween
@@ -149,14 +153,23 @@ class Logica extends FlxState
 	}
 
 	function comenzar() {
-		btnComenzar.visible = false;
+		
+		timeInicio = Date.now();
+		
+		btnComenzar.visible = false;	
 		if (posicionNivel < (nivel.items.length)) {
-			timer = new FlxTimer(0.1, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
+			timer = new FlxTimer(0.5, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
 			switchTipoDeLetra();
 		}
 	}
 	
+	function calcularTiempoEmpleado() {
+		timeFin = Date.now();
+		trace(timeFin.getTime() - timeInicio.getTime());
+	}
+	
 	function itemCorrecto() {
+		calcularTiempoEmpleado();		
 		ocultarBtnCorrectoIncorrecto();
 		if (posicionNivel < (nivel.items.length - 1)) {
 			posicionNivel += 1;
@@ -172,6 +185,7 @@ class Logica extends FlxState
 	}
 	
 	function itemIncorrecto() {
+		calcularTiempoEmpleado();
 		ocultarBtnCorrectoIncorrecto();
 		reproducirItem();
 	}
