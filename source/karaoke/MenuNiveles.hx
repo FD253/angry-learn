@@ -8,7 +8,7 @@ import flixel.ui.FlxButton;
  * ...
  * @author
  */
-class MenuNiveles extends MenuDeEnlace
+class MenuNiveles extends MenuBase
 {
 	static function nivel1OnClick()	{
 		Logica.nivelInicio = Nivel.nivel1;

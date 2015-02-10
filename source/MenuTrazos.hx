@@ -8,7 +8,7 @@ import trazos.MenuNiveles;
  * ...
  * @author ...
  */
-class MenuTrazos extends MenuDeEnlace
+class MenuTrazos extends MenuBase
 {
 
 	override public function create():Void 

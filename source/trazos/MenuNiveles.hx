@@ -2,7 +2,7 @@ package trazos;
 import flixel.FlxG;
 import flixel.ui.FlxButton;
 
-class MenuNiveles extends MenuDeEnlace
+class MenuNiveles extends MenuBase
 {
 	function nivel1OnClick() {
 		Logica.numeroNivel = 0;	// Le decimos al juego qué nivel tiene que usar

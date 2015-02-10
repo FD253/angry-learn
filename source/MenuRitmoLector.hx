@@ -7,7 +7,7 @@ import flixel.FlxState;
  * ...
  * @author Gabriel
  */
-class MenuRitmoLector extends MenuDeEnlace
+class MenuRitmoLector extends MenuBase
 {
 	override public function create():Void 
 	{

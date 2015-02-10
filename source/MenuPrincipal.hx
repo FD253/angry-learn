@@ -10,7 +10,7 @@ import MenuTrazos;
  * ...
  * @author Gabriel
  */
-class MenuPrincipal extends MenuDeEnlace
+class MenuPrincipal extends MenuBase
 {
 
 	override public function create():Void 
