@@ -5,11 +5,7 @@ import flixel.addons.ui.FlxUIButton;
 import flixel.text.FlxText;
 import flixel.FlxState;
 
-/**
- * ...
- * @author ...
- */
-class FinNivel extends FlxState
+class FinNivel extends EstadoBase
 {
 	public static var resultadoInicio : Float;
 	

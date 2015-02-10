@@ -21,7 +21,7 @@ import flixel.tweens.FlxEase;
  * 
  * @author Gabriel
  */
-class Logica extends FlxState
+class Logica extends JuegoBase
 {
 	// STATIC ATRIBUTES
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...

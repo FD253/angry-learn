@@ -22,7 +22,7 @@ import flixel.input.touch.FlxTouch;
 
 using flixel.util.FlxSpriteUtil;
 
-class Logica extends FlxState
+class Logica extends JuegoBase
 {
 	// Se debe asignar el número de nivel acá antes de instanciar Logica
 	//	para que así en create() sepa qué datos usar para mostrar el nivel
