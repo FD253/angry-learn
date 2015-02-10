@@ -5,7 +5,7 @@ import flixel.addons.ui.FlxUIButton;
 import flixel.text.FlxText;
 import flixel.FlxState;
 
-class FinNivel extends EstadoBase
+class FinNivel extends JuegoBase
 {
 	public static var resultadoInicio : Float;
 	
