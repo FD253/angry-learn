@@ -13,7 +13,7 @@ using flixel.util.FlxSpriteUtil;
 
 using BotonMenu;
 
-class MenuBase extends EstadoBase
+class BaseMenu extends BaseEstado
 {
 	var botonesDeMenu: List<FlxButton> = new List<FlxButton>();
 	

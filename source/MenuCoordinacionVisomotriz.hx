@@ -6,7 +6,7 @@ import flixel.FlxState;
  * ...
  * @author Gabriel
  */
-class MenuCoordinacionVisomotriz extends MenuBase
+class MenuCoordinacionVisomotriz extends BaseMenu
 {
 	override public function create():Void 
 	{

@@ -9,7 +9,7 @@ import flixel.FlxG;
  * ...
  * @author Gabriel
  */
-class MenuNiveles extends MenuBase
+class MenuNiveles extends BaseMenu
 {
 	var chkFeedbackVisual : FlxUICheckBox;
 	

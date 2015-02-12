@@ -3,7 +3,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxG;
 
-class JuegoBase extends EstadoBase
+class BaseJuego extends BaseEstado
 {
 	
 	override public function create() {
