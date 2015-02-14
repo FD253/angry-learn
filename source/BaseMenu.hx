@@ -4,6 +4,7 @@ import flash.events.Event;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.FlxSubState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -19,6 +20,15 @@ class BaseMenu extends BaseEstado
 	
 	static function _volver() {
 		FlxG.switchState(new MenuPrincipal());
+	}
+	
+	override public function create() {
+		super.create();
+		
+		// Botón reiniciar juego
+		var botonReiniciar = new FlxButton(7, 7, '', botonReiniciarOnClick);
+		botonReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
+		add(botonReiniciar);
 	}
 	
 	function agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton {
@@ -60,5 +70,10 @@ class BaseMenu extends BaseEstado
 			add(j);
 			y_acum += j.height + espacioIntermedio;
 		}
-	}	
+	}
+	
+	function botonReiniciarOnClick() {
+		FlxG.resetGame();
+	}
+	
 }

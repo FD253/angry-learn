@@ -29,14 +29,5 @@ class BaseEstado extends FlxState
 		encabezado.setGraphicSize(FlxG.width, 0);
 		encabezado.updateHitbox();
 		add(encabezado);
-		
-		var botonReiniciar = new FlxButton(7, 7, '', botonReiniciarOnClick);
-		botonReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
-		add(botonReiniciar);
 	}
-	
-	function botonReiniciarOnClick() {
-		FlxG.resetGame();
-	}
-	
 }
