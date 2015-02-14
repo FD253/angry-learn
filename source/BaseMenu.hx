@@ -22,8 +22,6 @@ class BaseMenu extends BaseEstado
 	}
 	
 	function agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton {
-		// No importa dónde nos lleve, el fondo tiene que ser el mismo:
-		FlxG.state.bgColor = FlxColor.BLACK;
 		
 		if (estadoDestino != null) {
 			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);

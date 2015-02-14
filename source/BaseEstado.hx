@@ -2,6 +2,7 @@ package ;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxG;
+import flixel.util.FlxColor;
 
 class BaseEstado extends FlxState
 {
@@ -12,10 +13,7 @@ class BaseEstado extends FlxState
 	override public function create() {
 		super.create();
 		
-		var fondo = new FlxSprite(0, 0, AssetPaths.fondo__png);
-		fondo.setGraphicSize(FlxG.width, FlxG.height);	// No nos importa el aspect ratio para esta imagen
-		fondo.updateHitbox();
-		add(fondo);
+		this.set_bgColor(15000804);
 		
 		var fondo_piso = new FlxSprite(0, 0, AssetPaths.fondo_piso__png);
 		// Ajustamos el ancho al de la pantalla
