@@ -68,10 +68,6 @@ class Logica extends BaseJuego
 		
 		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"
 		
-		// Botones del menú de juego
-		btnMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
-		botonesInterfaz.add(btnMenuVolver);
-		
 		btnCancelar = new FlxButton(40, 10, "Detener", botonCancelarOnClick);
 		btnCancelar.x = FlxG.width - btnCancelar.width - 10;
 		btnCancelar.visible = false;
@@ -197,10 +193,6 @@ class Logica extends BaseJuego
 			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 			trace("click");
 		}
-	}
-	
-	function botonMenuVolverOnClick() {
-		FlxG.switchState(new MenuNiveles());
 	}
 	
 	function botonCancelarOnClick() {

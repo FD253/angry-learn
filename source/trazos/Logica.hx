@@ -44,14 +44,11 @@ class Logica extends BaseJuego
 		super.create();
 
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
-
 		
 		add(nivel.spriteTrazo);
 		add(nivel.spriteFondo);
 		add(nivel.areaFin);
 		add(nivel.areaInicio);
-		
-		add(new FlxButton(10, 10, "Menu", function () { FlxG.switchState(new MenuTrazos() ); } ));
 		
 		canvas = new FlxSprite();
 		
