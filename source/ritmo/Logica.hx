@@ -66,8 +66,6 @@ class Logica extends BaseJuego
 		
 		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
 		
-		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"
-		
 		btnCancelar = new FlxButton(40, 10, "Detener", botonCancelarOnClick);
 		btnCancelar.x = FlxG.width - btnCancelar.width - 10;
 		btnCancelar.visible = false;
