@@ -36,7 +36,6 @@ class BaseMenu extends BaseEstado
 		if (estadoDestino != null) {
 			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
 			botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
-			//this.add(botonNuevo);	// No lo agregamos ahora porque puede mostrarse en la esquina 0,0 y moverse cuando se ejecuta this._ordenarBotones()
 			botonNuevo.loadGraphic(AssetPaths.boton_azul__png, true, 190, 49);
 			return botonNuevo;
 		}
