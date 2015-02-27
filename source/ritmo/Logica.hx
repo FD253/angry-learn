@@ -42,7 +42,7 @@ class Logica extends BaseJuego
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
 	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
-	var btnMenuVolver : FlxButton;
+	var btnMenuDesplegar : FlxButton;
 	var btnEscuchar : FlxButton;
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
@@ -63,37 +63,8 @@ class Logica extends BaseJuego
 		nivel = Logica.nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		feedbackVisual = feedbackVisualInicio;
 		
-		var mitadAncho = FlxG.width / 2;
-		var alturaBotones = 10;
-		
-		definirRepresentacionSecuencia();
-		
-		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", botonEscucharOnClick);
-		botonesInterfaz.add(btnEscuchar);
-		
-		btnJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", botonJugarOnClick);
-		btnJugar.x -= btnJugar.width;
-		botonesInterfaz.add(btnJugar);
-		
-		txtRetardo = new FlxText();
-		txtRetardo.wordWrap = false;
-		txtRetardo.autoSize = false;
-		txtRetardo.fieldWidth = 300;
-		txtRetardo.size = 30;
-		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
-		txtRetardo.alignment = "center";
-		add(txtRetardo);
-		
-		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		btnJugar.visible = false;
-		
-		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height / 2), '', registrarPulsacion);
-		btnToques.loadGraphic(AssetPaths.boton__png, true, 180, 184);
-		btnToques.x = btnToques.x - btnToques.width / 2;
-		btnToques.y = btnToques.y - btnToques.height / 2;
-		add(btnToques);
-		
-		add(botonesInterfaz);
+		definirRepresentacionSecuencia();		
+		agregarInterfaz();
 	}
 	
 	
@@ -116,6 +87,48 @@ class Logica extends BaseJuego
 		if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
 			add(txtRepresentacionSecuencia);
 		}
+	}
+	
+	function agregarInterfaz() {
+		var mitadAncho = FlxG.width / 2;
+		var alturaBotones = 10;
+		
+		// Botón escuchar
+		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", btnEscucharOnClick);
+		botonesInterfaz.add(btnEscuchar);
+		
+		// Botón jugar
+		btnJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", btnJugarOnClick);
+		btnJugar.x -= btnJugar.width;
+		botonesInterfaz.add(btnJugar);
+		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
+		btnJugar.visible = false;
+		
+		// Botón mostrar menu <-
+		btnMenuDesplegar = new FlxButton(5, 350, '', btnMenuDesplegarOnClick);
+		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
+		add(btnMenuDesplegar);
+		
+		// Panel de niveles
+		
+		// Botón de toques
+		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height / 2), '', btnToquesOnClick);
+		btnToques.loadGraphic(AssetPaths.boton__png, true, 180, 184);
+		btnToques.x = btnToques.x - btnToques.width / 2;
+		btnToques.y = btnToques.y - btnToques.height / 2;
+		add(btnToques);
+		
+		// Misc
+		txtRetardo = new FlxText();
+		txtRetardo.wordWrap = false;
+		txtRetardo.autoSize = false;
+		txtRetardo.fieldWidth = 300;
+		txtRetardo.size = 30;
+		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
+		txtRetardo.alignment = "center";
+		add(txtRetardo);
+		
+		add(botonesInterfaz);
 	}
 	
 	function avanceReproduccion(timer : FlxTimer) {
@@ -175,7 +188,7 @@ class Logica extends BaseJuego
 		}
 	}
 	
-	function registrarPulsacion() {
+	function btnToquesOnClick() {
 		// Grabamos en un array
 		if (enCurso) {
 			if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
@@ -187,7 +200,7 @@ class Logica extends BaseJuego
 		}
 	}
 	
-	function botonEscucharOnClick() {
+	function btnEscucharOnClick() {
 		botonesInterfaz.setAll("visible", false);
 		FlxG.state.bgColor = FlxColor.OLIVE;	// Color "reproduciendo"
 		
@@ -198,7 +211,7 @@ class Logica extends BaseJuego
 		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
 	}
 	
-	function botonJugarOnClick() {
+	function btnJugarOnClick() {
 		btnJugar.active = false;
 		btnEscuchar.visible = false;
 		acumulador = 0;
@@ -213,7 +226,9 @@ class Logica extends BaseJuego
 		);
 	}
 
-
+	function btnMenuDesplegarOnClick() {
+		
+	}
 	
 	
 	
