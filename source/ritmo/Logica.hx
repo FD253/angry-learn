@@ -1,5 +1,6 @@
 package ritmo;
 
+import flixel.group.FlxSpriteGroup;
 import Reg;
 import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
@@ -42,10 +43,14 @@ class Logica extends BaseJuego
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
 	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
-	var btnMenuDesplegar : FlxButton;
 	var btnEscuchar : FlxButton;
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
+	
+	var menuDesplegable : FlxSpriteGroup;
+	var btnMenuDesplegar : FlxButton;
+	var btnMenuContraer : FlxButton;
+	
 	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
@@ -63,8 +68,9 @@ class Logica extends BaseJuego
 		nivel = Logica.nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		feedbackVisual = feedbackVisualInicio;
 		
-		definirRepresentacionSecuencia();		
+		definirRepresentacionSecuencia();
 		agregarInterfaz();
+		agregarMenuDesplegable();
 	}
 	
 	
@@ -89,25 +95,48 @@ class Logica extends BaseJuego
 		}
 	}
 	
+	function agregarMenuDesplegable() {
+		// Botón mostrar menu ->
+		btnMenuDesplegar = new FlxButton(5, FlxG.height - 125, '', btnMenuDesplegarOnClick);
+		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
+		add(btnMenuDesplegar);
+		
+		menuDesplegable = new FlxSpriteGroup(btnMenuDesplegar.x, btnMenuDesplegar.y);
+		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
+		menuDesplegable.visible = false;
+		add(menuDesplegable);
+		
+		btnMenuContraer = new FlxButton(btnMenuDesplegar.x, btnMenuDesplegar.y, '', btnMenuContraerOnClick);
+		btnMenuContraer.loadGraphic(AssetPaths.boton_menu_contraer__png);
+		btnMenuContraer.visible = false;
+		add(btnMenuContraer);
+	}
+	
 	function agregarInterfaz() {
 		var mitadAncho = FlxG.width / 2;
-		var alturaBotones = 10;
+		var alturaBotonesSuperiores = 75;
 		
-		// Botón escuchar
-		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", btnEscucharOnClick);
-		botonesInterfaz.add(btnEscuchar);
+		// Nombre del juego
+		var nombreJuego = new FlxSprite(mitadAncho, 14, AssetPaths.nombre_juego__png);
+		nombreJuego.x = nombreJuego.x - nombreJuego.width / 2;	// Centramos al medio, manteniendo la altura
+		add(nombreJuego);
+		
+		
+		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
 		
 		// Botón jugar
-		btnJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", btnJugarOnClick);
-		btnJugar.x -= btnJugar.width;
+		btnJugar = new FlxButton(0, 0, '', btnJugarOnClick);
+		btnJugar.loadGraphic(AssetPaths.boton_jugar__png);
+		btnJugar.setPosition(mitadAncho - btnJugar.width - 20, alturaBotonesSuperiores);
 		botonesInterfaz.add(btnJugar);
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
 		btnJugar.visible = false;
 		
-		// Botón mostrar menu <-
-		btnMenuDesplegar = new FlxButton(5, 350, '', btnMenuDesplegarOnClick);
-		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
-		add(btnMenuDesplegar);
+		// Botón escuchar
+		btnEscuchar = new FlxButton(0, 0, '', btnEscucharOnClick);
+		btnEscuchar.loadGraphic(AssetPaths.boton_escuchar__png);
+		btnEscuchar.setPosition(btnJugar.x - btnEscuchar.width - 40, alturaBotonesSuperiores);
+		botonesInterfaz.add(btnEscuchar);
 		
 		// Panel de niveles
 		
@@ -124,7 +153,7 @@ class Logica extends BaseJuego
 		txtRetardo.autoSize = false;
 		txtRetardo.fieldWidth = 300;
 		txtRetardo.size = 30;
-		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
+		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotonesSuperiores + 10 + 25);
 		txtRetardo.alignment = "center";
 		add(txtRetardo);
 		
@@ -178,7 +207,7 @@ class Logica extends BaseJuego
 	function inicioRetardado(timer : FlxTimer) {
 		if (timer.loopsLeft == 0) {
 			trace('inicio de juego');
-			txtRetardo.text += " Go! ";
+			txtRetardo.text += " A JUGAR! ";
 			
 			enCurso = true;
 			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
@@ -202,7 +231,6 @@ class Logica extends BaseJuego
 	
 	function btnEscucharOnClick() {
 		botonesInterfaz.setAll("visible", false);
-		FlxG.state.bgColor = FlxColor.OLIVE;	// Color "reproduciendo"
 		
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
@@ -227,7 +255,15 @@ class Logica extends BaseJuego
 	}
 
 	function btnMenuDesplegarOnClick() {
-		
+		btnMenuDesplegar.visible = false;
+		menuDesplegable.visible = true;
+		btnMenuContraer.visible = true;
+	}
+	
+	function btnMenuContraerOnClick() {
+		btnMenuContraer.visible = false;
+		menuDesplegable.visible = false;
+		btnMenuDesplegar.visible = true;
 	}
 	
 	
