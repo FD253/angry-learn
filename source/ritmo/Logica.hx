@@ -47,11 +47,6 @@ class Logica extends BaseJuego
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
 	
-	var menuDesplegable : FlxSpriteGroup;
-	var btnMenuDesplegar : FlxButton;
-	var btnMenuContraer : FlxButton;
-	
-	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
 	
@@ -65,12 +60,12 @@ class Logica extends BaseJuego
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		nivel = Logica.nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		nivel = Logica.nivelInicio;  // Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		feedbackVisual = feedbackVisualInicio;
 		
 		definirRepresentacionSecuencia();
 		agregarInterfaz();
-		agregarMenuDesplegable();
+		definirMenuDesplegable();
 	}
 	
 	
@@ -95,21 +90,8 @@ class Logica extends BaseJuego
 		}
 	}
 	
-	function agregarMenuDesplegable() {
-		// Botón mostrar menu ->
-		btnMenuDesplegar = new FlxButton(5, FlxG.height - 125, '', btnMenuDesplegarOnClick);
-		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
-		add(btnMenuDesplegar);
-		
-		menuDesplegable = new FlxSpriteGroup(0, btnMenuDesplegar.y);
+	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
-		menuDesplegable.x = -menuDesplegable.width;	// Lo ocultamos a la izquierda de la pantalla (Para usar un Tween)
-		add(menuDesplegable);
-		
-		btnMenuContraer = new FlxButton(5, btnMenuDesplegar.y, '', btnMenuContraerOnClick);
-		btnMenuContraer.loadGraphic(AssetPaths.boton_menu_contraer__png);
-		btnMenuContraer.x = -btnMenuContraer.width;
-		add(btnMenuContraer);
 	}
 	
 	function agregarInterfaz() {
@@ -252,32 +234,6 @@ class Logica extends BaseJuego
 			inicioRetardado,	// Handler
 			4	// Loops
 		);
-	}
-	
-	function btnMenuDesplegarOnClick() {
-		// Ocultamos el botón que muestra el menu
-		FlxTween.tween(btnMenuDesplegar, {x: -btnMenuDesplegar.width}, 0.2, {complete: tweenBtnMenuDesplegarOnComplete});
-		//FlxTween.linearMotion(menuDesplegable, menuDesplegable.x, menuDesplegable.y, btnMenuDesplegar.x, btnMenuDesplegar.y, 0.15, true, {complete: tweenMenuDesplegarOnComplete});
-	}
-	
-	function tweenBtnMenuDesplegarOnComplete(tween : FlxTween) {
-		// Desplegamos el menu y el botón que lo contrae
-		FlxTween.tween(menuDesplegable, { x: 5 }, 0.1);
-		FlxTween.tween(btnMenuContraer, { x: 5 }, 0.1);
-	}
-	
-	function tweenBtnMenuContraerOnComplete(tween : FlxTween) {
-		FlxTween.tween(btnMenuDesplegar, {x: 5}, 0.2);
-	}
-
-	
-	function btnMenuContraerOnClick() {
-		FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
-		FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: tweenBtnMenuContraerOnComplete});
-		
-	}
-	
-	
-	
+	}	
 	
 }
