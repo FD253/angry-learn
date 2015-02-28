@@ -45,7 +45,7 @@ class BaseJuego extends BaseEstado
 	
 	function btnMenuDesplegarOnClick() {
 		// Ocultamos el botón que muestra el menu
-		FlxTween.tween(btnMenuDesplegar, {x: -btnMenuDesplegar.width}, 0.2, {complete: tweenBtnMenuDesplegarOnComplete});
+		FlxTween.tween(btnMenuDesplegar, {x: -btnMenuDesplegar.width}, 0.08, {complete: tweenBtnMenuDesplegarOnComplete});
 	}
 	
 	function tweenBtnMenuDesplegarOnComplete(tween : FlxTween) {
