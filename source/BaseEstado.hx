@@ -2,6 +2,9 @@ package ;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxG;
+import flixel.util.FlxColor;
+import flixel.ui.FlxButton;
+import openfl.events.Event;
 
 class BaseEstado extends FlxState
 {
@@ -12,23 +15,19 @@ class BaseEstado extends FlxState
 	override public function create() {
 		super.create();
 		
-		var fondo = new FlxSprite(0, 0, AssetPaths.fondo__png);
-		fondo.setGraphicSize(FlxG.width, FlxG.height);	// No nos importa el aspect ratio para esta imagen
-		fondo.updateHitbox();
-		add(fondo);
+		this.set_bgColor(15000804);
 		
-		var fondo_piso = new FlxSprite(0, 0, AssetPaths.fondo_piso__png);
+		var fondoPiso = new FlxSprite(0, 0, AssetPaths.fondo_piso__png);
 		// Ajustamos el ancho al de la pantalla
-		fondo_piso.setGraphicSize(FlxG.width, 0);
-		fondo_piso.updateHitbox();
+		fondoPiso.setGraphicSize(FlxG.width, 0);
+		fondoPiso.updateHitbox();
 		// Colocamos el piso abajo de todo
-		fondo_piso.y = FlxG.height - fondo_piso.height;
-		add(fondo_piso);
+		fondoPiso.y = FlxG.height - fondoPiso.height;
+		add(fondoPiso);
 		
 		var encabezado = new FlxSprite(0, 0, AssetPaths.encabezado__png);
 		encabezado.setGraphicSize(FlxG.width, 0);
 		encabezado.updateHitbox();
 		add(encabezado);
 	}
-	
 }

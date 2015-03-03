@@ -10,10 +10,7 @@ import flixel.util.FlxMath;
 
 using flixel.util.FlxSpriteUtil;
 
-/**
- * ...
- * @author
- */
+
 class BotonMenu extends FlxButton
 {
 	var estadoDestino: Class<FlxState>;	// Referencia al estado al que el botón va a llevar

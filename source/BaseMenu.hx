@@ -4,6 +4,7 @@ import flash.events.Event;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.FlxSubState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -21,14 +22,20 @@ class BaseMenu extends BaseEstado
 		FlxG.switchState(new MenuPrincipal());
 	}
 	
+	override public function create() {
+		super.create();
+		
+		// Botón reiniciar juego
+		var botonReiniciar = new FlxButton(7, 7, '', botonReiniciarOnClick);
+		botonReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
+		add(botonReiniciar);
+	}
+	
 	function agregarBoton(texto: String, ?estadoDestino: Class<FlxState>): FlxButton {
-		// No importa dónde nos lleve, el fondo tiene que ser el mismo:
-		FlxG.state.bgColor = FlxColor.BLACK;
 		
 		if (estadoDestino != null) {
 			var botonNuevo: BotonMenu = new BotonMenu(texto, estadoDestino);
 			botonesDeMenu.add(botonNuevo); // Lo agregamos a la lista interna para después cuando estén todos poder ordenarlos
-			//this.add(botonNuevo);	// No lo agregamos ahora porque puede mostrarse en la esquina 0,0 y moverse cuando se ejecuta this._ordenarBotones()
 			botonNuevo.loadGraphic(AssetPaths.boton_azul__png, true, 190, 49);
 			return botonNuevo;
 		}
@@ -62,5 +69,10 @@ class BaseMenu extends BaseEstado
 			add(j);
 			y_acum += j.height + espacioIntermedio;
 		}
-	}	
+	}
+	
+	function botonReiniciarOnClick() {
+		FlxG.resetGame();
+	}
+	
 }

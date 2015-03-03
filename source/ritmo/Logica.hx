@@ -34,75 +34,37 @@ class Logica extends BaseJuego
 	
 	// PRIVATE ATRIBUTES
 	var nivel : Nivel;
-	var feedbackVisual : Bool;
+	var feedbackVisual : Bool = false;
+	
+	var enCurso : Bool = false;
 	
 	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
-	var btnCancelar : FlxButton;
-	
 	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
+	var btnMenuDesplegar : FlxButton;
+	var btnEscuchar : FlxButton;
+	var btnJugar : FlxButton;
+	var btnToques : FlxButton;
 	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
-
 	
-	var btnMenuVolver : FlxButton;
-	var btnEscuchar : FlxButton;
-	var btnJugar : FlxButton;
 	var tmrPrincipal : FlxTimer;	// Esta referencia sirve para el timer tanto de juego como de escucha
 	
 	var txtRetardo : FlxText;
-	//var sptMarcadorRitmo : FlxSprite;
 	var tweenOptionsRitmo : TweenOptions = { type: FlxTween.BACKWARD, ease: FlxEase.quartInOut };
 	var tweenMarcadorRitmo : FlxTween;
 	
 	
-	// PUCLIC METHODS	
+	// PUCLIC METHODS
 	override public function create() {
 		super.create();
 		nivel = Logica.nivelInicio;// Pasamos a la instancia el nivel que antes se debe haber definido en la clase
 		feedbackVisual = feedbackVisualInicio;
 		
-		Reg.level = Nivel.niveles.indexOf(nivelInicio);	// Guardamos el nivel en el que estamos (La posic del array) para los botones
-		
-		FlxG.state.bgColor = FlxColor.OLIVE;	// Arrancamos con color "reproduciendo"
-		
-		// Botones del menú de juego
-		btnMenuVolver = new FlxButton(10, 10, "Volver al menú", botonMenuVolverOnClick);
-		botonesInterfaz.add(btnMenuVolver);
-		
-		btnCancelar = new FlxButton(40, 10, "Detener", botonCancelarOnClick);
-		btnCancelar.x = FlxG.width - btnCancelar.width - 10;
-		btnCancelar.visible = false;
-		
-		add(btnCancelar); // No lo tomamos como botón del grupo interfaz
-		
-		var mitadAncho = FlxG.width / 2;
-		var alturaBotones = 10;
-		
-		definirRepresentacionSecuencia();
-		
-		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", botonEscucharOnClick);
-		botonesInterfaz.add(btnEscuchar);
-		
-		btnJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", botonJugarOnClick);
-		btnJugar.x -= btnJugar.width;
-		botonesInterfaz.add(btnJugar);
-		
-		txtRetardo = new FlxText();
-		txtRetardo.wordWrap = false;
-		txtRetardo.autoSize = false;
-		txtRetardo.fieldWidth = 300;
-		txtRetardo.size = 30;
-		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
-		txtRetardo.alignment = "center";
-		add(txtRetardo);
-		
-		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
-		btnJugar.visible = false;
-		
-		add(botonesInterfaz);
+		definirRepresentacionSecuencia();		
+		agregarInterfaz();
 	}
 	
 	
@@ -127,18 +89,57 @@ class Logica extends BaseJuego
 		}
 	}
 	
+	function agregarInterfaz() {
+		var mitadAncho = FlxG.width / 2;
+		var alturaBotones = 10;
+		
+		// Botón escuchar
+		btnEscuchar = new FlxButton(mitadAncho + 10, alturaBotones, "Escuchar", btnEscucharOnClick);
+		botonesInterfaz.add(btnEscuchar);
+		
+		// Botón jugar
+		btnJugar = new FlxButton(mitadAncho - 10, alturaBotones, "Jugar", btnJugarOnClick);
+		btnJugar.x -= btnJugar.width;
+		botonesInterfaz.add(btnJugar);
+		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
+		btnJugar.visible = false;
+		
+		// Botón mostrar menu <-
+		btnMenuDesplegar = new FlxButton(5, 350, '', btnMenuDesplegarOnClick);
+		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
+		add(btnMenuDesplegar);
+		
+		// Panel de niveles
+		
+		// Botón de toques
+		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height / 2), '', btnToquesOnClick);
+		btnToques.loadGraphic(AssetPaths.boton__png, true, 180, 184);
+		btnToques.x = btnToques.x - btnToques.width / 2;
+		btnToques.y = btnToques.y - btnToques.height / 2;
+		add(btnToques);
+		
+		// Misc
+		txtRetardo = new FlxText();
+		txtRetardo.wordWrap = false;
+		txtRetardo.autoSize = false;
+		txtRetardo.fieldWidth = 300;
+		txtRetardo.size = 30;
+		txtRetardo.setPosition(mitadAncho - txtRetardo.fieldWidth / 2, alturaBotones + 10 + 25);
+		txtRetardo.alignment = "center";
+		add(txtRetardo);
+		
+		add(botonesInterfaz);
+	}
+	
 	function avanceReproduccion(timer : FlxTimer) {
 		
 		if (timer.loopsLeft == 0) {
 			botonesInterfaz.setAll("visible", true);
-			btnCancelar.visible = false;
-			//txtRepresentacionSecuencia.removeFormat(formatoTween);
 			txtRepresentacionSecuencia.clearFormats();
 		}
 		if (nivel.secuencia[acumulador] == 1 && timer.loopsLeft > 0) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
-			//FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
 		}
 		
 		acumulador += 1;
@@ -147,7 +148,6 @@ class Logica extends BaseJuego
 	function avanceGrabacion(timer : FlxTimer) {
 		if (timer.loopsLeft == 0) {
 			trace("terminó");
-			FlxG.stage.removeEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
 			trace(nivel.secuencia);
 			trace(secuenciaUsuario);
 			
@@ -165,6 +165,8 @@ class Logica extends BaseJuego
 			btnEscuchar.visible = true;
 			txtRetardo.text = "";
 			
+			enCurso = false;
+			
 			FinNivel.resultadoInicio = resultado;	// Seteamos el static para que create() lo use para mostrarlo
 			FlxG.switchState(new FinNivel());
 		}
@@ -177,10 +179,8 @@ class Logica extends BaseJuego
 		if (timer.loopsLeft == 0) {
 			trace('inicio de juego');
 			txtRetardo.text += " Go! ";
-			FlxG.state.bgColor = FlxColor.CRIMSON; // Color "grabando"
 			
-			// Escuchamos el click para "grabar" lo que hace el usuario
-			FlxG.stage.addEventListener(MouseEvent.MOUSE_UP, registrarPulsacion);
+			enCurso = true;
 			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
 		}
 		else {
@@ -188,29 +188,19 @@ class Logica extends BaseJuego
 		}
 	}
 	
-	function registrarPulsacion(e : MouseEvent) {
+	function btnToquesOnClick() {
 		// Grabamos en un array
-		if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
-			secuenciaUsuario[acumulador] += 1;
-			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-			//tweenMarcadorRitmo = FlxTween.color(sptMarcadorRitmo, 0.4, FlxColor.WHITE, FlxColor.WHITE, 1, 0, tweenOptionsRitmo);
-			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
-			trace("click");
+		if (enCurso) {
+			if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
+				secuenciaUsuario[acumulador] += 1;
+				FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+				txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
+				trace("click");
+			}
 		}
 	}
 	
-	function botonMenuVolverOnClick() {
-		FlxG.switchState(new MenuNiveles());
-	}
-	
-	function botonCancelarOnClick() {
-		tmrPrincipal.destroy();
-		btnCancelar.visible = false;
-		botonesInterfaz.setAll("visible", true);
-	}
-	
-	function botonEscucharOnClick() {
-		btnCancelar.visible = true;
+	function btnEscucharOnClick() {
 		botonesInterfaz.setAll("visible", false);
 		FlxG.state.bgColor = FlxColor.OLIVE;	// Color "reproduciendo"
 		
@@ -221,8 +211,7 @@ class Logica extends BaseJuego
 		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
 	}
 	
-	function botonJugarOnClick() {
-		FlxG.state.bgColor = FlxColor.GRAY; // Color "preparando"
+	function btnJugarOnClick() {
 		btnJugar.active = false;
 		btnEscuchar.visible = false;
 		acumulador = 0;
@@ -237,7 +226,9 @@ class Logica extends BaseJuego
 		);
 	}
 
-
+	function btnMenuDesplegarOnClick() {
+		
+	}
 	
 	
 	

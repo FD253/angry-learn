@@ -15,14 +15,13 @@ class MenuPrincipal extends BaseMenu
 	{
 		super.create();
 		
-		var selectorNiveles = new FlxSpriteGroup(Math.round(FlxG.width * 0.5), Math.round(FlxG.height * 0.14));
+		var selectorNiveles = new FlxSpriteGroup(0, 0);
 		selectorNiveles.updateHitbox();
 		
 		var fondo = new FlxSprite(0, 0, AssetPaths.fondo_lista_juegos__png);
-		fondo.setGraphicSize(Math.round(FlxG.width * 0.40), 0);
-		fondo.updateHitbox();
 		selectorNiveles.add(fondo);
 		
+		selectorNiveles.setPosition((FlxG.width - selectorNiveles.width) - 70, 65);
 		add(selectorNiveles);
 		
 		// Sólo por ahora seguimos con los botones de prueba
@@ -30,7 +29,7 @@ class MenuPrincipal extends BaseMenu
 		agregarBoton("COORDINACIÓN VISOMOTRIZ", MenuCoordinacionVisomotriz);
 		agregarBoton("TRAZOS", MenuTrazos);
 		ordenarBotones();
-		
+
 	}
 	
 }
