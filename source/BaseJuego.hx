@@ -24,6 +24,10 @@ class BaseJuego extends BaseEstado
 		botonAtras.loadGraphic(AssetPaths.boton_atras__png);
 		add(botonAtras);
 		
+		var barraProgreso = new FlxSprite(0, 14, AssetPaths.barra_progreso_fondo__png);
+		barraProgreso.x = FlxG.width - barraProgreso.width - 7;
+		add(barraProgreso);
+		
 		agregarMenuDesplegable();
 	}
 	

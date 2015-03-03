@@ -209,6 +209,9 @@ class Logica extends BaseJuego
 				trace("click");
 			}
 		}
+		else {
+			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+		}
 	}
 	
 	function btnEscucharOnClick() {
