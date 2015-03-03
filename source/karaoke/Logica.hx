@@ -20,9 +20,9 @@ import karaoke.MenuNiveles;
 import sys.db.Types.STimeStamp;
 
 import flixel.addons.ui.FlxUIRadioGroup;
+import karaoke.Nivel;
 
-
-class Logica extends FlxState {
+class Logica extends BaseJuego {
 	// STATIC ATRIBUTES
 	public static var nivelInicio : Nivel;
 	
@@ -37,49 +37,70 @@ class Logica extends FlxState {
 	var timeFin : Date;
 	
 	var textItem : FlxText;
-	var color : FlxTextFormat; //pseudotween
+	var color : FlxTextFormat;
 	
 	var btnCorrecto : FlxUIButton;
 	var btnIncorrecto : FlxUIButton;
 	var btnComenzar: FlxUIButton;
 	
-	var tipoDeLetra : FlxUIRadioGroup;
+	var btnMayuscula : FlxUIButton;
+	var btnMinuscula : FlxUIButton;
+	var btnCursiva : FlxUIButton;
 	
 	override public function create() {
-		
-		tipoDeLetra = new FlxUIRadioGroup(20, 220, 
-		["Mayúscula", "Minúscula", "Cursiva"],
-		["Mayúscula", "Minúscula", "Cursiva"]);
-		add(tipoDeLetra);
-		
-		tipoDeLetra.selectedId = "Mayúscula";
-		
 		super.create();
 		nivel = nivelInicio;
-		posicionNivel = 0; //deberia ser random
+		posicionNivel = 0;
 		var item : Item = nivel.items[posicionNivel];
-		textItem = new FlxText(80, 40, 480, null, 26);
-		add(textItem);
-		textItem.text = quitarPuntosItem(item);
-		textItem.color = 0; // poner el mismo color que el fondo así parece que va apareciendo cada silaba
 		
-		btnIncorrecto = new FlxUIButton(560, 280 , "INCORRECTO", itemIncorrecto);
+		textItem = new FlxText(155, 192, 458, null, 22);
+		add(textItem);
+		
+		textItem.text = quitarPuntosItem(item);
+		textItem.color = 15000804; // gris 
+		textItem.font = "assets/fonts/arialbd.ttf";
+		
+		var xInicial : Int = 162;
+		var y: Int = 310;
+				
+		var mitad: Float = FlxG.width / 2;
+		
+		btnMinuscula = new FlxUIButton(0, y, null, cambiarPorMinusculas);	
+		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
+		btnMinuscula.x = mitad - btnMinuscula.width / 2;
+		add(btnMinuscula);
+		btnMinuscula.visible = false;
+		
+		btnMayuscula = new FlxUIButton(0, y, null, cambiarPorMayusculas);
+		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
+		btnMayuscula.x = btnMinuscula.x - btnMayuscula.width - 16;
+		add(btnMayuscula);
+		btnMayuscula.visible = false;
+		
+		btnCursiva = new FlxUIButton(btnMinuscula.x, y, null, cambiarPorCursivas);
+		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
+		btnCursiva.x = btnMinuscula.x + btnMayuscula.width + 16;
+		add(btnCursiva);
+		btnCursiva.visible = false;
+		
+		mostrarOpciones();
+		
+		btnIncorrecto = new FlxUIButton(500, 82 , null, itemIncorrecto);
+		btnIncorrecto.loadGraphic(AssetPaths.incorrecto__png);
 		btnIncorrecto.visible = false;
 		add(btnIncorrecto); 
 		
-		btnComenzar = new FlxUIButton(560, 220 , "COMENZAR", comenzar);
+		btnComenzar = new FlxUIButton(85, 95 , null, comenzar);
+		btnComenzar.loadGraphic(AssetPaths.comenzar__png);
 		add(btnComenzar);
 		
-		btnCorrecto = new FlxUIButton(560, 220 , "CORRECTO", itemCorrecto);
+		btnCorrecto = new FlxUIButton(550, 82 , null, itemCorrecto);
+		btnCorrecto.loadGraphic(AssetPaths.correcto__png);
 		btnCorrecto.visible = false;
 		add(btnCorrecto);
 		
 		var btnAtras = new FlxUIButton(0, 330 , "ATRAS", irAtras);
 		add(btnAtras);
-		
-		textItem.alignment = "center";
-		textItem.systemFont = "Calibri";
-
 	}
 	
 	// PRIVATE METHODS
@@ -111,41 +132,59 @@ class Logica extends FlxState {
 		}
 		return partes;
 	}
-		function cambiarPorMayusculas() {
-			textItem.font = "assets/fonts/calibri.ttf";
-			textItem.text = textItem.text.toUpperCase();
-		}
+	
+	function mostrarOpciones() {
+		var opciones: Setting;
+		opciones = nivel.items[posicionNivel].opciones;
 		
-		function cambiarPorMinusculas() {
-			textItem.font = "assets/fonts/calibri.ttf";
-			textItem.text =	textItem.text.toLowerCase();
-			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
+		if (opciones.Mayuscula == true) {
+			btnMayuscula.visible = true;
+			
+			if (opciones.Minuscula == true) {
+				btnMinuscula.visible = true;	
+			
+				if (opciones.Cursiva == true) {
+					btnCursiva.visible = true;
+				}
+			}			
 		}
-				
-		function cambiarPorCursiva() {
-			textItem.text =	textItem.text.toLowerCase();
-			textItem.text = textItem.text.charAt(0).toUpperCase() + textItem.text.substring(1,textItem.text.length);
-			textItem.font = "assets/fonts/LCALLIG.TTF";
-		}
-		
-	function switchTipoDeLetra() {
-		switch( tipoDeLetra.selectedId ) {			
-			case "Mayúscula":
-				cambiarPorMayusculas();
-			case "Minúscula":
-				cambiarPorMinusculas();
-			case "Cursiva":
-				cambiarPorCursiva();
-		}
+	}
+	
+	function cambiarPorMayusculas() {
+		textItem.font = "assets/fonts/arialbd.ttf";
+		textItem.text = textItem.text.toUpperCase();
+		textItem.size = 22;
+		btnMayuscula.loadGraphic(AssetPaths.mayusculaPresionada__png);
+		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
+		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
+	}
+	
+	function cambiarPorMinusculas() {
+		textItem.font = "assets/fonts/arialbd.ttf";
+		textItem.text = textItem.text.toLowerCase();
+		textItem.size = 22;
+		btnMinuscula.loadGraphic(AssetPaths.minusculaPresionada__png);
+		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
+		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
+	}
+	
+	function cambiarPorCursivas() {
+		textItem.font = "assets/fonts/cursiva.ttf";
+		var item : Item = nivel.items[posicionNivel];
+		textItem.text = textItem.text = quitarPuntosItem(item);
+		textItem.size = 30;
+		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
+		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
+		btnCursiva.loadGraphic(AssetPaths.cursivaPresionada__png);
 	}
 	
 	function reproducirItem() {
 		textItem.clearFormats();
 		var item : Item = nivel.items[posicionNivel];
 		color = new FlxTextFormat(FlxColor.AZURE);
-		textItem.systemFont = "Calibri";
 		textItem.text = quitarPuntosItem(item);
 		btnComenzar.visible = true;
+		mostrarOpciones();
 	}
 	
 	function irAtras()	{	
@@ -158,8 +197,7 @@ class Logica extends FlxState {
 		
 		btnComenzar.visible = false;	
 		if (posicionNivel < (nivel.items.length)) {
-			timer = new FlxTimer(0.5, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
-			switchTipoDeLetra();
+			timer = new FlxTimer(0.1, resaltarSilabas, obtenerPartesItem(nivel.items[posicionNivel]).length);
 		}
 	}
 	
