@@ -42,20 +42,32 @@ class Logica extends BaseJuego
 	
 	override public function create() {
 		super.create();
-
+		
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
 		
+		add(nivel.areaInicio);
+		add(nivel.areaFin);
 		add(nivel.spriteTrazo);
 		add(nivel.spriteFondo);
-		add(nivel.areaFin);
-		add(nivel.areaInicio);
 		
-		canvas = new FlxSprite(0, 60);
-		
-		// Definimos al canvas como un cuadrado que deja fuera las barras superior e inferior
-		canvas.makeGraphic(FlxG.width, FlxG.height - 70, FlxColor.TRANSPARENT, true);
+		canvas = new FlxSprite(0, 0);
+		// Definimos al canvas como un cuadrado que ocupa toda la pantalla
+		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 		add(canvas);
-		canvas.
+		
+		// <NOTE: Esto es un hack para que el trazo quede debajo de la interfaz
+		members.remove(canvas);
+		members.remove(nivel.areaInicio);
+		members.remove(nivel.areaFin);
+		members.remove(nivel.spriteTrazo);
+		members.remove(nivel.spriteFondo);
+		
+		members.unshift(canvas);
+		members.unshift(nivel.areaInicio);
+		members.unshift(nivel.areaFin);
+		members.unshift(nivel.spriteTrazo);
+		members.unshift(nivel.spriteFondo);
+		// NOTE>
 		
 		estiloLinea = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
 		estiloDibujo = { smoothing: true };
@@ -99,7 +111,7 @@ class Logica extends BaseJuego
 					puntosAcertados++;
 				}
 				
-				canvas.drawLine(ultimaPosicion.x - canvas.x, ultimaPosicion.y - canvas.y, FlxG.mouse.x- canvas.x, FlxG.mouse.y - canvas.y, estiloLinea, estiloDibujo);
+				canvas.drawLine(ultimaPosicion.x, ultimaPosicion.y, FlxG.mouse.x, FlxG.mouse.y, estiloLinea, estiloDibujo);
 				ultimaPosicion.x = FlxG.mouse.x;
 				ultimaPosicion.y = FlxG.mouse.y;
 			}
