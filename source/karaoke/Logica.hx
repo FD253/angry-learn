@@ -22,7 +22,6 @@ import sys.db.Types.STimeStamp;
 import flixel.addons.ui.FlxUIRadioGroup;
 import karaoke.Nivel;
 
-import openfl.
 class Logica extends BaseJuego {
 	// STATIC ATRIBUTES
 	public static var nivelInicio : Nivel;
