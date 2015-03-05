@@ -67,9 +67,12 @@ class Logica extends BaseJuego
 		members.unshift(nivel.areaFin);
 		members.unshift(nivel.spriteTrazo);
 		members.unshift(nivel.spriteFondo);
-		// NOTE>
+		// END NOTE>
 		
-		estiloLinea = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
+		// Le damos un fondo al menú desplegable
+		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
+		
+		estiloLinea = { thickness: 10, color: FlxColor.BLACK, jointStyle:JointStyle.ROUND, pixelHinting: true };
 		estiloDibujo = { smoothing: true };
 		ultimaPosicion = FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y);
 		
