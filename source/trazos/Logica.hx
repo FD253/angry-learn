@@ -55,7 +55,6 @@ class Logica extends BaseJuego
 		// Definimos al canvas como un cuadrado que deja fuera las barras superior e inferior
 		canvas.makeGraphic(FlxG.width, FlxG.height - 70, FlxColor.TRANSPARENT, true);
 		add(canvas);
-		canvas.
 		
 		estiloLinea = { thickness: 10, color: FlxColor.RED, jointStyle:JointStyle.ROUND, pixelHinting: true };
 		estiloDibujo = { smoothing: true };

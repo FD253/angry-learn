@@ -22,6 +22,7 @@ import sys.db.Types.STimeStamp;
 import flixel.addons.ui.FlxUIRadioGroup;
 import karaoke.Nivel;
 
+import openfl.
 class Logica extends BaseJuego {
 	// STATIC ATRIBUTES
 	public static var nivelInicio : Nivel;
@@ -49,6 +50,7 @@ class Logica extends BaseJuego {
 	
 	override public function create() {
 		super.create();
+		definirMenuDesplegable();
 		nivel = nivelInicio;
 		posicionNivel = 0;
 		var item : Item = nivel.items[posicionNivel];
@@ -104,6 +106,10 @@ class Logica extends BaseJuego {
 	}
 	
 	// PRIVATE METHODS
+	function definirMenuDesplegable() {
+		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable_karaoke__png));
+		
+	}
 	
 	function quitarPuntosItem(item:Item):String {
 		var todo : String;
