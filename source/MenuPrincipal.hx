@@ -16,6 +16,8 @@ class MenuPrincipal extends BaseMenu
 	var panelNiveles : FlxSpriteGroup;
 	var btnIniciarJuego : FlxButton;
 	
+	var gp : FlxButton;
+	
 	var globoPuntaje : FlxSpriteGroup;
 	var globoPuntajeTexto : FlxText;
 	
@@ -46,6 +48,10 @@ class MenuPrincipal extends BaseMenu
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_color__png);
 		btnRitmo.y = btnTrazos.y + btnTrazos.height + 10;
 		
+		panelNiveles.add(btnKaraoke);
+		panelNiveles.add(btnTrazos);
+		panelNiveles.add(btnRitmo);
+		
 		// Botón de inicio del juego seleccionado (arranca invisible)
 		btnIniciarJuego = new FlxButton(175, 275, '', btnIniciarJuegoOnClick);
 		btnIniciarJuego.loadGraphic(AssetPaths.boton_iniciar_juego__png);
@@ -54,7 +60,8 @@ class MenuPrincipal extends BaseMenu
 		
 		
 		// Globo con el puntaje (arranca invisible)
-		globoPuntaje = new FlxSpriteGroup();
+		globoPuntaje = new FlxSpriteGroup(250, 0);	// Place it to the right
+		globoPuntaje.visible = false;
 		
 		// Fondo verde
 		var globoPuntajeFondo = new FlxSprite();
@@ -62,16 +69,18 @@ class MenuPrincipal extends BaseMenu
 		globoPuntaje.add(globoPuntajeFondo);
 		
 		// Texto
-		globoPuntajeTexto = new FlxText();
-		globoPuntajeTexto.text = "699999";
+		globoPuntajeTexto = new FlxText(0, 2);
+		globoPuntajeTexto.wordWrap = false;
+		globoPuntajeTexto.autoSize = false;
+		globoPuntajeTexto.fieldWidth = globoPuntajeFondo.width;
+		globoPuntajeTexto.font = AssetPaths.carter__ttf;
+		globoPuntajeTexto.size = 14;
+		globoPuntajeTexto.alignment = "center";
+		globoPuntajeTexto.text = "0";
 		globoPuntaje.add(globoPuntajeTexto);
 		
 		panelNiveles.add(globoPuntaje);
-		
-		
-		panelNiveles.add(btnKaraoke);
-		panelNiveles.add(btnTrazos);
-		panelNiveles.add(btnRitmo);
+
 		
 		// Sólo por ahora seguimos con los botones de prueba
 		agregarBoton("RITMO LECTOR", MenuRitmoLector);
@@ -85,6 +94,7 @@ class MenuPrincipal extends BaseMenu
 		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_color__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_trazos_color__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_color__png);
+		globoPuntaje.visible = false;
 		btnIniciarJuego.visible = false;
 	}
 	
@@ -92,6 +102,9 @@ class MenuPrincipal extends BaseMenu
 		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_seleccionado__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_trazos_gris__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_gris__png);
+		globoPuntaje.y = btnKaraoke.y + 12;
+		globoPuntajeTexto.text = "111111";
+		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
 	}
 	
@@ -99,6 +112,9 @@ class MenuPrincipal extends BaseMenu
 		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_gris__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_trazos_seleccionado__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_gris__png);
+		globoPuntaje.y = btnTrazos.y + 12;
+		globoPuntajeTexto.text = "222222";
+		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
 	}
 	
@@ -106,6 +122,9 @@ class MenuPrincipal extends BaseMenu
 		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_gris__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_trazos_gris__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_seleccionado__png);
+		globoPuntaje.y = btnRitmo.y + 12;
+		globoPuntajeTexto.text = "3333333";
+		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
 	}
 	
