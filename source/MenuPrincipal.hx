@@ -53,6 +53,20 @@ class MenuPrincipal extends BaseMenu
 		panelNiveles.add(btnIniciarJuego);
 		
 		
+		// Globo con el puntaje (arranca invisible)
+		globoPuntaje = new FlxSpriteGroup();
+		
+		// Fondo verde
+		var globoPuntajeFondo = new FlxSprite();
+		globoPuntajeFondo.loadGraphic(AssetPaths.fondo_globo_puntaje__png);
+		globoPuntaje.add(globoPuntajeFondo);
+		
+		// Texto
+		globoPuntajeTexto = new FlxText();
+		globoPuntajeTexto.text = "699999";
+		globoPuntaje.add(globoPuntajeTexto);
+		
+		panelNiveles.add(globoPuntaje);
 		
 		
 		panelNiveles.add(btnKaraoke);
