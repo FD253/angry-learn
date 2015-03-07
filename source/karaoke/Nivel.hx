@@ -37,7 +37,7 @@ class Nivel
 	public static var nivel4 = new Nivel([
 		new Item("La ca.mi.sa . La pe.lo.ta . El he.la.do . La ma.ce.ta ", mayusculaMinusculaCursiva),
 		new Item("El pa.to na.da . La pa.lo.ma vue.la . Los a.mi.gos rí.en . El puen.te al.to ", mayusculaMinusculaCursiva),
-		new Item("EL ne.ne es.tá con.ten.to . El ca.ra.me.lo es dul.ce . Jue.go con mis a.mi.gos . Los pá.ja.ros vue.lan en gru.po ",mayusculaMinusculaCursiva),
+		new Item("El ne.ne es.tá con.ten.to . El ca.ra.me.lo es dul.ce . Jue.go con mis a.mi.gos . Los pá.ja.ros vue.lan en gru.po ",mayusculaMinusculaCursiva),
 	]);
 	
 	public var items : Array<Item>;
