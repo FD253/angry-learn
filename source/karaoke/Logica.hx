@@ -16,7 +16,6 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUIButton;
-import karaoke.MenuNiveles;
 import sys.db.Types.STimeStamp;
 
 import flixel.addons.ui.FlxUIRadioGroup;
@@ -188,7 +187,7 @@ class Logica extends BaseJuego {
 	}
 	
 	function irAtras()	{	
-		FlxG.switchState(new MenuNiveles());
+		FlxG.switchState(new MenuPrincipal());
 	}
 
 	function comenzar() {

@@ -54,8 +54,7 @@ class Logica extends BaseJuego
 	
 	var txtRetardo : FlxText;
 	var tweenOptionsRitmo : TweenOptions = { type: FlxTween.BACKWARD, ease: FlxEase.quartInOut };
-	var tweenMarcadorRitmo : FlxTween;
-	
+	var tweenMarcadorRitmo : FlxTween;	
 	
 	// PUCLIC METHODS
 	override public function create() {

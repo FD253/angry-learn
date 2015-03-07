@@ -6,17 +6,21 @@ import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
-import MenuCoordinacionVisomotriz;
-import MenuRitmoLector;
-import MenuTrazos;
+import karaoke.Logica;
+import ritmo.Nivel;
 
-class MenuPrincipal extends BaseMenu
+enum Juego {
+	Ritmo;
+	Karaoke;
+	Trazos;
+}
+
+class MenuPrincipal extends BaseEstado
 {
+	var juegoSeleccionado : Juego;
 	
 	var panelNiveles : FlxSpriteGroup;
 	var btnIniciarJuego : FlxButton;
-	
-	var gp : FlxButton;
 	
 	var globoPuntaje : FlxSpriteGroup;
 	var globoPuntajeTexto : FlxText;
@@ -80,14 +84,6 @@ class MenuPrincipal extends BaseMenu
 		globoPuntaje.add(globoPuntajeTexto);
 		
 		panelNiveles.add(globoPuntaje);
-
-		
-		// Sólo por ahora seguimos con los botones de prueba
-		agregarBoton("RITMO LECTOR", MenuRitmoLector);
-		agregarBoton("COORDINACIÓN VISOMOTRIZ", MenuCoordinacionVisomotriz);
-		agregarBoton("TRAZOS", MenuTrazos);
-		ordenarBotones();
-
 	}
 	
 	function reiniciarBotones() {
@@ -96,6 +92,7 @@ class MenuPrincipal extends BaseMenu
 		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_color__png);
 		globoPuntaje.visible = false;
 		btnIniciarJuego.visible = false;
+		juegoSeleccionado = null;
 	}
 	
 	function btnKaraokeOnClick() {
@@ -106,6 +103,7 @@ class MenuPrincipal extends BaseMenu
 		globoPuntajeTexto.text = "111111";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
+		juegoSeleccionado = Juego.Karaoke;
 	}
 	
 	function btnTrazosOnClick() {
@@ -116,6 +114,7 @@ class MenuPrincipal extends BaseMenu
 		globoPuntajeTexto.text = "222222";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
+		juegoSeleccionado = Juego.Trazos;
 	}
 	
 	function btnRitmoOnClick() {
@@ -126,10 +125,24 @@ class MenuPrincipal extends BaseMenu
 		globoPuntajeTexto.text = "3333333";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
+		juegoSeleccionado = Juego.Ritmo;
 	}
 	
 	function btnIniciarJuegoOnClick() {
-		
+		if (juegoSeleccionado != null) {
+			// Obtener la instancia del nivel del juego seleccionado y cambiarse a él
+			switch (juegoSeleccionado) {
+				case Juego.Ritmo:
+					ritmo.Logica.nivelInicio = ritmo.Nivel.niveles[0];
+					FlxG.switchState(new ritmo.Logica());
+				case Juego.Karaoke:
+					karaoke.Logica.nivelInicio = karaoke.Nivel.nivel1;
+					FlxG.switchState(new karaoke.Logica());
+				case Juego.Trazos:
+					trazos.Logica.numeroNivel = 0;
+					FlxG.switchState(new trazos.Logica());
+			}
+		}
 	}
 	
 		override public function update():Void 
