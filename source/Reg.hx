@@ -9,9 +9,10 @@ import flixel.util.FlxSave;
  */
 class Reg
 {
-	public static var MenuPrincipal = new MenuPrincipal();
 	public static var debug = false;
 	
+	public static var nivelActual : Int;
+	public static var ejercicioActual : Int;
 	
 	public static var levels:Array<Dynamic> = [];
 	/**
