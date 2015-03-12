@@ -133,7 +133,9 @@ class MenuPrincipal extends BaseEstado
 			// Obtener la instancia del nivel del juego seleccionado y cambiarse a él
 			switch (juegoSeleccionado) {
 				case Juego.Ritmo:
-					ritmo.Logica.nivelInicio = ritmo.Nivel.niveles[0].ejercicios[0];
+					// Indicamos a ritmo qué nivel inicializar:
+					Reg.nivelRitmoActual = 0;
+					Reg.ejercicioRitmoActual = 0;
 					FlxG.switchState(new ritmo.Logica());
 				case Juego.Karaoke:
 					karaoke.Logica.nivelInicio = karaoke.Nivel.nivel1;

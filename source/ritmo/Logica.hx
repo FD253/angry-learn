@@ -22,12 +22,9 @@ import flixel.tweens.FlxEase;
  */
 class Logica extends BaseJuego
 {
-	// STATIC ATRIBUTES
-	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
-	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
-	public static var nivelInicio : Ejercicio;
+	// STATIC ATRIBUTES	
 	// El ejercicio consta de 3 secuencias. Siempre se arranca de la primer sencuencia. Guardamos la secuencia actual en secuenciaActual:
-	var secuenciaActual : Int = 0;	// Tener en cuenta que al ser un array, la primera es la 0
+	var secuenciaActual : Int;	
 	
 	public static var feedbackVisualInicio : Bool = false;
 	
@@ -60,8 +57,8 @@ class Logica extends BaseJuego
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		ejercicio = Logica.nivelInicio;  // Pasamos a la instancia el nivel que antes se debe haber definido en la clase
-		secuenciaActual = 0; // Arrancamos en la primera de este ejercicio
+		ejercicio = Nivel.niveles[Reg.nivelRitmoActual].ejercicios[Reg.ejercicioRitmoActual];  // Buscamos el nivel que antes se debe haber definido en Reg
+		secuenciaActual = 0; // Arrancamos en la primera secuencia de este ejercicio (Como es un array la primera es la 0)
 		
 		feedbackVisual = feedbackVisualInicio;
 		
@@ -79,8 +76,7 @@ class Logica extends BaseJuego
 		
 		txtRepresentacionSecuencia = new FlxText();
 		txtRepresentacionSecuencia.wordWrap = false;
-		txtRepresentacionSecuencia.alignment = "center";
-		txtRepresentacionSecuencia.size = 40;
+		txtRepresentacionSecuencia.size = 20;
 		txtRepresentacionSecuencia.setPosition(20, FlxG.height * 0.4);
 		inicializarRepresentacionSecuencia();
 		
@@ -186,10 +182,28 @@ class Logica extends BaseJuego
 			// Avanzamos...
 			if (secuenciaActual == ejercicio.secuencias.length - 1) {
 				// Si terminó el ejercicio, avanzamos a otro
-				trace('TODO!');
+				trace('TODO! Se terminó el ejercicio');
+				
+				secuenciaActual = 0;
+				if (Reg.ejercicioRitmoActual == 2) {
+					Reg.ejercicioRitmoActual = 0;
+					
+					if (Reg.nivelRitmoActual == 2) {
+						trace("TODO: No tenemos más niveles. Qué hacemos?");
+						//TODO!
+					}
+					else {
+						Reg.nivelRitmoActual += 1;
+					}
+				}
+				else {
+					Reg.ejercicioRitmoActual += 1;
+				}
+				// Cambiamos de estado porque el ejercicio es otro ahora
+				FlxG.switchState(new Logica());
 			}
 			else {
-				// Avanzamos a la siguiente secuencia de este ejercicio
+				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
 				secuenciaActual += 1;
 			}
 			inicializarRepresentacionSecuencia();
