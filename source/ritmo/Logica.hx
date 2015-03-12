@@ -11,31 +11,32 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxTimer;
 import openfl.events.MouseEvent;
 import flixel.util.FlxColor;
+import ritmo.Nivel.Ejercicio;
 
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
 
 /**
- * 
  * Para entender la estructura de datos que maneja este ejercicio ver la documentación en ritmo.Niveles
- * 
- * @author Gabriel
  */
 class Logica extends BaseJuego
 {
 	// STATIC ATRIBUTES
 	// Esta variable debe ser seteada con el nivel que uno quiere que se ejecute...
 	//   Por supesto que antes de instanciar el ejercicio, porque es lo que usa el método create() para definir el nivel del ejercicio
-	public static var nivelInicio : Nivel;
+	public static var nivelInicio : Ejercicio;
+	// El ejercicio consta de 3 secuencias. Siempre se arranca de la primer sencuencia. Guardamos la secuencia actual en secuenciaActual:
+	var secuenciaActual : Int = 0;	// Tener en cuenta que al ser un array, la primera es la 0
+	
 	public static var feedbackVisualInicio : Bool = false;
 	
 	// PUBLIC ATRIBUTES
 	
 	
 	// PRIVATE ATRIBUTES
-	var nivel : Nivel;
-	var feedbackVisual : Bool = false;
+	var ejercicio : Ejercicio;
+	var feedbackVisual : Bool = false;	// mostrar o no la representacion de la secuencia
 	
 	var enCurso : Bool = false;
 	
@@ -59,7 +60,9 @@ class Logica extends BaseJuego
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
-		nivel = Logica.nivelInicio;  // Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		ejercicio = Logica.nivelInicio;  // Pasamos a la instancia el nivel que antes se debe haber definido en la clase
+		secuenciaActual = 0; // Arrancamos en la primera de este ejercicio
+		
 		feedbackVisual = feedbackVisualInicio;
 		
 		definirRepresentacionSecuencia();
@@ -77,16 +80,21 @@ class Logica extends BaseJuego
 		txtRepresentacionSecuencia = new FlxText();
 		txtRepresentacionSecuencia.wordWrap = false;
 		txtRepresentacionSecuencia.alignment = "center";
-		txtRepresentacionSecuencia.text = nivel.secuencia.toString();
+		txtRepresentacionSecuencia.size = 40;
+		txtRepresentacionSecuencia.setPosition(20, FlxG.height * 0.4);
+		inicializarRepresentacionSecuencia();
+		
+		//if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
+			add(txtRepresentacionSecuencia);
+		//}
+	}
+	
+	function inicializarRepresentacionSecuencia() {
+		txtRepresentacionSecuencia.clearFormats();
+		txtRepresentacionSecuencia.text = ejercicio.secuencias[secuenciaActual].pulsos.toString();
 		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, ",", ""); 	// Quitamos las comas
 		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, "0", " ");	// Ponemos espacios en los silencios
 		txtRepresentacionSecuencia.text = StringTools.replace(txtRepresentacionSecuencia.text, "1", "0");	// Ponemos "círculos" en cada sonido
-		txtRepresentacionSecuencia.size = 40;
-		txtRepresentacionSecuencia.setPosition(mitadAncho - txtRepresentacionSecuencia.fieldWidth / 2, FlxG.height * 0.4);
-		
-		if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
-			add(txtRepresentacionSecuencia);
-		}
 	}
 	
 	function definirMenuDesplegable() {
@@ -142,33 +150,31 @@ class Logica extends BaseJuego
 	}
 	
 	function avanceReproduccion(timer : FlxTimer) {
-		
 		if (timer.loopsLeft == 0) {
 			botonesInterfaz.setAll("visible", true);
 			txtRepresentacionSecuencia.clearFormats();
 		}
-		if (nivel.secuencia[acumulador] == 1 && timer.loopsLeft > 0) {
+		if (ejercicio.secuencias[secuenciaActual].pulsos[acumulador] == 1 && timer.loopsLeft > 0) {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 		}
-		
 		acumulador += 1;
 	}
 	
 	function avanceGrabacion(timer : FlxTimer) {
 		if (timer.loopsLeft == 0) {
 			trace("terminó");
-			trace(nivel.secuencia);
+			trace(ejercicio.secuencias[secuenciaActual].pulsos);
 			trace(secuenciaUsuario);
 			
 			var errores = 0;
 			// TODO: Contabilizar el acierto
-			for (i in 0...nivel.secuencia.length) {
-				if (nivel.secuencia[i] != secuenciaUsuario[i]) {
+			for (i in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) {
+				if (ejercicio.secuencias[secuenciaActual].pulsos[i] != secuenciaUsuario[i]) {
 					errores += 1;
 				}
 			}
-			var resultado = 100 - (errores / nivel.secuencia.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
+			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			trace("resultado: ", resultado);
 			
 			btnJugar.active = true;
@@ -177,8 +183,16 @@ class Logica extends BaseJuego
 			
 			enCurso = false;
 			
-			FinNivel.resultadoInicio = resultado;	// Seteamos el static para que create() lo use para mostrarlo
-			FlxG.switchState(new FinNivel());
+			// Avanzamos...
+			if (secuenciaActual == ejercicio.secuencias.length - 1) {
+				// Si terminó el ejercicio, avanzamos a otro
+				trace('TODO!');
+			}
+			else {
+				// Avanzamos a la siguiente secuencia de este ejercicio
+				secuenciaActual += 1;
+			}
+			inicializarRepresentacionSecuencia();
 		}
 		else {
 			acumulador += 1;
@@ -191,7 +205,7 @@ class Logica extends BaseJuego
 			txtRetardo.text += " A JUGAR! ";
 			
 			enCurso = true;
-			new FlxTimer(nivel.intervalo, avanceGrabacion, nivel.secuencia.length);
+			new FlxTimer(ejercicio.secuencias[secuenciaActual].intervalo, avanceGrabacion, ejercicio.secuencias[secuenciaActual].pulsos.length);
 		}
 		else {
 			txtRetardo.text += " . ";
@@ -220,7 +234,7 @@ class Logica extends BaseJuego
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
-		tmrPrincipal = new FlxTimer(nivel.intervalo, avanceReproduccion, nivel.secuencia.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
+		tmrPrincipal = new FlxTimer(ejercicio.secuencias[secuenciaActual].intervalo, avanceReproduccion, ejercicio.secuencias[secuenciaActual].pulsos.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
 	}
 	
 	function btnJugarOnClick() {
@@ -228,7 +242,7 @@ class Logica extends BaseJuego
 		btnEscuchar.visible = false;
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
-		secuenciaUsuario = [for (x in 0...nivel.secuencia.length) 0];
+		secuenciaUsuario = [for (x in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) 0];
 		
 		trace('inicio de retardo');
 		tmrPrincipal = new FlxTimer(		// Esto es sólo para mostrar el texto 1 .. 2 .. 3 .. Go!
