@@ -17,9 +17,9 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.addons.ui.FlxUIButton;
 import sys.db.Types.STimeStamp;
-
 import flixel.addons.ui.FlxUIRadioGroup;
 import karaoke.Nivel;
+import haxe.Utf8;
 
 class Logica extends BaseJuego {
 	// STATIC ATRIBUTES
@@ -120,20 +120,46 @@ class Logica extends BaseJuego {
 	}
 	
 	function obtenerPartesItem(item:Item):Array<String> {
-		var partes = new Array();
+		var partes = new Array();	
 		var subparte : String;
 		subparte = "";
+		
+		var texto : String;
+		
+		
+		#if flash
 		for ( i in 0...item.texto.length) {
 			if (item.texto.substring(i, i + 1) != "." && item.texto.substring(i, i + 1) != " ") {
 				subparte += item.texto.substring(i, i+1);
-				var a : String;
-				a = item.texto.substring(i, i+1);
+				//var a : String;
+				//a = item.texto.substring(i, i+1);
 			}
 			else {
 				partes.insert(partes.length, subparte);
 				subparte = "";
 			}
 		}
+		return partes;
+		#end
+		
+		#if android
+		
+		texto = Utf8.decode(item.texto);
+		
+		for ( i in 0...texto.length) {
+			if (texto.substring(i, i + 1) != "." && texto.substring(i, i + 1) != " ") {
+				subparte += texto.substring(i, i+1);
+				var a : String;
+				a = texto.substring(i, i+1);
+			}
+			else {
+				partes.insert(partes.length, subparte);
+				subparte = "";
+			}
+		}
+		return partes;
+		#end
+		
 		return partes;
 	}
 	
