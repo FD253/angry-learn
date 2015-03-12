@@ -11,8 +11,8 @@ class Reg
 {
 	public static var debug = false;
 	
-	public static var nivelActual : Int;
-	public static var ejercicioActual : Int;
+	public static var nivelRitmoActual : Int;
+	public static var ejercicioRitmoActual : Int;
 	
 	public static var levels:Array<Dynamic> = [];
 	/**
