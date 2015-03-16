@@ -1,5 +1,6 @@
 package ritmo;
 
+import flixel.addons.display.shapes.FlxShapeBox;
 import flixel.group.FlxSpriteGroup;
 import Reg;
 import flixel.FlxSprite;
@@ -37,7 +38,7 @@ class Logica extends BaseJuego
 	
 	var enCurso : Bool = false;
 	
-	var acumulador = 0;	// Se emplea para recorrer la secuencia del ejercicio (Para grabar y escuchar)
+	var acumulador = 0;	// Se emplea para recorrer la secuencia de pulsos del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
 	
 	var botonesInterfaz = new FlxTypedGroup<FlxButton>();
@@ -57,6 +58,7 @@ class Logica extends BaseJuego
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
+		trace('creating state');
 		ejercicio = Nivel.niveles[Reg.nivelRitmoActual].ejercicios[Reg.ejercicioRitmoActual];  // Buscamos el nivel que antes se debe haber definido en Reg
 		secuenciaActual = 0; // Arrancamos en la primera secuencia de este ejercicio (Como es un array la primera es la 0)
 		
@@ -95,6 +97,31 @@ class Logica extends BaseJuego
 	
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
+		
+		var xInicial = 50;
+		var yInicial = 30;
+		for (nivel in Nivel.niveles) {
+			var x = xInicial + 135 * Nivel.niveles.indexOf(nivel);
+			for (ejercicio in nivel.ejercicios) {
+				var y = yInicial + 20 * nivel.ejercicios.indexOf(ejercicio);
+				var boton = new FlxButton(x, y, 'Ejercicio', function () { 
+									//Inline, para no crear los handlers a mano
+									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + nivel.ejercicios.indexOf(ejercicio));
+									Reg.nivelRitmoActual = Nivel.niveles.indexOf(nivel);
+									Reg.ejercicioRitmoActual = nivel.ejercicios.indexOf(ejercicio);
+									FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
+									FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
+										{
+											FlxG.switchState(new Logica());
+										}
+									});
+								}
+				);
+				boton.label.setFormat(AssetPaths.carter__ttf, 8);
+				menuDesplegable.add(boton);
+				
+			}
+		}
 	}
 	
 	function agregarInterfaz() {
@@ -173,6 +200,7 @@ class Logica extends BaseJuego
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			trace("resultado: ", resultado);
 			
+			btnJugar.visible = false;
 			btnJugar.active = true;
 			btnEscuchar.visible = true;
 			txtRetardo.text = "";
