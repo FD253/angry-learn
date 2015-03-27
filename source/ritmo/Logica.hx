@@ -129,9 +129,9 @@ class Logica extends BaseJuego
 		var alturaBotonesSuperiores = 75;
 		
 		// Nombre del juego
-		var nombreJuego = new FlxSprite(mitadAncho, 14, AssetPaths.nombre_juego__png);
-		nombreJuego.x = nombreJuego.x - nombreJuego.width / 2;	// Centramos al medio, manteniendo la altura
-		add(nombreJuego);
+		//var nombreJuego = new FlxSprite(mitadAncho, 14, AssetPaths.nombre_juego__png);
+		//nombreJuego.x = nombreJuego.x - nombreJuego.width / 2;	// Centramos al medio, manteniendo la altura
+		//add(nombreJuego);
 		
 		
 		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
@@ -153,8 +153,8 @@ class Logica extends BaseJuego
 		// Panel de niveles
 		
 		// Botón de toques
-		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height / 2), '', btnToquesOnClick);
-		btnToques.loadGraphic(AssetPaths.boton__png, true, 180, 184);
+		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height * 0.4), '', btnToquesOnClick);
+		btnToques.loadGraphic(AssetPaths.boton__png, true, 297, 305); // HARDCODED
 		btnToques.x = btnToques.x - btnToques.width / 2;
 		btnToques.y = btnToques.y - btnToques.height / 2;
 		add(btnToques);
