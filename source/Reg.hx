@@ -9,20 +9,14 @@ import flixel.util.FlxSave;
  */
 class Reg
 {
-	public static var MenuPrincipal = new MenuPrincipal();
 	public static var debug = false;
 	
+	public static var nivelRitmoActual : Int;
+	public static var ejercicioRitmoActual : Int;
 	
-	public static var levels:Array<Dynamic> = [];
-	/**
-	 * Generic level variable that can be used for cross-state stuff.
-	 * Example usage: Storing the current level number.
-	 */
-	public static var level:Int = 0;
-	/**
-	 * Generic scores Array that can be used for cross-state stuff.
-	 * Example usage: Storing the scores for level.
-	 */
+	public static var nivel : Int;
+	public static var ejercicio : Int;
+	
 	public static var scores:Array<Dynamic> = [];
 	/**
 	 * Generic score variable that can be used for cross-state stuff.

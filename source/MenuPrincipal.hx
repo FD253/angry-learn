@@ -39,7 +39,8 @@ class MenuPrincipal extends BaseEstado
 		var fondo = new FlxSprite(0, 0, AssetPaths.fondo_lista_juegos__png);
 		panelNiveles.add(fondo);
 		
-		panelNiveles.setPosition((FlxG.width - panelNiveles.width) - 70, 65);
+		panelNiveles.setPosition(FlxG.width - panelNiveles.width - FlxG.width * 0.08, // Un cacho más a la izquierda del borde derecho
+								 FlxG.height * 0.15);
 		add(panelNiveles);
 		
 		// Agregamos las imágenes de los botones al panel
@@ -57,8 +58,10 @@ class MenuPrincipal extends BaseEstado
 		panelNiveles.add(btnRitmo);
 		
 		// Botón de inicio del juego seleccionado (arranca invisible)
-		btnIniciarJuego = new FlxButton(175, 275, '', btnIniciarJuegoOnClick);
+		btnIniciarJuego = new FlxButton(0, 0, '', btnIniciarJuegoOnClick);
 		btnIniciarJuego.loadGraphic(AssetPaths.boton_iniciar_juego__png);
+		btnIniciarJuego.setPosition(panelNiveles.width - btnIniciarJuego.width - panelNiveles.width * 0.1, // Un poco a la izquierda y arriba de la esquina del panel
+									panelNiveles.height - btnIniciarJuego.height - panelNiveles.height * 0.1);
 		btnIniciarJuego.visible = false;
 		panelNiveles.add(btnIniciarJuego);
 		
@@ -133,7 +136,9 @@ class MenuPrincipal extends BaseEstado
 			// Obtener la instancia del nivel del juego seleccionado y cambiarse a él
 			switch (juegoSeleccionado) {
 				case Juego.Ritmo:
-					ritmo.Logica.nivelInicio = ritmo.Nivel.niveles[0];
+					// Indicamos a ritmo qué nivel inicializar:
+					Reg.nivelRitmoActual = 0;
+					Reg.ejercicioRitmoActual = 0;
 					FlxG.switchState(new ritmo.Logica());
 				case Juego.Karaoke:
 					karaoke.Logica.nivelInicio = karaoke.Nivel.nivel1;

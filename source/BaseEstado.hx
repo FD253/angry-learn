@@ -11,6 +11,7 @@ class BaseEstado extends FlxState
 	// Este estado define cosas comunes a todos los FlxState que se usan:
 	//	- Pantallas de menúes
 	//	- Pantallas de juegos
+	var encabezado : FlxSprite;
 
 	override public function create() {
 		super.create();
@@ -25,7 +26,7 @@ class BaseEstado extends FlxState
 		fondoPiso.y = FlxG.height - fondoPiso.height;
 		add(fondoPiso);
 		
-		var encabezado = new FlxSprite(0, 0, AssetPaths.encabezado__png);
+		encabezado = new FlxSprite(0, 0, AssetPaths.encabezado__png);
 		encabezado.setGraphicSize(FlxG.width, 0);
 		encabezado.updateHitbox();
 		add(encabezado);
