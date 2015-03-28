@@ -13,6 +13,7 @@ import flixel.util.FlxTimer;
 import openfl.events.MouseEvent;
 import flixel.util.FlxColor;
 import ritmo.Nivel.Ejercicio;
+import flixel.util.FlxPoint;
 
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -129,9 +130,13 @@ class Logica extends BaseJuego
 		var alturaBotonesSuperiores = 75;
 		
 		// Nombre del juego
-		//var nombreJuego = new FlxSprite(mitadAncho, 14, AssetPaths.nombre_juego__png);
-		//nombreJuego.x = nombreJuego.x - nombreJuego.width / 2;	// Centramos al medio, manteniendo la altura
-		//add(nombreJuego);
+		var nombreJuego = new FlxText(0, encabezado.height * 0.25);
+		nombreJuego.size = 38; // HARDCODED
+		nombreJuego.text = "RITMO LECTOR";
+		nombreJuego.font = AssetPaths.carter__ttf;
+		nombreJuego.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		nombreJuego.x = FlxG.width / 2 - nombreJuego.fieldWidth / 2;	// Centramos al medio, manteniendo la altura
+		add(nombreJuego);
 		
 		
 		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
