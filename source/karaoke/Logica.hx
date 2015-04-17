@@ -96,7 +96,7 @@ class Logica extends BaseJuego {
 		add(btnCursiva);
 		btnCursiva.visible = false;
 		
-		mostrarOpciones();
+		mostrarBtnsTipoLetra();
 		
 		btnIncorrecto = new FlxUIButton(500, 82 , null, ejercicioIncorrecto);
 		btnIncorrecto.loadGraphic(AssetPaths.incorrecto__png);
@@ -214,9 +214,9 @@ class Logica extends BaseJuego {
 		//return ret;
 	}
 	
-	function mostrarOpciones() {
+	function mostrarBtnsTipoLetra() {
 		var opciones: Setting;
-		opciones = nivel.ejercicios[posicionNivel].opciones;
+		opciones = nivel.ejercicios[posicionNivel].tipoLetra;
 		
 		if (opciones.Mayuscula == true) {
 			btnMayuscula.visible = true;
@@ -235,6 +235,11 @@ class Logica extends BaseJuego {
 	}
 	function ocultarBtnComenzar() {
 		btnComenzar.visible = false;
+	}
+	function reiniciarBtnsTipoLetra() {
+		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
+		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
+		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
 	}
 	function cambiarPorMayusculas() {
 		textItem.font = "assets/fonts/arialbd.ttf";
@@ -272,7 +277,7 @@ class Logica extends BaseJuego {
 		var item : Ejercicio = nivel.ejercicios[posicionNivel];
 		color = new FlxTextFormat(FlxColor.AZURE);
 		textItem.text = quitarPuntosItem(item);
-		mostrarOpciones();
+		mostrarBtnsTipoLetra();
 	}
 	
 	function irAtras()	{	
@@ -285,6 +290,7 @@ class Logica extends BaseJuego {
 		
 		ocultarBtnComenzar();
 		ocultarBtnsCalific();
+		ocultarBtnsTipoLetra();
 		
 		if (posicionNivel < (nivel.ejercicios.length)) {
 			textItem.visible = true;
@@ -304,19 +310,24 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 	}
 	
-	function ejercicioCorrecto() { //POSIBLEMENTE NO SE USE YA QUE ES MAS FACIL CAMBIAR DE ESTADO QUE ACOMODAR TODAS LAS VARIABLES
+	function ejercicioCorrecto() {
 		calcularTiempoEmpleado();		
 		ocultarBtnsCalific();
-		posicionDentroItemGuardada = 0;  //reiniciar posicion dentro item guardada (xq se cambia por un nuevo item)
+		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
 		if (posicionNivel < (nivel.ejercicios.length - 1)) {
 			posicionNivel += 1;
-			
-			//SWITCHSTATE AL SIGUIENTE EJERCICIO DEL NIVEL
+			reinciarOffset();
+			item = nivel.ejercicios[posicionNivel];
+			textItem.text = quitarPuntosItem(item);
+			reiniciarBtnsTipoLetra();
+			textItem.clearFormats();
+			mostrarBtnsTipoLetra();
 		}
-		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
-		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
-		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
+		else {
+			FlxG.switchState(new MenuPrincipal());
+		}
+		
 	}
 
 	function mostrarBtnIncorrecto() {
@@ -346,6 +357,12 @@ class Logica extends BaseJuego {
 		btnIncorrecto.visible = false;
 	}
 	
+	function ocultarBtnsTipoLetra() {
+		btnCursiva.visible = false;
+		btnMayuscula.visible = false;
+		btnMinuscula.visible = false;
+	}
+	
 	function reinciarOffset() {
 		offset = 0;
 	}
@@ -355,7 +372,8 @@ class Logica extends BaseJuego {
 		reiniciarPosicionDentroEjercicio();
 		ocultarBtnsCalific();
 		reproducirItem();
-		mostrarBtnComenzar();
+		reiniciarBtnsTipoLetra();
+		//mostrarBtnComenzar();
 		reinciarOffset();
 	}
 
@@ -423,9 +441,11 @@ class Logica extends BaseJuego {
 			var item : Ejercicio = nivel.ejercicios[posicionNivel];
 			var texto : String;
 			texto = quitarPuntosItem(item);
-			
-			if (posicionDentroItemGuardada+2 == texto.length) {
-				//mostrarBtnCorrecto();
+			trace('posicionDentroItemGuardada = ' + posicionDentroItemGuardada);
+			trace('texto.lenght = ' + texto.length);
+			if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 3 == texto.length) {
+				mostrarBtnCorrecto();
+				ocultarBtnCorrectoParcial();
 				trace("fin del ejercicio");
 			}
 			else {

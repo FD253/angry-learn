@@ -37,7 +37,7 @@ class Nivel
 	public static var nivel4 = new Nivel([
 		new Ejercicio(["La ca.mi.sa ", "La pe.lo.ta ", "El he.la.do ", "La ma.ce.ta "], mayusculaMinusculaCursiva),
 		new Ejercicio(["El pa.to na.da ", "La pa.lo.ma vue.la ", "Los a.mi.gos rí.en ", "El puen.te al.to "], mayusculaMinusculaCursiva),
-		new Ejercicio(["El ne.ne es.tá con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "Los pá.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
+		new Ejercicio(["El ne.ne es.tá con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "   ", " Los pá.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
 	]);
 	
 	public var ejercicios : Array<Ejercicio>;
@@ -65,11 +65,11 @@ class Ejercicio
 	*/
 	public var texto : Array<String>;
 	
-	public var opciones: Setting;
+	public var tipoLetra: Setting;
 	
 	public function new(Texto : Array<String>,  Opciones: Setting) {
 		texto = Texto;
-		opciones = Opciones;
+		tipoLetra = Opciones;
 	}
 }
 
