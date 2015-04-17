@@ -105,7 +105,6 @@ class MenuPrincipal extends BaseEstado
 		// Fondo verde
 		var globoPuntajeFondo = new FlxSprite();
 		globoPuntajeFondo.loadGraphic(AssetPaths.fondo_globo_puntaje__png);
-		//globoPuntaje.x = globoPuntaje.x - globoPuntaje.width * 0.1;
 		globoPuntaje.add(globoPuntajeFondo);
 		
 		// Texto
