@@ -7,7 +7,10 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
 import karaoke.Logica;
+import openfl.system.Capabilities;
 import ritmo.Nivel;
+import flixel.util.FlxColor;
+import openfl.system.System;
 
 enum Juego {
 	Ritmo;
@@ -33,6 +36,8 @@ class MenuPrincipal extends BaseEstado
 	{
 		super.create();
 		
+		trace(Capabilities.version);
+		
 		panelNiveles = new FlxSpriteGroup(0, 0);
 		panelNiveles.updateHitbox();
 		
@@ -43,19 +48,46 @@ class MenuPrincipal extends BaseEstado
 								 FlxG.height * 0.15);
 		add(panelNiveles);
 		
-		// Agregamos las imágenes de los botones al panel
-		btnKaraoke = new FlxButton(30, 75, '', btnKaraokeOnClick);
-		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_color__png);
-		btnTrazos = new FlxButton(30, 0, '', btnTrazosOnClick);
-		btnTrazos.loadGraphic(AssetPaths.selector_trazos_color__png);
+		var textSize = 30;
+		
+		btnKaraoke = new FlxButton(0, 0, '', btnKaraokeOnClick);
+		btnKaraoke.loadGraphic(AssetPaths.selector_normal__png);
+		btnKaraoke.x = (panelNiveles.width / 2) - (btnKaraoke.width / 2);
+		btnKaraoke.y = panelNiveles.height * 0.23;
+		var txtKaraoke = new FlxText(btnKaraoke.x + btnKaraoke.width * 0.25,
+									 btnKaraoke.y,
+									 0, 'KARAOKE', textSize);
+		txtKaraoke.font = AssetPaths.carter__ttf;
+		txtKaraoke.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		txtKaraoke.y = btnKaraoke.y + (btnKaraoke.height / 2) - (txtKaraoke.height / 2) - (txtKaraoke.size * 0.3);
+		
+		btnTrazos = new FlxButton(btnKaraoke.x, 0, '', btnTrazosOnClick);
+		btnTrazos.loadGraphic(AssetPaths.selector_normal__png);
 		btnTrazos.y = btnKaraoke.y + btnKaraoke.height + 10;
-		btnRitmo = new FlxButton(30, 0, '', btnRitmoOnClick);
-		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_color__png);
+		var txtTrazos = new FlxText(btnTrazos.x + btnTrazos.width * 0.25,
+									 btnTrazos.y,
+									 0, 'SIGUE EL TRAZO!', textSize);
+		txtTrazos.font = AssetPaths.carter__ttf;
+		txtTrazos.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		txtTrazos.y = btnTrazos.y + (btnTrazos.height / 2) - (txtTrazos.height / 2) - (txtTrazos.size * 0.3);
+		
+		btnRitmo = new FlxButton(btnKaraoke.x, 0, '', btnRitmoOnClick);
+		btnRitmo.loadGraphic(AssetPaths.selector_normal__png);
 		btnRitmo.y = btnTrazos.y + btnTrazos.height + 10;
+		var txtRitmo = new FlxText(btnRitmo.x + btnRitmo.width * 0.25,
+									 btnRitmo.y,
+									 0, 'RITMO LECTOR', textSize);
+		txtRitmo.font = AssetPaths.carter__ttf;
+		txtRitmo.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		txtRitmo.y = btnRitmo.y + (btnRitmo.height / 2) - (txtRitmo.height / 2) - (txtRitmo.size * 0.3);
 		
 		panelNiveles.add(btnKaraoke);
 		panelNiveles.add(btnTrazos);
 		panelNiveles.add(btnRitmo);
+		panelNiveles.add(txtKaraoke);
+		panelNiveles.add(txtTrazos);
+		panelNiveles.add(txtRitmo);
+
 		
 		// Botón de inicio del juego seleccionado (arranca invisible)
 		btnIniciarJuego = new FlxButton(0, 0, '', btnIniciarJuegoOnClick);
@@ -67,12 +99,13 @@ class MenuPrincipal extends BaseEstado
 		
 		
 		// Globo con el puntaje (arranca invisible)
-		globoPuntaje = new FlxSpriteGroup(250, 0);	// Place it to the right
+		globoPuntaje = new FlxSpriteGroup(0, 0);
 		globoPuntaje.visible = false;
 		
 		// Fondo verde
 		var globoPuntajeFondo = new FlxSprite();
 		globoPuntajeFondo.loadGraphic(AssetPaths.fondo_globo_puntaje__png);
+		//globoPuntaje.x = globoPuntaje.x - globoPuntaje.width * 0.1;
 		globoPuntaje.add(globoPuntajeFondo);
 		
 		// Texto
@@ -81,28 +114,29 @@ class MenuPrincipal extends BaseEstado
 		globoPuntajeTexto.autoSize = false;
 		globoPuntajeTexto.fieldWidth = globoPuntajeFondo.width;
 		globoPuntajeTexto.font = AssetPaths.carter__ttf;
-		globoPuntajeTexto.size = 14;
+		globoPuntajeTexto.size = textSize;
 		globoPuntajeTexto.alignment = "center";
 		globoPuntajeTexto.text = "0";
 		globoPuntaje.add(globoPuntajeTexto);
 		
 		panelNiveles.add(globoPuntaje);
+		globoPuntaje.x = btnKaraoke.x + btnKaraoke.width - globoPuntaje.width * 0.4;
 	}
 	
 	function reiniciarBotones() {
-		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_color__png);
-		btnTrazos.loadGraphic(AssetPaths.selector_trazos_color__png);
-		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_color__png);
+		btnKaraoke.loadGraphic(AssetPaths.selector_normal__png);
+		btnTrazos.loadGraphic(AssetPaths.selector_normal__png);
+		btnRitmo.loadGraphic(AssetPaths.selector_normal__png);
 		globoPuntaje.visible = false;
 		btnIniciarJuego.visible = false;
 		juegoSeleccionado = null;
 	}
 	
 	function btnKaraokeOnClick() {
-		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_seleccionado__png);
-		btnTrazos.loadGraphic(AssetPaths.selector_trazos_gris__png);
-		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_gris__png);
-		globoPuntaje.y = btnKaraoke.y + 12;
+		btnKaraoke.loadGraphic(AssetPaths.selector_seleccionado__png);
+		btnTrazos.loadGraphic(AssetPaths.selector_gris__png);
+		btnRitmo.loadGraphic(AssetPaths.selector_gris__png);
+		globoPuntaje.y = btnKaraoke.y + btnKaraoke.height / 2 - globoPuntaje.height / 2;
 		globoPuntajeTexto.text = "111111";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
@@ -110,10 +144,10 @@ class MenuPrincipal extends BaseEstado
 	}
 	
 	function btnTrazosOnClick() {
-		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_gris__png);
-		btnTrazos.loadGraphic(AssetPaths.selector_trazos_seleccionado__png);
-		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_gris__png);
-		globoPuntaje.y = btnTrazos.y + 12;
+		btnKaraoke.loadGraphic(AssetPaths.selector_gris__png);
+		btnTrazos.loadGraphic(AssetPaths.selector_seleccionado__png);
+		btnRitmo.loadGraphic(AssetPaths.selector_gris__png);
+		globoPuntaje.y = btnTrazos.y + btnTrazos.height / 2 - globoPuntaje.height / 2;
 		globoPuntajeTexto.text = "222222";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
@@ -121,10 +155,10 @@ class MenuPrincipal extends BaseEstado
 	}
 	
 	function btnRitmoOnClick() {
-		btnKaraoke.loadGraphic(AssetPaths.selector_karaoke_gris__png);
-		btnTrazos.loadGraphic(AssetPaths.selector_trazos_gris__png);
-		btnRitmo.loadGraphic(AssetPaths.selector_ritmo_seleccionado__png);
-		globoPuntaje.y = btnRitmo.y + 12;
+		btnKaraoke.loadGraphic(AssetPaths.selector_gris__png);
+		btnTrazos.loadGraphic(AssetPaths.selector_gris__png);
+		btnRitmo.loadGraphic(AssetPaths.selector_seleccionado__png);
+		globoPuntaje.y = btnRitmo.y + btnRitmo.height / 2 - globoPuntaje.height / 2;
 		globoPuntajeTexto.text = "3333333";
 		globoPuntaje.visible = true;
 		btnIniciarJuego.visible = true;
