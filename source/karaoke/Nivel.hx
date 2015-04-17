@@ -16,29 +16,28 @@ class Nivel
 	public static var mayusculaMinuscula = new Setting(true, true, false);
 	public static var mayusculaMinusculaCursiva = new Setting(true, true, true);
 	
-	public static var nivel1 = new Nivel([
-		new Ejercicio(["A E I O U ", " A.A E.E I.I O.O ", " A.E I.U E.I E.A "],mayuscula),
-		new Ejercicio(["S M A S ", " M O L R ", " R M E P "], mayusculaMinuscula),
-		new Ejercicio(["M A N O ", " S A P O ", " P I N O "], mayusculaMinuscula),  //separar en " LETRA " en lugar de "LETRA " <-INVESTIGAR XQ?
-	]);
-	
-	public static var nivel2 = new Nivel([
-		new Ejercicio(["Ma Me Mi Mo Mu ", "Pa Pe Pi Po Pu ", "Sa Se Si So Su "],mayusculaMinusculaCursiva),
-		new Ejercicio(["Ta To Tu Ti Te ", "Ni Ne Na Un No ", "Lo Le Lu La Li "], mayusculaMinusculaCursiva),
-		new Ejercicio(["Ma Si Pe Ru Tu ", "Ni So Ta Re Lu ", "Pa Ru Ti Mo "], mayusculaMinusculaCursiva),
-	]);
-	
-	public static var nivel3 = new Nivel([
-		new Ejercicio(["O.so ", "Pa.to ", "Ca.sa "],mayusculaMinusculaCursiva),
-		new Ejercicio(["Au.to ", "Da.do ", "Pa.la ", "Ne.ne "],mayusculaMinusculaCursiva),
-		new Ejercicio(["La ta.za ", "La ma.no ", "El de.do ", "El sa.po "],mayusculaMinusculaCursiva),
-	]);
-	
-	public static var nivel4 = new Nivel([
-		new Ejercicio(["La ca.mi.sa ", "La pe.lo.ta ", "El he.la.do ", "La ma.ce.ta "], mayusculaMinusculaCursiva),
-		new Ejercicio(["El pa.to na.da ", "La pa.lo.ma vue.la ", "Los a.mi.gos rí.en ", "El puen.te al.to "], mayusculaMinusculaCursiva),
-		new Ejercicio(["El ne.ne es.tá con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "   ", " Los pá.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
-	]);
+	public static var niveles = [
+		new Nivel([
+			new Ejercicio(["A E I O U ", " A.A E.E I.I O.O ", " A.E I.U E.I E.A "],mayuscula),
+			new Ejercicio(["S M A S ", " M O L R ", " R M E P "], mayusculaMinuscula),
+			new Ejercicio(["M A N O ", " S A P O ", " P I N O "], mayusculaMinuscula),  //separar en " LETRA " en lugar de "LETRA " <-INVESTIGAR XQ?
+		]),
+		new Nivel([
+			new Ejercicio(["Ma Me Mi Mo Mu ", "Pa Pe Pi Po Pu ", "Sa Se Si So Su "],mayusculaMinusculaCursiva),
+			new Ejercicio(["Ta To Tu Ti Te ", "Ni Ne Na Un No ", "Lo Le Lu La Li "], mayusculaMinusculaCursiva),
+			new Ejercicio(["Ma Si Pe Ru Tu ", "Ni So Ta Re Lu ", "Pa Ru Ti Mo "], mayusculaMinusculaCursiva),
+		]),
+		new Nivel([
+			new Ejercicio(["O.so ", "Pa.to ", "Ca.sa "],mayusculaMinusculaCursiva),
+			new Ejercicio(["Au.to ", "Da.do ", "Pa.la ", "Ne.ne "],mayusculaMinusculaCursiva),
+			new Ejercicio(["La ta.za ", "La ma.no ", "El de.do ", "El sa.po "],mayusculaMinusculaCursiva),
+		]),
+		new Nivel([
+			new Ejercicio(["La ca.mi.sa ", "La pe.lo.ta ", "El he.la.do ", "La ma.ce.ta "], mayusculaMinusculaCursiva),
+			new Ejercicio(["El pa.to na.da ", "La pa.lo.ma vue.la ", "Los a.mi.gos rí.en ", "El puen.te al.to "], mayusculaMinusculaCursiva),
+			new Ejercicio(["El ne.ne es.tá con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "   ", " Los pá.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
+		]),
+	];
 	
 	public var ejercicios : Array<Ejercicio>;
 

@@ -175,7 +175,8 @@ class MenuPrincipal extends BaseEstado
 					Reg.ejercicioRitmoActual = 0;
 					FlxG.switchState(new ritmo.Logica());
 				case Juego.Karaoke:
-					karaoke.Logica.nivelInicio = karaoke.Nivel.nivel1;
+					Reg.nivelKaraokeActual = 0;
+					Reg.ejercicioKaraokeActual = 0;
 					FlxG.switchState(new karaoke.Logica());
 				case Juego.Trazos:
 					trazos.Logica.numeroNivel = 0;

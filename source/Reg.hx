@@ -14,8 +14,8 @@ class Reg
 	public static var nivelRitmoActual : Int;
 	public static var ejercicioRitmoActual : Int;
 	
-	//public static var nivelKaraokeActual : Int;
-	//public static var ejercicioKaraokeActual : Int;
+	public static var nivelKaraokeActual : Int;
+	public static var ejercicioKaraokeActual : Int;
 	
 	public static var nivel : Int;
 	public static var ejercicio : Int;

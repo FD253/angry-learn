@@ -24,7 +24,6 @@ import haxe.Utf8;
 
 class Logica extends BaseJuego {
 	// STATIC ATRIBUTES
-	public static var nivelInicio : Nivel;
 	
 	
 	// PRIVATE ATRIBUTES
@@ -62,9 +61,9 @@ class Logica extends BaseJuego {
 	override public function create() {
 		super.create();
 		definirMenuDesplegable();
-		nivel = nivelInicio;
+		
 		posicionNivel = 0;
-		var item : Ejercicio = nivel.ejercicios[posicionNivel];
+		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 		
 		textItem = new FlxText(155, 192, 458, null, 22);
 		add(textItem);
@@ -121,7 +120,7 @@ class Logica extends BaseJuego {
 		
 		var btnAtras = new FlxUIButton(0, 330 , "ATRAS", irAtras);
 		add(btnAtras);
-		silabas = obtenerPartesItem(nivel.ejercicios[posicionNivel]);
+		silabas = obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual]);
 		//silaba = silabas[timer.elapsedLoops - 1];
 		posicionDentroItemGuardada = 0;
 		posicionForAUsar = 0;
@@ -216,7 +215,7 @@ class Logica extends BaseJuego {
 	
 	function mostrarBtnsTipoLetra() {
 		var opciones: Setting;
-		opciones = nivel.ejercicios[posicionNivel].tipoLetra;
+		opciones = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual].tipoLetra;
 		
 		if (opciones.Mayuscula == true) {
 			btnMayuscula.visible = true;
@@ -263,7 +262,7 @@ class Logica extends BaseJuego {
 	
 	function cambiarPorCursivas() {
 		textItem.font = "assets/fonts/cursiva.ttf";
-		var item : Ejercicio = nivel.ejercicios[posicionNivel];
+		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 		textItem.text = quitarPuntosItem(item);
 		textItem.size = 30;
 		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
@@ -274,7 +273,7 @@ class Logica extends BaseJuego {
 	
 	function reproducirItem() {
 		textItem.clearFormats();
-		var item : Ejercicio = nivel.ejercicios[posicionNivel];
+		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 		color = new FlxTextFormat(FlxColor.AZURE);
 		textItem.text = quitarPuntosItem(item);
 		mostrarBtnsTipoLetra();
@@ -292,9 +291,9 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		ocultarBtnsTipoLetra();
 		
-		if (posicionNivel < (nivel.ejercicios.length)) {
+		if (Reg.ejercicioKaraokeActual < Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length) {
 			textItem.visible = true;
-			timer = new FlxTimer(0.4, resaltarSilabas, obtenerPartesItem(nivel.ejercicios[posicionNivel])[posicionDentroEjercicio].length);
+			timer = new FlxTimer(0.4, resaltarSilabas, obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual])[posicionDentroEjercicio].length);
 		}
 	}
 	
@@ -315,10 +314,12 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
-		if (posicionNivel < (nivel.ejercicios.length - 1)) {
-			posicionNivel += 1;
+		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
+			trace('reg.ejKaraoke actual ' + Reg.ejercicioKaraokeActual);
+			trace('Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length)) ' + Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length);
+			Reg.ejercicioKaraokeActual += 1;
 			reinciarOffset();
-			item = nivel.ejercicios[posicionNivel];
+			item = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 			textItem.text = quitarPuntosItem(item);
 			reiniciarBtnsTipoLetra();
 			textItem.clearFormats();
@@ -381,7 +382,7 @@ class Logica extends BaseJuego {
 		posicionDentroItemGuardada = pos;
 	}
 	function avanzarMismoEjercicio() {
-		if (posicionDentroEjercicio < nivel.ejercicios[posicionNivel].texto.length - 1) {
+		if (posicionDentroEjercicio < Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual].texto.length - 1) {
 			posicionDentroEjercicio += 1;
 		}
 		else {
@@ -400,7 +401,7 @@ class Logica extends BaseJuego {
 		//var posicionDentroItem :Int = posicionDentroItemGuardada;
 		var silabas = new Array();
 		var silaba : String;
-		silabas = obtenerPartesItem(nivel.ejercicios[posicionNivel]);
+		silabas = obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual]);
 
 		silaba = silabas[posicionDentroEjercicio][timer.elapsedLoops - 1];
 		color = new FlxTextFormat(FlxColor.AZURE);
@@ -438,7 +439,7 @@ class Logica extends BaseJuego {
 		}		
 		//trace(posicionDentroItemGuardada);
 		if (timer.loopsLeft == 0) {
-			var item : Ejercicio = nivel.ejercicios[posicionNivel];
+			var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 			var texto : String;
 			texto = quitarPuntosItem(item);
 			trace('posicionDentroItemGuardada = ' + posicionDentroItemGuardada);
