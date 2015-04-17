@@ -7,7 +7,6 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
 import karaoke.Logica;
-import openfl.system.Capabilities;
 import ritmo.Nivel;
 import flixel.util.FlxColor;
 import openfl.system.System;
@@ -35,8 +34,6 @@ class MenuPrincipal extends BaseEstado
 	override public function create():Void 
 	{
 		super.create();
-		
-		trace(Capabilities.version);
 		
 		panelNiveles = new FlxSpriteGroup(0, 0);
 		panelNiveles.updateHitbox();
