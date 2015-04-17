@@ -32,7 +32,7 @@ class Nivel
 			new Ejercicio([new Secuencia([1, 0, 1, 0, 1], 				intervalo),
 						   new Secuencia([1, 1, 0, 1], 					intervalo),
 						   new Secuencia([1, 0, 1, 1], 					intervalo)]),
-			new Ejercicio([new Secuencia([1, 0, 1, 0, 1, 0, 1], 			intervalo),
+			new Ejercicio([new Secuencia([1, 0, 1, 0, 1, 0, 1], 		intervalo),
 						   new Secuencia([1, 1, 0, 1, 1], 				intervalo),
 						   new Secuencia([1, 0, 1, 1, 1], 				intervalo)]),
 		    new Ejercicio([new Secuencia([1, 1, 0, 1, 0, 1], 			intervalo),
@@ -49,6 +49,17 @@ class Nivel
 		    new Ejercicio([new Secuencia([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1], 		intervalo),
 						   new Secuencia([1, 1, 0, 1, 1, 0, 1, 1], 				intervalo),
 						   new Secuencia([1, 1, 1, 0, 1, 1, 1], 					intervalo)])
+		]),
+		new Nivel([ // Nivel 3
+			new Ejercicio([new Secuencia([1, 0, 1, 1, 1, 0, 1, 1], 		intervalo),
+						   new Secuencia([1, 1, 0, 1, 0, 1, 1, 1], 					intervalo),
+						   new Secuencia([1, 1, 1, 0, 1, 1, 0, 1], 					intervalo)]),
+			new Ejercicio([new Secuencia([1, 1, 0, 1, 0, 1, 1, 1, 0, 1], 					intervalo),
+						   new Secuencia([1, 0, 1, 1, 1, 1, 0, 1, 1], 					intervalo),
+						   new Secuencia([1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1], 					intervalo)]),
+		    new Ejercicio([new Secuencia([1, 1, 1, 0, 1, 0, 1, 1, 0, 1], 		intervalo),
+						   new Secuencia([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1], 				intervalo),
+						   new Secuencia([1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1], 					intervalo)])
 		]),
 	];
 	
