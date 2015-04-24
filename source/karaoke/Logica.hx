@@ -131,7 +131,40 @@ class Logica extends BaseJuego {
 	// PRIVATE METHODS
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable_karaoke__png));
-		
+		var xInicial = menuDesplegable.width * 0.15;
+		var yInicial = menuDesplegable.height * 0.3;
+		var altoBoton = 32;
+		var anchoBoton = 165;
+		for (nivel in Nivel.niveles) {
+			var xEspacio = (menuDesplegable.width - xInicial - anchoBoton * Nivel.niveles.length) / Nivel.niveles.length;
+			var x = xInicial + (anchoBoton + xEspacio) * Nivel.niveles.indexOf(nivel);
+			var textoNivel = new FlxText(x, 15, 0, "Nivel " + (Nivel.niveles.indexOf(nivel) + 1));
+			textoNivel.size = 18;
+			menuDesplegable.add(textoNivel);
+			for (ejercicio in nivel.ejercicios) {
+				var yEspacio = (menuDesplegable.height - yInicial - altoBoton * nivel.ejercicios.length) / nivel.ejercicios.length;
+				var y = yInicial + (altoBoton + yEspacio) * nivel.ejercicios.indexOf(ejercicio);
+				var boton = new FlxButton(x, y, 'Ejercicio ' + (nivel.ejercicios.indexOf(ejercicio) + 1), function () { 
+									//Inline, para no crear los handlers a mano
+									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
+									Reg.nivelKaraokeActual = Nivel.niveles.indexOf(nivel);
+									Reg.ejercicioKaraokeActual = nivel.ejercicios.indexOf(ejercicio);
+									FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
+									FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
+										{
+											FlxG.switchState(new Logica());
+										}
+									});
+								}
+				);
+				boton.label.setFormat(AssetPaths.carter__ttf, 17);
+				boton.label.color = FlxColor.BLACK;
+				//boton.label.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 1.9, 1);
+				boton.loadGraphic(AssetPaths.boton_ejercicio__png);
+				menuDesplegable.add(boton);
+				
+			}
+		}
 	}
 	
 	//function quitarGuionesItem(item:Item):List<String> {
