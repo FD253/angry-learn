@@ -17,12 +17,11 @@ class Reg
 	public static var nivel : Int;
 	public static var ejercicio : Int;
 	
-	public static var scores:Array<Dynamic> = [];
-	/**
-	 * Generic score variable that can be used for cross-state stuff.
-	 * Example usage: Storing the current score.
-	 */
-	public static var score:Int = 0;
+	public static var puntosTrazos:Int = 0;
+	public static var puntosKaraoke:Int = 0;
+	public static var puntosRitmo:Int = 0;
+	
+	
 	/**
 	 * Generic bucket for storing different FlxSaves.
 	 * Especially useful for setting up multiple save slots.
