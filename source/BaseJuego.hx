@@ -16,6 +16,8 @@ class BaseJuego extends BaseEstado
 	var btnMenuDesplegar : FlxButton;
 	var btnMenuContraer : FlxButton;
 	
+	var animacionEnCurso : Bool = false;
+	
 	var menuPosicionX : Float;
 	
 	override public function create() {
@@ -28,9 +30,9 @@ class BaseJuego extends BaseEstado
 		botonAtras.loadGraphic(AssetPaths.boton_atras__png);
 		add(botonAtras);
 		
-		var barraProgreso = new FlxSprite(0, encabezado.height * 0.5, AssetPaths.barra_progreso_fondo__png);
-		barraProgreso.x = FlxG.width - barraProgreso.width - 7;
-		add(barraProgreso);
+		//var barraProgreso = new FlxSprite(0, encabezado.height * 0.5, AssetPaths.barra_progreso_fondo__png);
+		//barraProgreso.x = FlxG.width - barraProgreso.width - 7;
+		//add(barraProgreso);
 		
 		agregarMenuDesplegable();
 	}
@@ -54,9 +56,23 @@ class BaseJuego extends BaseEstado
 		add(btnMenuContraer);
 	}
 	
+	function activarClick(tween: FlxTween)
+	{
+		animacionEnCurso = false;
+	}
+	
+	function desactivarClick()
+	{
+		animacionEnCurso = true;
+	}
+	
 	function btnMenuDesplegarOnClick() {
 		// Ocultamos el botón que muestra el menu
-		FlxTween.tween(btnMenuDesplegar, {x: -btnMenuDesplegar.width}, 0.08, {complete: tweenBtnMenuDesplegarOnComplete});
+		if (!animacionEnCurso) {
+			desactivarClick();
+			FlxTween.tween(btnMenuDesplegar, { x: -btnMenuDesplegar.width }, 0.08, { complete: tweenBtnMenuDesplegarOnComplete } );
+			
+		}
 	}
 	
 	function tweenBtnMenuDesplegarOnComplete(tween : FlxTween) {
@@ -69,17 +85,20 @@ class BaseJuego extends BaseEstado
 		
 		// Desplegamos el menu y el botón que lo contrae
 		FlxTween.tween(menuDesplegable, { x: menuPosicionX }, 0.1);
-		FlxTween.tween(btnMenuContraer, { x: menuPosicionX }, 0.1);
+		FlxTween.tween(btnMenuContraer, { x: menuPosicionX }, 0.1, { complete : activarClick });
 	}
 	
 	function tweenBtnMenuContraerOnComplete(tween : FlxTween) {
-		FlxTween.tween(btnMenuDesplegar, {x: menuPosicionX}, 0.2);
+		FlxTween.tween(btnMenuDesplegar, { x: menuPosicionX }, 0.2, { complete: activarClick });
 	}
 
 	
 	function btnMenuContraerOnClick() {
-		FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
-		FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: tweenBtnMenuContraerOnComplete});
+		if (!animacionEnCurso) {
+			desactivarClick();
+			FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
+			FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, { complete: tweenBtnMenuContraerOnComplete } );
+		}
 		
 	}
 	
