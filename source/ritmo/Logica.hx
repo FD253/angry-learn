@@ -36,6 +36,7 @@ class Logica extends BaseJuego
 	// PRIVATE ATRIBUTES
 	var ejercicio : Ejercicio;
 	var feedbackVisual : Bool = false;	// mostrar o no la representacion de la secuencia
+	var txtNumeroDeSecuencia : FlxText;	// Muesta cuál de las secuencias del ejercicio actual se está jugando
 	
 	var enCurso : Bool = false;
 	
@@ -56,6 +57,8 @@ class Logica extends BaseJuego
 	var tweenOptionsRitmo : TweenOptions = { type: FlxTween.BACKWARD, ease: FlxEase.quartInOut };
 	var tweenMarcadorRitmo : FlxTween;	
 	
+	var botonesDeNivel : Array<FlxButton>;	// Esto guarda los botones que se usan para switchear nivel. Cosa de tenerluego su posición, etc
+	
 	// PUCLIC METHODS
 	override public function create() {
 		super.create();
@@ -68,6 +71,9 @@ class Logica extends BaseJuego
 		definirRepresentacionSecuencia();
 		agregarInterfaz();
 		definirMenuDesplegable();
+		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelRitmoActual * 3) + Reg.ejercicioRitmoActual)];
+		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
+		btnMenuDesplegarOnClick();
 	}
 	
 	
@@ -83,9 +89,9 @@ class Logica extends BaseJuego
 		txtRepresentacionSecuencia.setPosition(20, FlxG.height * 0.4);
 		inicializarRepresentacionSecuencia();
 		
-		//if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
+		if (feedbackVisual) {	// Sólo mostrarlo si es requerido. Sino permanece oculto
 			add(txtRepresentacionSecuencia);
-		//}
+		}
 	}
 	
 	function inicializarRepresentacionSecuencia() {
@@ -98,6 +104,8 @@ class Logica extends BaseJuego
 	
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
+		
+		botonesDeNivel = new Array<FlxButton>();
 		
 		var xInicial = menuDesplegable.width * 0.15;
 		var yInicial = menuDesplegable.height * 0.3;
@@ -130,7 +138,7 @@ class Logica extends BaseJuego
 				//boton.label.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 1.9, 1);
 				boton.loadGraphic(AssetPaths.boton_ejercicio__png);
 				menuDesplegable.add(boton);
-				
+				botonesDeNivel.push(boton); // Lo ponemos en un array para luego marcarlo segun se completan los lvls
 			}
 		}
 	}
@@ -184,7 +192,24 @@ class Logica extends BaseJuego
 		txtRetardo.alignment = "center";
 		add(txtRetardo);
 		
+		// Numero de secuencia del ejercicio actual
+		txtNumeroDeSecuencia = new FlxText();
+		txtNumeroDeSecuencia.wordWrap = false;
+		txtNumeroDeSecuencia.autoSize = false;
+		txtNumeroDeSecuencia.fieldWidth = 100;
+		txtNumeroDeSecuencia.size = 40;
+		txtNumeroDeSecuencia.alignment = "center";
+		txtNumeroDeSecuencia.font = AssetPaths.carter__ttf;
+		txtNumeroDeSecuencia.setPosition(FlxG.width - txtNumeroDeSecuencia.width - FlxG.width * 0.1,
+										 txtNumeroDeSecuencia.height * 0.05);
+		actualizarNumeroDeSecuenciaActual();
+		add(txtNumeroDeSecuencia);
+		
 		add(botonesInterfaz);
+	}
+	
+	function actualizarNumeroDeSecuenciaActual() {
+		txtNumeroDeSecuencia.text = Std.string(secuenciaActual + 1) + "/" + Std.string(ejercicio.secuencias.length);
 	}
 	
 	function avanceReproduccion(timer : FlxTimer) {
@@ -214,6 +239,7 @@ class Logica extends BaseJuego
 			}
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			trace("resultado: ", resultado);
+			Reg.puntosRitmo += Std.int(resultado);
 			
 			btnJugar.visible = false;
 			btnJugar.active = true;
@@ -234,6 +260,8 @@ class Logica extends BaseJuego
 					if (Reg.nivelRitmoActual == 2) {
 						trace("TODO: No tenemos más niveles. Qué hacemos?");
 						//TODO!
+						FlxG.switchState(new Logo());
+						// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
 					}
 					else {
 						Reg.nivelRitmoActual += 1;
@@ -249,6 +277,7 @@ class Logica extends BaseJuego
 				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
 				secuenciaActual += 1;
 			}
+			actualizarNumeroDeSecuenciaActual();
 			inicializarRepresentacionSecuencia();
 		}
 		else {
