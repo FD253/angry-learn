@@ -65,7 +65,7 @@ class Logica extends BaseJuego {
 		posicionNivel = 0;
 		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 		
-		textItem = new FlxText(155, 192, 458, null, 22);
+		textItem = new FlxText(300, 300, 680, null, 22);
 		add(textItem);
 		
 		textItem.text = quitarPuntosItem(item);
@@ -73,7 +73,7 @@ class Logica extends BaseJuego {
 		textItem.font = "assets/fonts/arialbd.ttf";
 		
 		var xInicial : Int = 162;
-		var y: Int = 310;
+		var y: Int = 500;
 				
 		var mitad: Float = FlxG.width / 2;
 		
@@ -97,29 +97,27 @@ class Logica extends BaseJuego {
 		
 		mostrarBtnsTipoLetra();
 		
-		btnIncorrecto = new FlxUIButton(500, 82 , null, ejercicioIncorrecto);
+		btnIncorrecto = new FlxUIButton(650, 160 , null, ejercicioIncorrecto);
 		btnIncorrecto.loadGraphic(AssetPaths.incorrecto__png);
 		add(btnIncorrecto); 
 		ocultarBtnIncorrecto();
 		
-		btnComenzar = new FlxUIButton(85, 95 , null, comenzar);
+		btnComenzar = new FlxUIButton(85, 160 , null, comenzar);
 		btnComenzar.loadGraphic(AssetPaths.comenzar__png);
 		add(btnComenzar);
 		ocultarBtnComenzar();
 		
-		btnCorrecto = new FlxUIButton(550, 82 , null, ejercicioCorrecto);
+		btnCorrecto = new FlxUIButton(550, 160, null, ejercicioCorrecto);
 		btnCorrecto.loadGraphic(AssetPaths.correcto__png);
 		ocultarBtnCorrecto();
 		add(btnCorrecto);
 		
-		btnCorrectoParcial = new FlxUIButton(550, 10 , null, subEjercicioCorrecto);
+		btnCorrectoParcial = new FlxUIButton(550, 160, null, subEjercicioCorrecto);
 		btnCorrectoParcial.loadGraphic(AssetPaths.correcto__png);
 		//btnCorrectoParcial.visible = false;
 		add(btnCorrectoParcial);
 		ocultarBtnCorrectoParcial();
 		
-		var btnAtras = new FlxUIButton(0, 330 , "ATRAS", irAtras);
-		add(btnAtras);
 		silabas = obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual]);
 		//silaba = silabas[timer.elapsedLoops - 1];
 		posicionDentroItemGuardada = 0;
@@ -276,7 +274,7 @@ class Logica extends BaseJuego {
 	function cambiarPorMayusculas() {
 		textItem.font = "assets/fonts/arialbd.ttf";
 		textItem.text = textItem.text.toUpperCase();
-		textItem.size = 22;
+		textItem.size = 33;
 		btnMayuscula.loadGraphic(AssetPaths.mayusculaPresionada__png);
 		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
 		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
@@ -286,7 +284,7 @@ class Logica extends BaseJuego {
 	function cambiarPorMinusculas() {
 		textItem.font = "assets/fonts/arialbd.ttf";
 		textItem.text = textItem.text.toLowerCase();
-		textItem.size = 22;
+		textItem.size = 33;
 		btnMinuscula.loadGraphic(AssetPaths.minusculaPresionada__png);
 		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
 		btnCursiva.loadGraphic(AssetPaths.cursiva__png);
@@ -297,7 +295,7 @@ class Logica extends BaseJuego {
 		textItem.font = "assets/fonts/cursiva.ttf";
 		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 		textItem.text = quitarPuntosItem(item);
-		textItem.size = 30;
+		textItem.size = 44;
 		btnMinuscula.loadGraphic(AssetPaths.minuscula__png);
 		btnMayuscula.loadGraphic(AssetPaths.mayuscula__png);
 		btnCursiva.loadGraphic(AssetPaths.cursivaPresionada__png);
@@ -312,9 +310,6 @@ class Logica extends BaseJuego {
 		mostrarBtnsTipoLetra();
 	}
 	
-	function irAtras()	{	
-		FlxG.switchState(new MenuPrincipal());
-	}
 
 	function comenzar() {
 		
