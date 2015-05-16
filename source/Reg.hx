@@ -23,6 +23,7 @@ class Reg
 	
 	
 	public static var idsUsuario : Array<Int> = [3, 4];
+	public static var usuarioActual : String;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

@@ -22,13 +22,13 @@ class SeleccionUsuario extends BaseEstado
 	public function mostrarUsuarios(e : Event) {
 		var listaUsuarios = Json.parse(e.target.data);
 		trace(listaUsuarios.objects[0].id);
-		//trace( "USUATIOS : " + Json.parse(e.target.data) );
-		//SeleccionUsuario.mostrarUsuarios(Json.parse(e.target.data));
 		var altura = 50;
 		for (usuario in listaUsuarios.objects) {
 			if (Reg.idsUsuario.indexOf(usuario.id) != -1 ) {
 				// Nos fijamos que los usuarios que tenemos hardcodeados estén en el backend
-				var botonUsuario = new FlxButton(15, altura, usuario.username);
+				var botonUsuario = new FlxButton(15, altura, usuario.username, function() {
+					Reg.usuarioActual = usuario.resource_uri;
+				});
 				add(botonUsuario);
 				altura += 30;
 			}
