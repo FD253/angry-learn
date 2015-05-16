@@ -22,6 +22,8 @@ class Reg
 	public static var puntosRitmo:Int = 0;
 	
 	
+	public static var idsUsuario : Array<Int> = [3, 4];
+	
 	/**
 	 * Generic bucket for storing different FlxSaves.
 	 * Especially useful for setting up multiple save slots.

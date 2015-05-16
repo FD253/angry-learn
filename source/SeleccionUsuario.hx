@@ -2,6 +2,9 @@ package ;
 import flixel.ui.FlxButton;
 import flixel.FlxG;
 import ServicioPosta;
+import flash.events.Event;
+import haxe.Json;
+
 
 class SeleccionUsuario extends BaseEstado
 {
@@ -12,10 +15,26 @@ class SeleccionUsuario extends BaseEstado
 		super.create();
 
 		btnBlah = new FlxButton(10, 10, "Blah", btnBlahOnClick);
-		ServicioPosta.instancia.obtenerUsuarios();
+		ServicioPosta.instancia.obtenerUsuarios(this);
 		add(btnBlah);
 	}
 	
+	public function mostrarUsuarios(e : Event) {
+		var listaUsuarios = Json.parse(e.target.data);
+		trace(listaUsuarios.objects[0].id);
+		//trace( "USUATIOS : " + Json.parse(e.target.data) );
+		//SeleccionUsuario.mostrarUsuarios(Json.parse(e.target.data));
+		var altura = 50;
+		for (usuario in listaUsuarios.objects) {
+			if (Reg.idsUsuario.indexOf(usuario.id) != -1 ) {
+				// Nos fijamos que los usuarios que tenemos hardcodeados estén en el backend
+				var botonUsuario = new FlxButton(15, altura, usuario.username);
+				add(botonUsuario);
+				altura += 30;
+			}
+		}
+	}
+
 	function btnBlahOnClick()
 	{
 		FlxG.switchState(new MenuPrincipal());
