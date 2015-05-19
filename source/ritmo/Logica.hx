@@ -251,6 +251,7 @@ class Logica extends BaseJuego
 			// Avanzamos...
 			if (secuenciaActual == ejercicio.secuencias.length - 1) {
 				// Si terminó el ejercicio, avanzamos a otro
+				ServicioPosta.instancia.postPlay(resultado);
 				trace('TODO! Se terminó el ejercicio');
 				
 				secuenciaActual = 0;

@@ -26,6 +26,7 @@ class ServicioPosta {
 	
 	private inline static var ruta_level : String = "level/";
 	private inline static var ruta_user : String = "user/";
+	private inline static var ruta_play : String = "play/";
 	
 	private function new() {
 		
@@ -49,11 +50,6 @@ class ServicioPosta {
 		var ruta : String = ruta_base + ruta_user + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
 		trace(ruta);
 		
-		//var parametros:URLVariables = new URLVariables();
-		//parametros.format = ServicioPosta.formato;
-		//parametros.api_key = ServicioPosta.api_key;
-		//parametros.api_username = ServicioPosta.api_username;
-		//trace(Json.stringify(parametros));
 		
 		var request : URLRequest = new URLRequest(ruta);
 		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
@@ -64,33 +60,40 @@ class ServicioPosta {
 		cargador.load(request);
 	}
 	
-	//public function crearJuego():Void {
-		//var cargador:URLLoader = new URLLoader();
-		//cargador.addEventListener(Event.COMPLETE, crearJuegoCompleto);
-		//cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		//cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
-		//cargador.addEventListener(Event.OPEN, openHandler);
-		//cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
-		//cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		//var ruta:String = ruta_base + ruta_user + "?format=" + formato;
-		//trace(ruta);
-		//var params:Dynamic = {};
-		//params.codigo = Math.ceil(Math.random() * 100);
-		//params.descripcion = "esta es la descripcion";
-		////params.id = Math.ceil(Math.random() * 100);
-		////params.id = 41;
-		//params.nombre = "Juego asombroso nro: " + Math.ceil(Math.random() * 100);
-		//
-		//trace(params);
-		//trace(Json.stringify(params));
-		//
-		//var request:URLRequest = new URLRequest(ruta);
-		//request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
-		//request.method = URLRequestMethod.POST;
-		//request.data = Json.stringify(params);
-		//
-		//cargador.load(request);
-	//}
+	public function postPlay(puntaje:Float):Void {
+		var cargador:URLLoader = new URLLoader();
+		cargador.addEventListener(Event.COMPLETE, function(e:Event){});
+		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(Event.OPEN, openHandler);
+		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		var ruta : String = ruta_base + ruta_play ; //+ '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		trace(ruta);
+		var params:Dynamic = { };
+		params.app = '/api/v1/app/3/';
+		params.device_app_version = "201505051920";
+		params.device_id = "A02111";
+		params.level = "/api/v1/level/7/";
+		params.play_date = "2015-05-05T19:20:00";
+		params.player = Reg.usuarioActual;
+        params.used_time = "120";
+		params.result = Std.string(Std.int(puntaje));
+		
+		//params.id = Math.ceil(Math.random() * 100);
+		//params.id = 41;
+		
+		trace(params);
+		trace(Json.stringify(params));
+		
+		var request:URLRequest = new URLRequest(ruta);
+        request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + api_key));
+		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
+		request.method = URLRequestMethod.POST;
+		request.data = Json.stringify(params);
+		trace(request.data);
+		cargador.load(request);
+	}
 	
 	//public function parchearJuego():Void {
 		//var cargador:URLLoader = new URLLoader();
