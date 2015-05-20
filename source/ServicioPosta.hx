@@ -1,4 +1,6 @@
 package ;
+import flixel.FlxG;
+import flixel.util.FlxTimer;
 import flash.events.Event;
 import flash.events.HTTPStatusEvent;
 import flash.events.IOErrorEvent;
@@ -60,11 +62,15 @@ class ServicioPosta {
 		cargador.load(request);
 	}
 	
+	static var timeoutTimer : FlxTimer;
+	
 	public function postPlay(puntaje : Float, appId : String, levelId : String, usedTime : Float):Void {
 		var cargador:URLLoader = new URLLoader();
-		cargador.addEventListener(Event.COMPLETE, function(e:Event){});
+		cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
 		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
+			FlxG.resetGame(); // Si el server no se pudo alcanzar guardando el juego, chau
+		});//ioErrorHandler);
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
@@ -93,6 +99,7 @@ class ServicioPosta {
 		request.method = URLRequestMethod.POST;
 		request.data = Json.stringify(params);
 		trace(request.data);
+
 		cargador.load(request);
 	}
 	

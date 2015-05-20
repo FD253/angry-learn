@@ -21,6 +21,12 @@ class Reg
 	public static var puntosKaraoke:Int = 0;
 	public static var puntosRitmo:Int = 0;
 	
+	//=========================
+	public static var REGISTRADO = "registrado";
+	public static var LIBRE = "libre";
+	
+	public static var modoDeJuego : String;
+	
 	
 	// API
 	public static var usuarioActual : String;
@@ -35,6 +41,8 @@ class Reg
 	public static var idAppTrazos : String = '/api/v1/app/3/';
 	
 	public static var idRitmoLvl1 : String = '/api/v1/level/1/';
+	
+	public static var maxLvlRitmo : Int = 0;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

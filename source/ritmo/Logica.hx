@@ -68,6 +68,17 @@ class Logica extends BaseJuego
 	override public function create() {
 		super.create();
 		trace('creating state');
+		
+		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
+			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
+			// TODO: acá hay un bichito:
+			var nivel = Std.int(Reg.maxLvlRitmo / 3);
+			var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
+			trace (nivel, ejercicio);
+			Reg.nivelRitmoActual = nivel;
+			Reg.ejercicioRitmoActual = ejercicio;
+		}
+			
 		ejercicio = Nivel.niveles[Reg.nivelRitmoActual].ejercicios[Reg.ejercicioRitmoActual];  // Buscamos el nivel que antes se debe haber definido en Reg
 		secuenciaActual = 0; // Arrancamos en la primera secuencia de este ejercicio (Como es un array la primera es la 0)
 		
@@ -127,15 +138,15 @@ class Logica extends BaseJuego
 				var y = yInicial + (altoBoton + yEspacio) * nivel.ejercicios.indexOf(ejercicio);
 				var boton = new FlxButton(x, y, 'Ejercicio ' + (nivel.ejercicios.indexOf(ejercicio) + 1), function () { 
 									//Inline, para no crear los handlers a mano
-									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
-									Reg.nivelRitmoActual = Nivel.niveles.indexOf(nivel);
-									Reg.ejercicioRitmoActual = nivel.ejercicios.indexOf(ejercicio);
-									FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
-									FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
-										{
-											FlxG.switchState(new Logica());
-										}
-									});
+										Reg.nivelRitmoActual = Nivel.niveles.indexOf(nivel);
+										Reg.ejercicioRitmoActual = nivel.ejercicios.indexOf(ejercicio);
+										trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
+										FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
+										FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
+											{
+												FlxG.switchState(new Logica());
+											}
+										});
 								}
 				);
 				boton.label.setFormat(AssetPaths.carter__ttf, 17);
@@ -271,25 +282,32 @@ class Logica extends BaseJuego
 				
 				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idRitmoLvl1, tiempoDeJuego);
 				
-				secuenciaActual = 0;
-				puntajeDeEjercicio = 0;
-				if (Reg.ejercicioRitmoActual == 2) {
-					Reg.ejercicioRitmoActual = 0;
+				if (puntajeDeEjercicio >= 250) {
+					// Sólo ejecuto el código que hace el cambio de nivel si superó el puntaje este
 					
-					if (Reg.nivelRitmoActual == 2) {
-						trace("TODO: No tenemos más niveles. Qué hacemos?");
-						//TODO!
-						FlxG.switchState(new Logo());
-						// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
+					Reg.maxLvlRitmo += 1; // Habilito al usuario para que después pueda cambiar a mano el ejercicio
+					
+					if (Reg.ejercicioRitmoActual == 2) {
+						Reg.ejercicioRitmoActual = 0;
+						
+						if (Reg.nivelRitmoActual == 2) {
+							trace("TODO: No tenemos más niveles. Qué hacemos?");
+							//TODO!
+							FlxG.switchState(new Logo());
+							// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
+						}
+						else {
+							Reg.nivelRitmoActual += 1;
+						}
 					}
 					else {
-						Reg.nivelRitmoActual += 1;
+						Reg.ejercicioRitmoActual += 1;
 					}
 				}
-				else {
-					Reg.ejercicioRitmoActual += 1;
-				}
-				// Cambiamos de estado porque el ejercicio es otro ahora
+				
+				secuenciaActual = 0;
+				puntajeDeEjercicio = 0;
+				// Cambiamos de estado (ejercicio puede ser otro ahora... O el mismo si no superó puntaje)
 				FlxG.switchState(new Logica());
 			}
 			else {
