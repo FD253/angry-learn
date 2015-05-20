@@ -28,7 +28,7 @@ class Logica extends BaseJuego
 	// El ejercicio consta de 3 secuencias. Siempre se arranca de la primer sencuencia. Guardamos la secuencia actual en secuenciaActual:
 	var secuenciaActual : Int;	
 	
-	var puntajeDeEjercicio : Float;
+	var puntajeDeEjercicio : Float = 0;
 	
 	public static var feedbackVisualInicio : Bool = false;
 	
@@ -239,10 +239,16 @@ class Logica extends BaseJuego
 			// TODO: Contabilizar el acierto
 			for (i in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) {
 				if (ejercicio.secuencias[secuenciaActual].pulsos[i] != secuenciaUsuario[i]) {
-					errores += 1;
+					errores += Std.int(Math.abs(secuenciaUsuario[i] - ejercicio.secuencias[secuenciaActual].pulsos[i]));
 				}
 			}
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
+			
+			// Si lo hizo asquerosamente mal, su puntuación puede ser negativa, así que directamente eso es un CERO
+			if (resultado < 0) {
+				resultado = 0;
+			}
+			
 			trace("resultado: ", resultado);
 			Reg.puntosRitmo += Std.int(resultado);
 			
@@ -255,6 +261,7 @@ class Logica extends BaseJuego
 			
 			// Avanzamos...
 			if (secuenciaActual == ejercicio.secuencias.length - 1) {
+				puntajeDeEjercicio += resultado;
 				// Si terminó el ejercicio, avanzamos a otro
 				trace('Se terminó el ejercicio');
 				
@@ -315,12 +322,10 @@ class Logica extends BaseJuego
 	function btnToquesOnClick() {
 		// Grabamos en un array
 		if (enCurso) {
-			if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
 				secuenciaUsuario[acumulador] += 1;
 				FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 				txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 				trace("click");
-			}
 		}
 		else {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
