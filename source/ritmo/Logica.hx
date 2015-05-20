@@ -34,6 +34,9 @@ class Logica extends BaseJuego
 	
 	
 	// PRIVATE ATRIBUTES
+	var momentoInicioEjercicio : Date;
+	var momentoFinEjercicio : Date;
+	
 	var ejercicio : Ejercicio;
 	var feedbackVisual : Bool = false;	// mostrar o no la representacion de la secuencia
 	var txtNumeroDeSecuencia : FlxText;	// Muesta cuál de las secuencias del ejercicio actual se está jugando
@@ -251,8 +254,13 @@ class Logica extends BaseJuego
 			// Avanzamos...
 			if (secuenciaActual == ejercicio.secuencias.length - 1) {
 				// Si terminó el ejercicio, avanzamos a otro
-				ServicioPosta.instancia.postPlay(resultado);
-				trace('TODO! Se terminó el ejercicio');
+				trace('Se terminó el ejercicio');
+				
+				momentoFinEjercicio = Date.now();
+				// Calculamos cuántos segundos pasaron desde que empezó (Restamos tiempos y pasamos de milisegundos a segundos)
+				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
+				
+				ServicioPosta.instancia.postPlay(resultado, Reg.idAppRitmo, Reg.idRitmoLvl1, tiempoDeJuego);
 				
 				secuenciaActual = 0;
 				if (Reg.ejercicioRitmoActual == 2) {
@@ -319,6 +327,11 @@ class Logica extends BaseJuego
 		
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
+		
+		// Cuando el usuario quiere escuchar la primera secuencia del ejercicio, tomamos el tiempo para luego saber cuánto tarda en completar el ejercicio
+		if (secuenciaActual == 0) {
+			momentoInicioEjercicio = Date.now();
+		}
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
 		tmrPrincipal = new FlxTimer(ejercicio.secuencias[secuenciaActual].intervalo, avanceReproduccion, ejercicio.secuencias[secuenciaActual].pulsos.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia

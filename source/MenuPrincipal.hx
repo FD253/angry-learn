@@ -130,8 +130,6 @@ class MenuPrincipal extends BaseEstado
 		
 		panelNiveles.add(globoPuntaje);
 		globoPuntaje.x = btnKaraoke.x + btnKaraoke.width - globoPuntaje.width * 0.4;
-	
-		ServicioPosta.instancia.postPlay(10);
 	}
 	
 	function reiniciarBotones() {
