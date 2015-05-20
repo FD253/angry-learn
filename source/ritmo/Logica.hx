@@ -28,6 +28,8 @@ class Logica extends BaseJuego
 	// El ejercicio consta de 3 secuencias. Siempre se arranca de la primer sencuencia. Guardamos la secuencia actual en secuenciaActual:
 	var secuenciaActual : Int;	
 	
+	var puntajeDeEjercicio : Float;
+	
 	public static var feedbackVisualInicio : Bool = false;
 	
 	// PUBLIC ATRIBUTES
@@ -260,9 +262,10 @@ class Logica extends BaseJuego
 				// Calculamos cuántos segundos pasaron desde que empezó (Restamos tiempos y pasamos de milisegundos a segundos)
 				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 				
-				ServicioPosta.instancia.postPlay(resultado, Reg.idAppRitmo, Reg.idRitmoLvl1, tiempoDeJuego);
+				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idRitmoLvl1, tiempoDeJuego);
 				
 				secuenciaActual = 0;
+				puntajeDeEjercicio = 0;
 				if (Reg.ejercicioRitmoActual == 2) {
 					Reg.ejercicioRitmoActual = 0;
 					
@@ -285,6 +288,8 @@ class Logica extends BaseJuego
 			else {
 				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
 				secuenciaActual += 1;
+				// Acumulamos el puntaje de la secuencia que se jugó al total del ejercicio
+				puntajeDeEjercicio += resultado;
 			}
 			actualizarNumeroDeSecuenciaActual();
 			inicializarRepresentacionSecuencia();
