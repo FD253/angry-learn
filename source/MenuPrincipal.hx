@@ -36,6 +36,17 @@ class MenuPrincipal extends BaseEstado
 	{
 		super.create();
 		
+		var btnReiniciar = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
+									   FlxG.width * 0.015,	// 1.5% del ancho del juego
+									   function() {
+										   FlxG.resetGame();
+										   });
+
+		btnReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
+		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.5));
+		btnReiniciar.updateHitbox();
+		add(btnReiniciar);
+		
 		panelNiveles = new FlxSpriteGroup(0, 0);
 		panelNiveles.updateHitbox();
 		

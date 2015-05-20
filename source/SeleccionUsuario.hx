@@ -1,9 +1,12 @@
 package ;
+import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.FlxG;
 import ServicioPosta;
 import flash.events.Event;
 import haxe.Json;
+import flixel.util.FlxColor;
+
 
 
 class SeleccionUsuario extends BaseEstado
@@ -14,30 +17,37 @@ class SeleccionUsuario extends BaseEstado
 	{
 		super.create();
 
-		btnBlah = new FlxButton(10, 10, "Blah", btnBlahOnClick);
 		ServicioPosta.instancia.obtenerUsuarios(this);
-		add(btnBlah);
 	}
 	
 	public function mostrarUsuarios(e : Event) {
 		var listaUsuarios = Json.parse(e.target.data);
 		trace(listaUsuarios.objects[0].id);
-		var altura = 50;
+		var altura = 0;
+		var textSize = 30;
 		for (usuario in listaUsuarios.objects) {
 			if (Reg.idsUsuario.indexOf(usuario.id) != -1 ) {
 				// Nos fijamos que los usuarios que tenemos hardcodeados estén en el backend
-				var botonUsuario = new FlxButton(15, altura, usuario.username, function() {
+				var btnUsuario = new FlxButton(0, 0, null, function() {
 					Reg.usuarioActual = usuario.resource_uri;
+					FlxG.switchState(new MenuPrincipal());
+					trace(Reg.usuarioActual);
 				});
-				add(botonUsuario);
-				altura += 30;
+				btnUsuario.loadGraphic(AssetPaths.selector_normal__png);
+				
+				btnUsuario.x = (FlxG.width / 2) - (btnUsuario.width / 2);
+				btnUsuario.y = FlxG.height * 0.23 + altura;
+				var txtUsuario = new FlxText(btnUsuario.x + btnUsuario.width * 0.25,
+									 btnUsuario.y, 0, usuario.username, textSize);
+				txtUsuario.font = AssetPaths.carter__ttf;
+				txtUsuario.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+				txtUsuario.y = btnUsuario.y + (btnUsuario.height / 2) - (txtUsuario.height / 2) - (txtUsuario.size * 0.3);
+
+				add(btnUsuario);
+				add(txtUsuario);
+				altura += 100;
 			}
 		}
-	}
-
-	function btnBlahOnClick()
-	{
-		FlxG.switchState(new MenuPrincipal());
 	}
 	
 }
