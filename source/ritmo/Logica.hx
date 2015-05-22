@@ -280,7 +280,7 @@ class Logica extends BaseJuego
 				// Calculamos cuántos segundos pasaron desde que empezó (Restamos tiempos y pasamos de milisegundos a segundos)
 				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 				
-				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idRitmoLvl1, tiempoDeJuego);
+				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idNivelesRitmo[Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual], tiempoDeJuego);
 				
 				if (puntajeDeEjercicio >= 250) {
 					// Sólo ejecuto el código que hace el cambio de nivel si superó el puntaje este

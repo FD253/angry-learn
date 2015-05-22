@@ -7,6 +7,7 @@ import flixel.util.FlxSave;
  * references to objects and other things for quick-access. Feel
  * free to simply ignore it or change it in any way you like.
  */
+
 class Reg
 {
 	public static var debug = false;
@@ -18,8 +19,8 @@ class Reg
 	public static var ejercicio : Int;
 	
 	public static var puntosTrazos:Int = 0;
-	public static var puntosKaraoke:Int = 0;
 	public static var puntosRitmo:Int = 0;
+	public static var puntosKaraoke:Int = 0;
 	
 	//=========================
 	public static var REGISTRADO = "registrado";
@@ -40,7 +41,17 @@ class Reg
 	public static var idAppKaraoke : String = '/api/v1/app/2/';
 	public static var idAppTrazos : String = '/api/v1/app/3/';
 	
-	public static var idRitmoLvl1 : String = '/api/v1/level/1/';
+	public static var idNivelesRitmo : Array<String> = [
+		'/api/v1/level/1/',
+		'/api/v1/level/2/',
+		'/api/v1/level/3/',
+		'/api/v1/level/10/',
+		'/api/v1/level/11/',
+		'/api/v1/level/12/',
+		'/api/v1/level/13/',
+		'/api/v1/level/14/',
+		'/api/v1/level/15/'
+	];
 	
 	public static var maxLvlRitmo : Int = 0;
 	
@@ -49,4 +60,10 @@ class Reg
 	 * Especially useful for setting up multiple save slots.
 	 */
 	public static var saves:Array<FlxSave> = [];
+	
+	public static function obtenerIdResource(recurso:String) :String {
+		var cosas = recurso.split('/');
+		cosas.pop(); // Descartamos el "nada" de MIERDA que Haxe toma como que hay al final
+		return cosas.pop();
+	}
 }
