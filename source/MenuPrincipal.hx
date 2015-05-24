@@ -43,7 +43,7 @@ class MenuPrincipal extends BaseEstado
 										   });
 
 		btnReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
-		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.5));
+		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.7));
 		btnReiniciar.updateHitbox();
 		add(btnReiniciar);
 		

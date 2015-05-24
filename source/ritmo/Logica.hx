@@ -53,6 +53,8 @@ class Logica extends BaseJuego
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
 	
+	var popupBienHecho : FlxButton;
+	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
 	
@@ -89,6 +91,15 @@ class Logica extends BaseJuego
 		definirMenuDesplegable();
 		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelRitmoActual * 3) + Reg.ejercicioRitmoActual)];
 		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
+		for (boton in botonesDeNivel) {
+			// Si el boton pertenece a un nivel ya alcanzado, le ponemos una estrella
+			if (botonesDeNivel.indexOf(boton) <= Reg.maxLvlRitmo)  {
+				
+				var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+				menuDesplegable.add(estrella);
+				estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
+			}
+		}
 		btnMenuDesplegarOnClick();
 	}
 	
@@ -222,6 +233,13 @@ class Logica extends BaseJuego
 		add(txtNumeroDeSecuencia);
 		
 		add(botonesInterfaz);
+		
+		
+		// Cartel de bien hecho
+		popupBienHecho = new FlxButton(FlxG.width * 0.45, FlxG.height * 0.3, '', popupBienHechoOnClick);
+		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
+		popupBienHecho.visible = false;
+		add(popupBienHecho);
 	}
 	
 	function actualizarNumeroDeSecuenciaActual() {
@@ -303,12 +321,13 @@ class Logica extends BaseJuego
 					else {
 						Reg.ejercicioRitmoActual += 1;
 					}
+					popupBienHecho.visible = true;  // Mostramos cartel de bien hecho
 				}
 				
 				secuenciaActual = 0;
 				puntajeDeEjercicio = 0;
 				// Cambiamos de estado (ejercicio puede ser otro ahora... O el mismo si no superó puntaje)
-				FlxG.switchState(new Logica());
+				//FlxG.switchState(new Logica());
 			}
 			else {
 				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
@@ -348,6 +367,10 @@ class Logica extends BaseJuego
 		else {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 		}
+	}
+	
+	function popupBienHechoOnClick() {
+		popupBienHecho.visible = false;
 	}
 	
 	function btnEscucharOnClick() {

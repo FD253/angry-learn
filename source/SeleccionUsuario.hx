@@ -31,9 +31,21 @@ class SeleccionUsuario extends BaseEstado
 			var app = '/api/v1/app/' + Std.string(puntaje.app) + '/';
 			switch (app) 
 			{
-				case Reg.idAppKaraoke: Reg.puntosKaraoke = puntaje.points;
-				case Reg.idAppTrazos: Reg.puntosTrazos = puntaje.points;
-				case Reg.idAppRitmo: Reg.puntosRitmo = puntaje.points;
+				case Reg.idAppKaraoke: Reg.puntosKaraoke = Std.int(puntaje.points);
+				case Reg.idAppTrazos: Reg.puntosTrazos = Std.int(puntaje.points);
+				case Reg.idAppRitmo: Reg.puntosRitmo = Std.int(puntaje.points);
+			}
+		}
+	}
+	
+	public function setearMaximosNiveles(e: Event) {
+		var listaMaximosNiveles = Json.parse(e.target.data);
+		trace(listaMaximosNiveles[0]);
+		for (maxNivel in listaMaximosNiveles) {
+			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
+			switch (app) 
+			{
+				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level);
 			}
 		}
 	}
@@ -49,6 +61,7 @@ class SeleccionUsuario extends BaseEstado
 				var btnUsuario = new FlxButton(0, 0, null, function() {
 					Reg.usuarioActual = usuario.resource_uri;
 					ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
+					ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
 					
 					FlxG.switchState(new MenuPrincipal());
 					trace(Reg.usuarioActual);

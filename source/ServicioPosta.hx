@@ -61,8 +61,28 @@ class ServicioPosta {
 		//request.data = parametros;
 		
 		cargador.load(request);
-		
 	}
+	
+	
+	public function obtenerMaximosNiveles(usuario:String, callback : Event -> Void) :Void {
+		var cargador:URLLoader = new URLLoader();
+		cargador.addEventListener(Event.COMPLETE, callback );
+		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(Event.OPEN, openHandler);
+		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		trace(ruta);
+		
+		var request : URLRequest = new URLRequest(ruta);
+		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
+		trace(request);
+		request.method = URLRequestMethod.GET;
+		
+		cargador.load(request);
+	}
+	
 	
 	public function obtenerUsuarios(pantalla : SeleccionUsuario) : Void {
 		var cargador:URLLoader = new URLLoader();
