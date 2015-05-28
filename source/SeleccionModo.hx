@@ -40,11 +40,13 @@ class SeleccionModo extends BaseEstado
 	
 	function btnModoLibreOnClick()
 	{
+		Reg.modoDeJuego = Reg.LIBRE;
 		FlxG.switchState(new MenuPrincipal());
 	}
 	
 	function btnModoRegistradoOnClick()
 	{
+		Reg.modoDeJuego = Reg.REGISTRADO;
 		FlxG.switchState(new SeleccionUsuario());
 	}
 }

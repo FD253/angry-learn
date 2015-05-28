@@ -1,4 +1,6 @@
 package ;
+import flixel.FlxG;
+import flixel.util.FlxTimer;
 import flash.events.Event;
 import flash.events.HTTPStatusEvent;
 import flash.events.IOErrorEvent;
@@ -27,6 +29,7 @@ class ServicioPosta {
 	private inline static var ruta_level : String = "level/";
 	private inline static var ruta_user : String = "user/";
 	private inline static var ruta_play : String = "play/";
+	private inline static var ruta_puntajes: String = "points/";
 	
 	private function new() {
 		
@@ -38,6 +41,48 @@ class ServicioPosta {
 		}
 		return instancia;
 	}
+	
+	public function obtenerPuntajes(usuario:String, callback : Event -> Void) :Void {
+		var cargador:URLLoader = new URLLoader();
+		cargador.addEventListener(Event.COMPLETE, callback );
+		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(Event.OPEN, openHandler);
+		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario)+'/' + ruta_puntajes + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		trace(ruta);
+		
+		
+		var request : URLRequest = new URLRequest(ruta);
+		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
+		trace(request);
+		request.method = URLRequestMethod.GET;
+		//request.data = parametros;
+		
+		cargador.load(request);
+	}
+	
+	
+	public function obtenerMaximosNiveles(usuario:String, callback : Event -> Void) :Void {
+		var cargador:URLLoader = new URLLoader();
+		cargador.addEventListener(Event.COMPLETE, callback );
+		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(Event.OPEN, openHandler);
+		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		trace(ruta);
+		
+		var request : URLRequest = new URLRequest(ruta);
+		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
+		trace(request);
+		request.method = URLRequestMethod.GET;
+		
+		cargador.load(request);
+	}
+	
 	
 	public function obtenerUsuarios(pantalla : SeleccionUsuario) : Void {
 		var cargador:URLLoader = new URLLoader();
@@ -60,11 +105,15 @@ class ServicioPosta {
 		cargador.load(request);
 	}
 	
+	static var timeoutTimer : FlxTimer;
+	
 	public function postPlay(puntaje : Float, appId : String, levelId : String, usedTime : Float):Void {
 		var cargador:URLLoader = new URLLoader();
-		cargador.addEventListener(Event.COMPLETE, function(e:Event){});
+		cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
 		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
+			FlxG.resetGame(); // Si el server no se pudo alcanzar guardando el juego, chau
+		});//ioErrorHandler);
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
@@ -93,6 +142,7 @@ class ServicioPosta {
 		request.method = URLRequestMethod.POST;
 		request.data = Json.stringify(params);
 		trace(request.data);
+
 		cargador.load(request);
 	}
 	

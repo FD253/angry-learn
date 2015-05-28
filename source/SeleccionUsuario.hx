@@ -6,6 +6,7 @@ import ServicioPosta;
 import flash.events.Event;
 import haxe.Json;
 import flixel.util.FlxColor;
+import StringTools;
 
 
 
@@ -20,6 +21,35 @@ class SeleccionUsuario extends BaseEstado
 		ServicioPosta.instancia.obtenerUsuarios(this);
 	}
 	
+	public function setearPuntaje(e: Event) {
+		//var data = StringTools.replace(e.target.data, '[', '{');
+		//data = StringTools.replace(data, ']', '}');
+		var listaPuntajes = Json.parse(e.target.data);
+		
+		trace(listaPuntajes[0]);
+		for (puntaje in listaPuntajes) {
+			var app = '/api/v1/app/' + Std.string(puntaje.app) + '/';
+			switch (app) 
+			{
+				case Reg.idAppKaraoke: Reg.puntosKaraoke = Std.int(puntaje.points);
+				case Reg.idAppTrazos: Reg.puntosTrazos = Std.int(puntaje.points);
+				case Reg.idAppRitmo: Reg.puntosRitmo = Std.int(puntaje.points);
+			}
+		}
+	}
+	
+	public function setearMaximosNiveles(e: Event) {
+		var listaMaximosNiveles = Json.parse(e.target.data);
+		trace(listaMaximosNiveles[0]);
+		for (maxNivel in listaMaximosNiveles) {
+			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
+			switch (app) 
+			{
+				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level);
+			}
+		}
+	}
+	
 	public function mostrarUsuarios(e : Event) {
 		var listaUsuarios = Json.parse(e.target.data);
 		trace(listaUsuarios.objects[0].id);
@@ -30,6 +60,9 @@ class SeleccionUsuario extends BaseEstado
 				// Nos fijamos que los usuarios que tenemos hardcodeados estén en el backend
 				var btnUsuario = new FlxButton(0, 0, null, function() {
 					Reg.usuarioActual = usuario.resource_uri;
+					ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
+					ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
+					
 					FlxG.switchState(new MenuPrincipal());
 					trace(Reg.usuarioActual);
 				});
