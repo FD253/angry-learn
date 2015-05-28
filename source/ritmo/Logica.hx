@@ -28,12 +28,17 @@ class Logica extends BaseJuego
 	// El ejercicio consta de 3 secuencias. Siempre se arranca de la primer sencuencia. Guardamos la secuencia actual en secuenciaActual:
 	var secuenciaActual : Int;	
 	
+	var puntajeDeEjercicio : Float = 0;
+	
 	public static var feedbackVisualInicio : Bool = false;
 	
 	// PUBLIC ATRIBUTES
 	
 	
 	// PRIVATE ATRIBUTES
+	var momentoInicioEjercicio : Date;
+	var momentoFinEjercicio : Date;
+	
 	var ejercicio : Ejercicio;
 	var feedbackVisual : Bool = false;	// mostrar o no la representacion de la secuencia
 	var txtNumeroDeSecuencia : FlxText;	// Muesta cuál de las secuencias del ejercicio actual se está jugando
@@ -47,6 +52,8 @@ class Logica extends BaseJuego
 	var btnEscuchar : FlxButton;
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
+	
+	var popupBienHecho : FlxButton;
 	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
@@ -63,6 +70,17 @@ class Logica extends BaseJuego
 	override public function create() {
 		super.create();
 		trace('creating state');
+		
+		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
+			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
+			// TODO: acá hay un bichito:
+			var nivel = Std.int(Reg.maxLvlRitmo / 3);
+			var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
+			trace (nivel, ejercicio);
+			Reg.nivelRitmoActual = nivel;
+			Reg.ejercicioRitmoActual = ejercicio;
+		}
+			
 		ejercicio = Nivel.niveles[Reg.nivelRitmoActual].ejercicios[Reg.ejercicioRitmoActual];  // Buscamos el nivel que antes se debe haber definido en Reg
 		secuenciaActual = 0; // Arrancamos en la primera secuencia de este ejercicio (Como es un array la primera es la 0)
 		
@@ -73,6 +91,15 @@ class Logica extends BaseJuego
 		definirMenuDesplegable();
 		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelRitmoActual * 3) + Reg.ejercicioRitmoActual)];
 		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
+		for (boton in botonesDeNivel) {
+			// Si el boton pertenece a un nivel ya alcanzado, le ponemos una estrella
+			if (botonesDeNivel.indexOf(boton) <= Reg.maxLvlRitmo)  {
+				
+				var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+				menuDesplegable.add(estrella);
+				estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
+			}
+		}
 		btnMenuDesplegarOnClick();
 	}
 	
@@ -122,15 +149,15 @@ class Logica extends BaseJuego
 				var y = yInicial + (altoBoton + yEspacio) * nivel.ejercicios.indexOf(ejercicio);
 				var boton = new FlxButton(x, y, 'Ejercicio ' + (nivel.ejercicios.indexOf(ejercicio) + 1), function () { 
 									//Inline, para no crear los handlers a mano
-									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
-									Reg.nivelRitmoActual = Nivel.niveles.indexOf(nivel);
-									Reg.ejercicioRitmoActual = nivel.ejercicios.indexOf(ejercicio);
-									FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
-									FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
-										{
-											FlxG.switchState(new Logica());
-										}
-									});
+										Reg.nivelRitmoActual = Nivel.niveles.indexOf(nivel);
+										Reg.ejercicioRitmoActual = nivel.ejercicios.indexOf(ejercicio);
+										trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
+										FlxTween.tween(btnMenuContraer, { x: -btnMenuContraer.width }, 0.1);
+										FlxTween.tween(menuDesplegable, { x: -menuDesplegable.width }, 0.1, {complete: function(tween : FlxTween)
+											{
+												FlxG.switchState(new Logica());
+											}
+										});
 								}
 				);
 				boton.label.setFormat(AssetPaths.carter__ttf, 17);
@@ -206,6 +233,13 @@ class Logica extends BaseJuego
 		add(txtNumeroDeSecuencia);
 		
 		add(botonesInterfaz);
+		
+		
+		// Cartel de bien hecho
+		popupBienHecho = new FlxButton(FlxG.width * 0.45, FlxG.height * 0.3, '', popupBienHechoOnClick);
+		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
+		popupBienHecho.visible = false;
+		add(popupBienHecho);
 	}
 	
 	function actualizarNumeroDeSecuenciaActual() {
@@ -234,10 +268,16 @@ class Logica extends BaseJuego
 			// TODO: Contabilizar el acierto
 			for (i in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) {
 				if (ejercicio.secuencias[secuenciaActual].pulsos[i] != secuenciaUsuario[i]) {
-					errores += 1;
+					errores += Std.int(Math.abs(secuenciaUsuario[i] - ejercicio.secuencias[secuenciaActual].pulsos[i]));
 				}
 			}
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
+			
+			// Si lo hizo asquerosamente mal, su puntuación puede ser negativa, así que directamente eso es un CERO
+			if (resultado < 0) {
+				resultado = 0;
+			}
+			
 			trace("resultado: ", resultado);
 			Reg.puntosRitmo += Std.int(resultado);
 			
@@ -250,32 +290,50 @@ class Logica extends BaseJuego
 			
 			// Avanzamos...
 			if (secuenciaActual == ejercicio.secuencias.length - 1) {
+				puntajeDeEjercicio += resultado;
 				// Si terminó el ejercicio, avanzamos a otro
-				trace('TODO! Se terminó el ejercicio');
+				trace('Se terminó el ejercicio');
 				
-				secuenciaActual = 0;
-				if (Reg.ejercicioRitmoActual == 2) {
-					Reg.ejercicioRitmoActual = 0;
+				momentoFinEjercicio = Date.now();
+				// Calculamos cuántos segundos pasaron desde que empezó (Restamos tiempos y pasamos de milisegundos a segundos)
+				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
+				
+				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idNivelesRitmo[Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual], tiempoDeJuego);
+				
+				if (puntajeDeEjercicio >= 250) {
+					// Sólo ejecuto el código que hace el cambio de nivel si superó el puntaje este
 					
-					if (Reg.nivelRitmoActual == 2) {
-						trace("TODO: No tenemos más niveles. Qué hacemos?");
-						//TODO!
-						FlxG.switchState(new Logo());
-						// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
+					Reg.maxLvlRitmo += 1; // Habilito al usuario para que después pueda cambiar a mano el ejercicio
+					
+					if (Reg.ejercicioRitmoActual == 2) {
+						Reg.ejercicioRitmoActual = 0;
+						
+						if (Reg.nivelRitmoActual == 2) {
+							trace("TODO: No tenemos más niveles. Qué hacemos?");
+							//TODO!
+							FlxG.switchState(new Logo());
+							// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
+						}
+						else {
+							Reg.nivelRitmoActual += 1;
+						}
 					}
 					else {
-						Reg.nivelRitmoActual += 1;
+						Reg.ejercicioRitmoActual += 1;
 					}
+					popupBienHecho.visible = true;  // Mostramos cartel de bien hecho
 				}
-				else {
-					Reg.ejercicioRitmoActual += 1;
-				}
-				// Cambiamos de estado porque el ejercicio es otro ahora
-				FlxG.switchState(new Logica());
+				
+				secuenciaActual = 0;
+				puntajeDeEjercicio = 0;
+				// Cambiamos de estado (ejercicio puede ser otro ahora... O el mismo si no superó puntaje)
+				//FlxG.switchState(new Logica());
 			}
 			else {
 				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
 				secuenciaActual += 1;
+				// Acumulamos el puntaje de la secuencia que se jugó al total del ejercicio
+				puntajeDeEjercicio += resultado;
 			}
 			actualizarNumeroDeSecuenciaActual();
 			inicializarRepresentacionSecuencia();
@@ -301,16 +359,18 @@ class Logica extends BaseJuego
 	function btnToquesOnClick() {
 		// Grabamos en un array
 		if (enCurso) {
-			if (secuenciaUsuario[acumulador] == 0) {	// No permitimos que el usuario registre más de una pulsación por intervalo
 				secuenciaUsuario[acumulador] += 1;
 				FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 				txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 				trace("click");
-			}
 		}
 		else {
 			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 		}
+	}
+	
+	function popupBienHechoOnClick() {
+		popupBienHecho.visible = false;
 	}
 	
 	function btnEscucharOnClick() {
@@ -318,6 +378,11 @@ class Logica extends BaseJuego
 		
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
+		
+		// Cuando el usuario quiere escuchar la primera secuencia del ejercicio, tomamos el tiempo para luego saber cuánto tarda en completar el ejercicio
+		if (secuenciaActual == 0) {
+			momentoInicioEjercicio = Date.now();
+		}
 		
 		// Un timer de duración de intervalo (slot) definida en Niveles, que va a ir reproduciendo si hace falta
 		tmrPrincipal = new FlxTimer(ejercicio.secuencias[secuenciaActual].intervalo, avanceReproduccion, ejercicio.secuencias[secuenciaActual].pulsos.length + 1); // Agregamos un loop extra para el resaltado del último golpe de la secuencia
