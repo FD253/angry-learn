@@ -54,6 +54,7 @@ class Reg
 	];
 	
 	public static var maxLvlRitmo : Int = 0;
+	public static var maxLvlTrazos : Int = 0;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

@@ -46,6 +46,7 @@ class SeleccionUsuario extends BaseEstado
 			switch (app) 
 			{
 				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level);
+				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
 			}
 		}
 	}
