@@ -56,7 +56,23 @@ class Reg
 		'/api/v1/level/15/'
 	];
 	
+	public static var idNivelesKaraoke : Array<String> = [
+		'/api/v1/level/4/',
+		'/api/v1/level/5/',
+		'/api/v1/level/6/',
+		'/api/v1/level/16/',
+		'/api/v1/level/17/',
+		'/api/v1/level/18/',
+		'/api/v1/level/19/',
+		'/api/v1/level/20/',
+		'/api/v1/level/21/',
+		'/api/v1/level/22/',
+		'/api/v1/level/23/',
+		'/api/v1/level/24/'
+	];
+	
 	public static var maxLvlRitmo : Int = 0;
+	public static var maxLvlKaraoke : Int = 0;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

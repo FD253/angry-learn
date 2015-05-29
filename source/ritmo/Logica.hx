@@ -74,8 +74,14 @@ class Logica extends BaseJuego
 		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
 			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
 			// TODO: acá hay un bichito:
+			function Modulo(n : Int, d : Int) : Int {
+				var r = n % d;
+				if(r < 0) r+=d;
+				return r;
+			}
+			var ejercicio = Modulo(Reg.maxLvlRitmo , 3);
 			var nivel = Std.int(Reg.maxLvlRitmo / 3);
-			var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
+			//var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
 			trace (nivel, ejercicio);
 			Reg.nivelRitmoActual = nivel;
 			Reg.ejercicioRitmoActual = ejercicio;
@@ -270,6 +276,11 @@ class Logica extends BaseJuego
 				if (ejercicio.secuencias[secuenciaActual].pulsos[i] != secuenciaUsuario[i]) {
 					errores += Std.int(Math.abs(secuenciaUsuario[i] - ejercicio.secuencias[secuenciaActual].pulsos[i]));
 				}
+				//else {
+					//if (secuenciaUsuario[i] = true) {
+						//errores = Std.int(errores / 2);
+					//}
+				//}
 			}
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			
@@ -299,6 +310,11 @@ class Logica extends BaseJuego
 				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 				
 				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idNivelesRitmo[Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual], tiempoDeJuego);
+				
+				var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+				var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelRitmoActual * 3) + Reg.ejercicioRitmoActual)];
+				menuDesplegable.add(estrella);
+				estrella.setPosition(botonDeEjercicioActual.x - estrella.width * 1.5, botonDeEjercicioActual.y); // La movemos un poco a la izq del boton
 				
 				if (puntajeDeEjercicio >= 250) {
 					// Sólo ejecuto el código que hace el cambio de nivel si superó el puntaje este

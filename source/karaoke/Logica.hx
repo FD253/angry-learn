@@ -61,6 +61,17 @@ class Logica extends BaseJuego {
 	override public function create() {
 		super.create();
 		definirMenuDesplegable();
+		//var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
+		//botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
+		//for (boton in botonesDeNivel) {
+			//// Si el boton pertenece a un nivel ya alcanzado, le ponemos una estrella
+			//if (botonesDeNivel.indexOf(boton) <= Reg.maxLvlRitmo)  {
+				//
+				//var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+				//menuDesplegable.add(estrella);
+				//estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
+			//}
+		//}
 		
 		posicionNivel = 0;
 		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
@@ -327,7 +338,7 @@ class Logica extends BaseJuego {
 	
 	function calcularTiempoEmpleado() {
 		timeFin = Date.now();
-		trace(timeFin.getTime() - timeInicio.getTime());
+		return(timeFin.getTime() - timeInicio.getTime());
 	}
 	
 	
@@ -342,6 +353,9 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
+		
+		ServicioPosta.instancia.postPlay(100.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
+		
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
 			trace('reg.ejKaraoke actual ' + Reg.ejercicioKaraokeActual);
 			trace('Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length)) ' + Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length);
