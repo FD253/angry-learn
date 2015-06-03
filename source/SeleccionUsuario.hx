@@ -45,6 +45,7 @@ class SeleccionUsuario extends BaseEstado
 			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
 			switch (app) 
 			{
+				case Reg.idAppKaraoke :Reg.maxLvlKaraoke = Std.int(maxNivel.higger_level - 1);
 				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level-1);
 				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
 			}
