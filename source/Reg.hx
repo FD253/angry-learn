@@ -1,6 +1,7 @@
 package;
 
 import flixel.util.FlxSave;
+import trazos.Nivel;
 
 /**
  * Handy, pre-built Registry class that can be used to store 
@@ -83,9 +84,18 @@ class Reg
 		'/api/v1/level/30/'		// 9
 	];
 	
+	public static function avanzarLvlTrazos() {
+		if (maxLvlTrazos < (Nivel.niveles.length - 1)) {
+			maxLvlTrazos += 1;
+		}
+	}
+	
 	public static var maxLvlRitmo : Int = 0;
 	public static var maxLvlKaraoke : Int = 0;
 	public static var maxLvlTrazos : Int = 0;
+	
+	public static var umbralTrazos : Float = 75;
+	public static var umbralRitmo : Float = 85;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.
