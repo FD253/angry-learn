@@ -32,6 +32,9 @@ class Logica extends BaseJuego
 	var nivel : Nivel;
 	var enCurso : Bool;
 	
+	var momentoInicioEjercicio : Date;
+	var momentoFinEjercicio : Date;
+	
 	//donde vamos a mostrar lo que dibuja el usuario.
 	var canvas : FlxSprite;
 	var estiloLinea : LineStyle;
@@ -133,11 +136,21 @@ class Logica extends BaseJuego
 		btnMenuDesplegarOnClick();
 	}
 	
-	private function finalizarJuego()
+	private function finalizarJuego(exito : Bool)
+	// El parametro exito es para saber si se finalizó bien, o el usuario soltó el dedo de la pantalla
 	{
 		enCurso = false;
-		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
+		momentoFinEjercicio = Date.now();
 		
+		var puntaje : Float = 0;
+		if (exito) {
+			// Si no soltó el dedo, calculamos el puntaje. Sino queda en cero
+			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
+		}
+		
+		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
+		var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
+		ServicioPosta.instancia.postPlay(puntaje, Reg.idAppTrazos, Reg.idNivelesTrazos[Logica.numeroNivel], tiempoDeJuego);
 	}
 	
 	override public function update() {
@@ -149,6 +162,7 @@ class Logica extends BaseJuego
 			ultimaPosicion.x = FlxG.mouse.x;
 			ultimaPosicion.y = FlxG.mouse.y;
 			enCurso = true;	// Arrancamos
+			momentoInicioEjercicio = Date.now();
 			puntosAcertados = 0;
 			puntosFallados = 0;
 		}
@@ -164,7 +178,7 @@ class Logica extends BaseJuego
 					puntosFallados++;
 				} else if (pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaFin)) {
 					// Si toca el areaFin se finaliza
-					finalizarJuego();
+					finalizarJuego(true);
 				} else {
 					puntosAcertados++;
 				}
@@ -183,7 +197,7 @@ class Logica extends BaseJuego
 					puntosAcertados = 0;
 					puntosFallados = 1;
 					
-					finalizarJuego();
+					finalizarJuego(false); // Perdió por dejar de tocar la pantalla: exito=false
 				}
 			}
 		}
