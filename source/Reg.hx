@@ -71,8 +71,21 @@ class Reg
 		'/api/v1/level/24/'
 	];
 	
+	public static var idNivelesTrazos : Array<String> = [
+		'/api/v1/level/7/', 	// 1
+		'/api/v1/level/8/',		// 2
+		'/api/v1/level/9/',		// 3
+		'/api/v1/level/25/',	// 4
+		'/api/v1/level/26/',	// 5
+		'/api/v1/level/27/',	// 6
+		'/api/v1/level/28/',	// 7
+		'/api/v1/level/29/',	// 8
+		'/api/v1/level/30/'		// 9
+	];
+	
 	public static var maxLvlRitmo : Int = 0;
 	public static var maxLvlKaraoke : Int = 0;
+	public static var maxLvlTrazos : Int = 0;
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

@@ -11,6 +11,7 @@ import ritmo.Nivel;
 import flixel.util.FlxColor;
 import openfl.system.System;
 
+
 enum Juego {
 	Ritmo;
 	Karaoke;

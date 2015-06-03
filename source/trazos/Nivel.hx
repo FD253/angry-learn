@@ -4,6 +4,7 @@ import flixel.util.FlxPoint;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil.LineStyle;
+import flixel.FlxG;
 
 typedef ParamArea = {  // Son los parámetros que definen el área de inicio o fin de un nivel de trazos
 	var x 		: Float;
@@ -23,58 +24,166 @@ typedef ParamNivel = {  // Parámetros que definen el nivel en sí
 class Nivel
 {
 	static var estiloBordeArea = { thickness: null, color: FlxColor.TRANSPARENT };
-	static var estiloRellenoArea = { color: FlxColor.MEDIUM_BLUE };
+	static var estiloRellenoArea = { color: FlxColor.GREEN };
 	
 	public static var niveles = [	// Array<ParamNivel>
 		{	// Nivel 1
-			trazo:  AssetPaths.test_trace__png,
+			trazo:  AssetPaths.n1e1__png,
 			fondo:  null, // Sin fondo
 			inicio: {
-						x: 185,
-						y: 276,
-						radio: 10,
+						x: 3,
+						y: 2,
+						radio: 12,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 488,
-						y: 65,
-						radio: 10,
+						x: 3,
+						y: 288,
+						radio: 12,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 		},
 		{	// Nivel 2
-			trazo:  AssetPaths.test_trace2__png,
+			trazo:  AssetPaths.n1e2__png,
 			fondo:  null, // Sin fondo
 			inicio: {
-						x: 100,
-						y: 300,
-						radio: 10,
+						x: 1,
+						y: 156,
+						radio: 12,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 72,
-						y: 77,
-						radio: 10,
+						x: 286,
+						y: 162,
+						radio: 12,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 		},
 		{	// Nivel 3
-			trazo:  AssetPaths.test_trace3__png,
+			trazo:  AssetPaths.n1e3__png,
 			fondo:  null, // Sin fondo
 			inicio: {
-						x: 35,
-						y: 165,
+						x: 4,
+						y: 260,
 						radio: 10,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 255,
-						y: 155,
+						x: 265,
+						y: 262,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 4
+			trazo:  AssetPaths.n2e1__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 209,
+						y: 7,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 202,
+						y: 241,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 5
+			trazo:  AssetPaths.n2e2__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 5,
+						y: 65,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 521,
+						y: 58,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 6
+			trazo:  AssetPaths.n2e3__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 6,
+						y: 7,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 410,
+						y: 7,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 7
+			trazo:  AssetPaths.n3e1__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 7,
+						y: 192,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 380,
+						y: 382,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 8
+			trazo:  AssetPaths.n3e2__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 5,
+						y: 207,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 629,
+						y: 341,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+		},
+		{	// Nivel 9
+			trazo:  AssetPaths.n3e3__png,
+			fondo:  null, // Sin fondo
+			inicio: {
+						x: 6,
+						y: 35,
+						radio: 10,
+						borde: Nivel.estiloBordeArea,
+						relleno: Nivel.estiloRellenoArea
+					},
+			fin: 	{
+						x: 677,
+						y: 289,
 						radio: 10,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
