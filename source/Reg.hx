@@ -85,4 +85,27 @@ class Reg
 		cosas.pop(); // Descartamos el "nada" de MIERDA que Haxe toma como que hay al final
 		return cosas.pop();
 	}
+	
+	public static function reiniciarMaximos() {
+		nivelRitmoActual = 0;
+		ejercicioRitmoActual = 0;
+		nivelKaraokeActual = 0;
+		ejercicioKaraokeActual = 0;
+	
+		puntosTrazos = 0;
+		puntosRitmo = 0;
+		puntosKaraoke = 0;
+		
+	}
+	
+	public static function setearModoLibre() {
+		usuarioActual = "";
+		//nivelRitmoActual = 0;
+		//ejercicioRitmoActual = 0;
+		//nivelKaraokeActual = 0;
+		//ejercicioKaraokeActual = 0;
+		
+		maxLvlRitmo = 8;
+		maxLvlKaraoke = 11;
+	}
 }

@@ -38,6 +38,7 @@ class MenuPrincipal extends BaseEstado
 		var btnReiniciar = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
 									   FlxG.width * 0.015,	// 1.5% del ancho del juego
 									   function() {
+										   Reg.reiniciarMaximos();
 										   FlxG.resetGame();
 										   });
 

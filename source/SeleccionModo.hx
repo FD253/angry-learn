@@ -40,6 +40,7 @@ class SeleccionModo extends BaseEstado
 	
 	function btnModoLibreOnClick()
 	{
+		Reg.setearModoLibre();
 		Reg.modoDeJuego = Reg.LIBRE;
 		FlxG.switchState(new MenuPrincipal());
 	}

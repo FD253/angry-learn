@@ -55,23 +55,39 @@ class Logica extends BaseJuego {
 	var posicionDentroEjercicio: Int;
 	var offset :Int; //compensa lo ya pintado
 	
-
+	var botonesDeNivel : Array<FlxButton>;
 	
 	
 	override public function create() {
 		super.create();
+		
+		if ((Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual) > Reg.maxLvlKaraoke) {
+			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
+			// TODO: acá hay un bichito:
+			function Modulo(n : Int, d : Int) : Int {
+				var r = n % d;
+				if(r < 0) r+=d;
+				return r;
+			}
+			var ejercicio = Modulo(Reg.maxLvlKaraoke , 3);
+			var nivel = Std.int(Reg.maxLvlKaraoke / 3);
+			//var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
+			trace (nivel, ejercicio);
+			Reg.nivelKaraokeActual = nivel;
+			Reg.ejercicioKaraokeActual = ejercicio;
+		}
+		
 		definirMenuDesplegable();
-		//var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
-		//botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
-		//for (boton in botonesDeNivel) {
-			//// Si el boton pertenece a un nivel ya alcanzado, le ponemos una estrella
-			//if (botonesDeNivel.indexOf(boton) <= Reg.maxLvlRitmo)  {
-				//
-				//var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
-				//menuDesplegable.add(estrella);
-				//estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
-			//}
-		//}
+		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
+		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
+		for (boton in botonesDeNivel) {
+			// Si el boton pertenece a un nivel ya alcanzado, le ponemos una estrella
+			if (botonesDeNivel.indexOf(boton) <= Reg.maxLvlKaraoke)  {
+				var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+				menuDesplegable.add(estrella);
+				estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
+			}
+		}
 		
 		posicionNivel = 0;
 		var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
@@ -140,6 +156,7 @@ class Logica extends BaseJuego {
 	// PRIVATE METHODS
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable_karaoke__png));
+		botonesDeNivel = new Array<FlxButton>();
 		var xInicial = menuDesplegable.width * 0.15;
 		var yInicial = menuDesplegable.height * 0.3;
 		var altoBoton = 32;
@@ -171,7 +188,7 @@ class Logica extends BaseJuego {
 				//boton.label.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 1.9, 1);
 				boton.loadGraphic(AssetPaths.boton_ejercicio__png);
 				menuDesplegable.add(boton);
-				
+				botonesDeNivel.push(boton); // Lo ponemos en un array para luego marcarlo segun se completan los lvls
 			}
 		}
 	}
