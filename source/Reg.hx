@@ -130,5 +130,6 @@ class Reg
 		
 		maxLvlRitmo = 8;
 		maxLvlKaraoke = 11;
+		maxLvlTrazos = 8;
 	}
 }
