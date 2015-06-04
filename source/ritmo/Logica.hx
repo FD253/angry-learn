@@ -54,6 +54,7 @@ class Logica extends BaseJuego
 	var btnToques : FlxButton;
 	
 	var popupBienHecho : FlxButton;
+	var popupMalHecho : FlxButton;
 	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
@@ -242,10 +243,20 @@ class Logica extends BaseJuego
 		
 		
 		// Cartel de bien hecho
-		popupBienHecho = new FlxButton(FlxG.width * 0.45, FlxG.height * 0.3, '', popupBienHechoOnClick);
+		popupBienHecho = new FlxButton(0, 0, '', popupBienHechoOnClick);
 		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
+		popupBienHecho.updateHitbox();
+		popupBienHecho.setPosition(FlxG.width - popupBienHecho.width * 1.2, FlxG.height - popupBienHecho.height * 1.2);
 		popupBienHecho.visible = false;
 		add(popupBienHecho);
+		
+		// Cartel de mal hecho
+		popupMalHecho = new FlxButton(0, 0, '', popupMalHechoOnClick);
+		popupMalHecho.loadGraphic(AssetPaths.popup_ejercicio_mal__png);
+		popupMalHecho.updateHitbox();
+		popupMalHecho.setPosition(FlxG.width - popupMalHecho.width * 1.2, FlxG.height - popupMalHecho.height * 1.2);
+		popupMalHecho.visible = false;
+		add(popupMalHecho);
 	}
 	
 	function actualizarNumeroDeSecuenciaActual() {
@@ -309,7 +320,8 @@ class Logica extends BaseJuego
 				// Calculamos cuántos segundos pasaron desde que empezó (Restamos tiempos y pasamos de milisegundos a segundos)
 				var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 				
-				ServicioPosta.instancia.postPlay(puntajeDeEjercicio, Reg.idAppRitmo, Reg.idNivelesRitmo[Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual], tiempoDeJuego);
+				// Dividimos el puntaje de ejercicio porque el puntaje es la suma de las 3 secuencias que como máximo dan 300
+				ServicioPosta.instancia.postPlay(puntajeDeEjercicio / 3, Reg.idAppRitmo, Reg.idNivelesRitmo[Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual], tiempoDeJuego);
 				
 				var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
 				var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelRitmoActual * 3) + Reg.ejercicioRitmoActual)];
@@ -338,6 +350,9 @@ class Logica extends BaseJuego
 						Reg.ejercicioRitmoActual += 1;
 					}
 					popupBienHecho.visible = true;  // Mostramos cartel de bien hecho
+				}
+				else {
+					popupMalHecho.visible = true;
 				}
 				
 				secuenciaActual = 0;
@@ -381,12 +396,16 @@ class Logica extends BaseJuego
 				trace("click");
 		}
 		else {
-			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+			//FlxG.sound.play(AssetPaths.ritmo_bell__wav);
 		}
 	}
 	
 	function popupBienHechoOnClick() {
 		popupBienHecho.visible = false;
+	}
+	
+	function popupMalHechoOnClick()	{
+		popupMalHecho.visible = false;
 	}
 	
 	function btnEscucharOnClick() {

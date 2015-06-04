@@ -61,22 +61,9 @@ class Logica extends BaseJuego {
 	override public function create() {
 		super.create();
 		
-		if ((Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual) > Reg.maxLvlKaraoke) {
-			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
-			// TODO: acá hay un bichito:
-			function Modulo(n : Int, d : Int) : Int {
-				var r = n % d;
-				if(r < 0) r+=d;
-				return r;
-			}
-			var ejercicio = Modulo(Reg.maxLvlKaraoke , 3);
-			var nivel = Std.int(Reg.maxLvlKaraoke / 3);
-			//var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
-			trace (nivel, ejercicio);
-			Reg.nivelKaraokeActual = nivel;
-			Reg.ejercicioKaraokeActual = ejercicio;
-		}
+		setearNivelEjercicioDesdeMaxLevel();
 		
+		trace(Reg.ejercicioKaraokeActual, Reg.nivelKaraokeActual);
 		definirMenuDesplegable();
 		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
 		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
@@ -124,7 +111,7 @@ class Logica extends BaseJuego {
 		
 		mostrarBtnsTipoLetra();
 		
-		btnIncorrecto = new FlxUIButton(650, 160 , null, ejercicioIncorrecto);
+		btnIncorrecto = new FlxUIButton(550, 160 , null, ejercicioIncorrecto);
 		btnIncorrecto.loadGraphic(AssetPaths.incorrecto__png);
 		add(btnIncorrecto); 
 		ocultarBtnIncorrecto();
@@ -134,12 +121,12 @@ class Logica extends BaseJuego {
 		add(btnComenzar);
 		ocultarBtnComenzar();
 		
-		btnCorrecto = new FlxUIButton(550, 160, null, ejercicioCorrecto);
+		btnCorrecto = new FlxUIButton(650, 160, null, ejercicioCorrecto);
 		btnCorrecto.loadGraphic(AssetPaths.correcto__png);
 		ocultarBtnCorrecto();
 		add(btnCorrecto);
 		
-		btnCorrectoParcial = new FlxUIButton(550, 160, null, subEjercicioCorrecto);
+		btnCorrectoParcial = new FlxUIButton(650, 160, null, subEjercicioCorrecto);
 		btnCorrectoParcial.loadGraphic(AssetPaths.correcto__png);
 		//btnCorrectoParcial.visible = false;
 		add(btnCorrectoParcial);
@@ -154,6 +141,24 @@ class Logica extends BaseJuego {
 	}
 	
 	// PRIVATE METHODS
+	function setearNivelEjercicioDesdeMaxLevel(){
+		if ((Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual) > Reg.maxLvlKaraoke) {
+			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
+			// TODO: acá hay un bichito:
+			function Modulo(n : Int, d : Int) : Int {
+				var r = n % d;
+				if(r < 0) r+=d;
+				return r;
+			}
+			var ejercicio = Modulo(Reg.maxLvlKaraoke , 3);
+			var nivel = Std.int(Reg.maxLvlKaraoke / 3);
+			//var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
+			trace (nivel, ejercicio);
+			Reg.nivelKaraokeActual = nivel;
+			Reg.ejercicioKaraokeActual = ejercicio;
+		}
+	}
+	
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable_karaoke__png));
 		botonesDeNivel = new Array<FlxButton>();
@@ -372,6 +377,7 @@ class Logica extends BaseJuego {
 		reiniciarPosicionDentroEjercicio();
 		
 		ServicioPosta.instancia.postPlay(100.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
+		Reg.maxLvlKaraoke += 1;
 		
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
 			trace('reg.ejKaraoke actual ' + Reg.ejercicioKaraokeActual);
@@ -385,7 +391,8 @@ class Logica extends BaseJuego {
 			mostrarBtnsTipoLetra();
 		}
 		else {
-			FlxG.switchState(new MenuPrincipal());
+			setearNivelEjercicioDesdeMaxLevel();
+			FlxG.switchState(new Logica());
 		}
 		
 	}
@@ -435,6 +442,7 @@ class Logica extends BaseJuego {
 		reiniciarBtnsTipoLetra();
 		//mostrarBtnComenzar();
 		reinciarOffset();
+		ServicioPosta.instancia.postPlay(0.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 	}
 
 	function guardarPosDentroItem(pos:Int) {

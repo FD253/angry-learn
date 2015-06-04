@@ -17,7 +17,16 @@ class SeleccionUsuario extends BaseEstado
 	override public function create() 
 	{
 		super.create();
-
+		var btnReiniciar = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
+											   FlxG.width * 0.015,	// 1.5% del ancho del juego
+											   function() {
+												   Reg.reiniciarMaximos();
+												   FlxG.resetGame();
+												   });
+		btnReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
+		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.7));
+		btnReiniciar.updateHitbox();
+		add(btnReiniciar);
 		ServicioPosta.instancia.obtenerUsuarios(this);
 	}
 	
@@ -45,6 +54,7 @@ class SeleccionUsuario extends BaseEstado
 			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
 			switch (app) 
 			{
+				case Reg.idAppKaraoke :Reg.maxLvlKaraoke = Std.int(maxNivel.higger_level - 1);
 				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level-1);
 				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
 			}

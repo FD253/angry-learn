@@ -108,42 +108,44 @@ class ServicioPosta {
 	static var timeoutTimer : FlxTimer;
 	
 	public function postPlay(puntaje : Float, appId : String, levelId : String, usedTime : Float):Void {
-		var cargador:URLLoader = new URLLoader();
-		cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
-		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
-			FlxG.resetGame(); // Si el server no se pudo alcanzar guardando el juego, chau
-		});//ioErrorHandler);
-		cargador.addEventListener(Event.OPEN, openHandler);
-		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
-		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_play ; //+ '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
-		trace(ruta);
-		var params : Dynamic = { };
-		params.device_app_version = Reg.deviceAppVersion;
-		params.device_id = Reg.deviceId;
-		params.player = Reg.usuarioActual;
-		params.play_date = Date.now().toString(); // Se jugó cuando se envió. No guardamos datos offline
-		
-		params.app = appId;
-		params.level = levelId;
-        params.used_time = Std.string(Std.int(usedTime));
-		params.result = Std.string(Std.int(puntaje));
-		
-		//params.id = Math.ceil(Math.random() * 100);
-		//params.id = 41;
-		
-		trace(params);
-		trace(Json.stringify(params));
-		
-		var request:URLRequest = new URLRequest(ruta);
-        request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + api_key));
-		request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
-		request.method = URLRequestMethod.POST;
-		request.data = Json.stringify(params);
-		trace(request.data);
+		if (Reg.usuarioActual != "") { //Si existe usuario actual (se está usando el modo registrado)
+			var cargador:URLLoader = new URLLoader();
+			cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
+			cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+			cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
+				FlxG.resetGame(); // Si el server no se pudo alcanzar guardando el juego, chau
+			});//ioErrorHandler);
+			cargador.addEventListener(Event.OPEN, openHandler);
+			cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+			cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+			var ruta : String = ruta_base + ruta_play ; //+ '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+			trace(ruta);
+			var params : Dynamic = { };
+			params.device_app_version = Reg.deviceAppVersion;
+			params.device_id = Reg.deviceId;
+			params.player = Reg.usuarioActual;
+			params.play_date = Date.now().toString(); // Se jugó cuando se envió. No guardamos datos offline
+			
+			params.app = appId;
+			params.level = levelId;
+			params.used_time = Std.string(Std.int(usedTime));
+			params.result = Std.string(Std.int(puntaje));
+			
+			//params.id = Math.ceil(Math.random() * 100);
+			//params.id = 41;
+			
+			trace(params);
+			trace(Json.stringify(params));
+			
+			var request:URLRequest = new URLRequest(ruta);
+			request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + api_key));
+			request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
+			request.method = URLRequestMethod.POST;
+			request.data = Json.stringify(params);
+			trace(request.data);
 
-		cargador.load(request);
+			cargador.load(request);
+		}
 	}
 	
 	//public function parchearJuego():Void {

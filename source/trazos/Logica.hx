@@ -35,6 +35,9 @@ class Logica extends BaseJuego
 	var momentoInicioEjercicio : Date;
 	var momentoFinEjercicio : Date;
 	
+	var popupBienHecho : FlxButton;
+	var popupMalHecho : FlxButton;
+	
 	//donde vamos a mostrar lo que dibuja el usuario.
 	var canvas : FlxSprite;
 	var estiloLinea : LineStyle;
@@ -58,6 +61,8 @@ class Logica extends BaseJuego
 		nivel.spriteTrazo.setPosition((FlxG.width - nivel.spriteTrazo.width) / 2, alturaDelTrazo);
 		nivel.areaInicio.setPosition(nivel.spriteTrazo.x + nivel.areaInicio.x * escala, nivel.spriteTrazo.y + nivel.areaInicio.y * escala);
 		nivel.areaFin.setPosition(nivel.spriteTrazo.x + nivel.areaFin.x * escala, nivel.spriteTrazo.y + nivel.areaFin.y * escala);
+		nivel.areaInicio.updateHitbox();
+		nivel.areaFin.updateHitbox();
 		
 		add(nivel.areaInicio);
 		add(nivel.areaFin);
@@ -82,6 +87,22 @@ class Logica extends BaseJuego
 		members.unshift(nivel.spriteTrazo);
 		members.unshift(nivel.spriteFondo);
 		// END NOTE>
+		
+		// Cartel de bien hecho
+		popupBienHecho = new FlxButton(0, 0, '', popupBienHechoOnClick);
+		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
+		popupBienHecho.updateHitbox();
+		popupBienHecho.setPosition(FlxG.width - popupBienHecho.width * 1.2, FlxG.height - popupBienHecho.height * 1.2);
+		popupBienHecho.visible = false;
+		add(popupBienHecho);
+		
+		// Cartel de mal hecho
+		popupMalHecho = new FlxButton(0, 0, '', popupMalHechoOnClick);
+		popupMalHecho.loadGraphic(AssetPaths.popup_ejercicio_mal__png);
+		popupMalHecho.updateHitbox();
+		popupMalHecho.setPosition(FlxG.width - popupMalHecho.width * 1.2, FlxG.height - popupMalHecho.height * 1.2);
+		popupMalHecho.visible = false;
+		add(popupMalHecho);
 		
 		// Le damos un fondo al menú desplegable
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
@@ -136,9 +157,8 @@ class Logica extends BaseJuego
 		btnMenuDesplegarOnClick();
 	}
 	
-	private function finalizarJuego(exito : Bool)
+	private function finalizarJuego(exito : Bool) {
 	// El parametro exito es para saber si se finalizó bien, o el usuario soltó el dedo de la pantalla
-	{
 		enCurso = false;
 		momentoFinEjercicio = Date.now();
 		
@@ -146,11 +166,37 @@ class Logica extends BaseJuego
 		if (exito) {
 			// Si no soltó el dedo, calculamos el puntaje. Sino queda en cero
 			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
+			if (puntaje >= 70) {
+				// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
+				popupBienHecho.visible = true;
+				if (Logica.numeroNivel == Reg.maxLvlTrazos) {
+					// Sólo si estamos en el lvl más alto avanzamos
+					Reg.avanzarLvlTrazos();
+				}
+			}
+			else {
+				popupMalHecho.visible = true;
+			}
+		}
+		else {
+			puntaje = 0;
+			popupMalHecho.visible = true;
 		}
 		
 		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
 		var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 		ServicioPosta.instancia.postPlay(puntaje, Reg.idAppTrazos, Reg.idNivelesTrazos[Logica.numeroNivel], tiempoDeJuego);
+	}
+	
+	function popupBienHechoOnClick() {
+		popupBienHecho.visible = false;
+		// Cuando se le da al popup se recarga el nivel actual
+		FlxG.switchState(new Logica());
+	}
+	
+	function popupMalHechoOnClick()	{
+		popupMalHecho.visible = false;
+		FlxG.switchState(new Logica());
 	}
 	
 	override public function update() {
