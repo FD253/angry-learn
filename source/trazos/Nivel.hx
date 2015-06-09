@@ -85,16 +85,16 @@ class Nivel
 			trazo:  AssetPaths.n2e1__png,
 			fondo:  null, // Sin fondo
 			inicio: {
-						x: 209,
-						y: 7,
-						radio: 10,
+						x: 309,
+						y: 3,
+						radio: 19,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 202,
-						y: 241,
-						radio: 10,
+						x: 309,
+						y: 357,
+						radio: 19,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
@@ -103,16 +103,16 @@ class Nivel
 			trazo:  AssetPaths.n2e2__png,
 			fondo:  null, // Sin fondo
 			inicio: {
-						x: 5,
-						y: 65,
-						radio: 10,
+						x: 4,
+						y: 87,
+						radio: 22,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 521,
-						y: 58,
-						radio: 10,
+						x: 781,
+						y: 87,
+						radio: 22,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
@@ -122,15 +122,15 @@ class Nivel
 			fondo:  null, // Sin fondo
 			inicio: {
 						x: 6,
-						y: 7,
-						radio: 10,
+						y: 4,
+						radio: 22,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
 			fin: 	{
-						x: 410,
-						y: 7,
-						radio: 10,
+						x: 615,
+						y: 4,
+						radio: 22,
 						borde: Nivel.estiloBordeArea,
 						relleno: Nivel.estiloRellenoArea
 					},
