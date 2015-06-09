@@ -84,11 +84,11 @@ class ServicioPosta {
 	}
 	
 	
-	public function obtenerUsuarios(pantalla : SeleccionUsuario) : Void {
+	public function obtenerUsuarios(callback : Event -> Void, onErrorHandler : Event -> Void) : Void {
 		var cargador:URLLoader = new URLLoader();
-		cargador.addEventListener(Event.COMPLETE, pantalla.mostrarUsuarios);
+		cargador.addEventListener(Event.COMPLETE, callback);
 		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		cargador.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler);
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);

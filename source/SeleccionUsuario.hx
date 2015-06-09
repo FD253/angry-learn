@@ -1,4 +1,6 @@
 package ;
+import flixel.FlxSprite;
+import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.FlxG;
@@ -7,12 +9,14 @@ import flash.events.Event;
 import haxe.Json;
 import flixel.util.FlxColor;
 import StringTools;
+import flixel.addons.ui.FlxUIPopup;
 
 
 
 class SeleccionUsuario extends BaseEstado
 {
 	var btnBlah : FlxButton;
+	var mensajeError : FlxSpriteGroup = new FlxSpriteGroup();
 	
 	override public function create() 
 	{
@@ -27,7 +31,27 @@ class SeleccionUsuario extends BaseEstado
 		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.7));
 		btnReiniciar.updateHitbox();
 		add(btnReiniciar);
-		ServicioPosta.instancia.obtenerUsuarios(this);
+		
+		
+		var textoError = new FlxText(0, 0, FlxG.width, "HAY PROBLEMAS PARA CONECTARSE A INTERNET", 48);
+		textoError.font = AssetPaths.carter__ttf;	
+		textoError.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		textoError.autoSize = false;
+		textoError.alignment = "center";
+		textoError.fieldWidth = FlxG.width;
+		textoError.updateHitbox();
+		mensajeError.add(textoError);		
+		
+		var imagenError = new FlxSprite(0, 0, AssetPaths.error_red__png);
+		mensajeError.add(imagenError);
+		imagenError.setPosition((mensajeError.width - imagenError.width) / 2, textoError.height * 1.2);
+		
+		mensajeError.visible = false;
+		mensajeError.setPosition((FlxG.width - mensajeError.width) / 2, FlxG.height * 0.3);
+		
+		add(mensajeError);
+		
+		ServicioPosta.instancia.obtenerUsuarios(mostrarUsuarios, mostrarError);
 	}
 	
 	public function setearPuntaje(e: Event) {
@@ -59,6 +83,10 @@ class SeleccionUsuario extends BaseEstado
 				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
 			}
 		}
+	}
+	
+	public function mostrarError(e : Event) {
+		mensajeError.visible = true;
 	}
 	
 	public function mostrarUsuarios(e : Event) {
