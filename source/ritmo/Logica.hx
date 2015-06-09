@@ -71,7 +71,7 @@ class Logica extends BaseJuego
 	override public function create() {
 		super.create();
 		trace('creating state');
-		
+	    agregarTitulo("RITMO LECTOR");	
 		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
 			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
 			// TODO: acá hay un bichito:
@@ -180,16 +180,6 @@ class Logica extends BaseJuego
 	function agregarInterfaz() {
 		var mitadAncho = FlxG.width / 2;
 		var alturaBotonesSuperiores = 75;
-		
-		// Nombre del juego
-		var nombreJuego = new FlxText(0, encabezado.height * 0.25);
-		nombreJuego.size = 38; // HARDCODED
-		nombreJuego.text = "RITMO LECTOR";
-		nombreJuego.font = AssetPaths.carter__ttf;
-		nombreJuego.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
-		nombreJuego.x = FlxG.width / 2 - nombreJuego.fieldWidth / 2;	// Centramos al medio, manteniendo la altura
-		add(nombreJuego);
-		
 		
 		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
 		

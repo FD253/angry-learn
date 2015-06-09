@@ -53,7 +53,7 @@ class Logica extends BaseJuego
 		super.create();
 		var alturaDelTrazo : Int = 120;
 		var escala : Float = 1;
-		
+	    agregarTitulo("SIGUE EL TRAZO");
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
 		
 		nivel.spriteTrazo.setGraphicSize(Std.int(escala * nivel.spriteTrazo.width));
