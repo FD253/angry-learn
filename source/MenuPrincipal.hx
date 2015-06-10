@@ -21,6 +21,7 @@ enum Juego {
 class MenuPrincipal extends BaseEstado
 {
 	var juegoSeleccionado : Juego;
+	var previewJuego : FlxSprite = new FlxSprite();
 	
 	var panelNiveles : FlxSpriteGroup;
 	var btnIniciarJuego : FlxButton;
@@ -57,6 +58,9 @@ class MenuPrincipal extends BaseEstado
 		panelNiveles.setPosition(FlxG.width - panelNiveles.width - FlxG.width * 0.08, // Un cacho más a la izquierda del borde derecho
 								 FlxG.height * 0.15);
 		add(panelNiveles);
+		
+		previewJuego.visible = false;
+		add(previewJuego);
 		
 		var textSize = 30;
 		var espacioEntreBotones = 15;
@@ -142,7 +146,21 @@ class MenuPrincipal extends BaseEstado
 		juegoSeleccionado = null;
 	}
 	
+	function mostrarPreview(imagen : String) {
+		previewJuego.loadGraphic(imagen);
+		previewJuego.updateHitbox();
+		
+		var anchoEspacio = panelNiveles.x * 0.9; // El 80% del espacio a la izquierda del panel de botones de nivel
+		var mitadPanelNiveles = panelNiveles.y + panelNiveles.height / 2;
+		
+		previewJuego.setPosition((anchoEspacio - previewJuego.width) / 2, mitadPanelNiveles - previewJuego.height / 2);
+		
+		previewJuego.visible = true;
+	}
+	
 	function btnKaraokeOnClick() {
+		mostrarPreview(AssetPaths.preview_karaoke__png);
+		
 		btnKaraoke.loadGraphic(AssetPaths.selector_seleccionado__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_gris__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_gris__png);
@@ -154,6 +172,8 @@ class MenuPrincipal extends BaseEstado
 	}
 	
 	function btnTrazosOnClick() {
+		mostrarPreview(AssetPaths.preview_trazos__png);
+
 		btnKaraoke.loadGraphic(AssetPaths.selector_gris__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_seleccionado__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_gris__png);
@@ -165,6 +185,8 @@ class MenuPrincipal extends BaseEstado
 	}
 	
 	function btnRitmoOnClick() {
+		mostrarPreview(AssetPaths.preview_ritmo__png);
+
 		btnKaraoke.loadGraphic(AssetPaths.selector_gris__png);
 		btnTrazos.loadGraphic(AssetPaths.selector_gris__png);
 		btnRitmo.loadGraphic(AssetPaths.selector_seleccionado__png);
@@ -212,6 +234,7 @@ class MenuPrincipal extends BaseEstado
 			// Si no se fuera del panel selector, reiniciar las imágenes de los botones
 			trace('click fuera del panel');
 			reiniciarBotones();
+			previewJuego.visible = false;
 		}
 		#end
 	}

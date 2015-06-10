@@ -94,7 +94,7 @@ class Reg
 	public static var maxLvlKaraoke : Int = 0;
 	public static var maxLvlTrazos : Int = 0;
 	
-	public static var umbralTrazos : Float = 75;
+	public static var umbralTrazos : Float = 97;
 	public static var umbralRitmo : Float = 85;
 	
 	/**
