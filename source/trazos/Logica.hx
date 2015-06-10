@@ -54,7 +54,12 @@ class Logica extends BaseJuego
 		var alturaDelTrazo : Int = 120;
 		var escala : Float = 1;
 		
+		if (Logica.numeroNivel > Reg.maxLvlTrazos) {
+			// No dejamos iniciar el juego en un nivel más alto que el máximo alcanzado
+			Logica.numeroNivel = Reg.maxLvlTrazos;
+		}
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
+		
 		
 		nivel.spriteTrazo.setGraphicSize(Std.int(escala * nivel.spriteTrazo.width));
 		nivel.spriteTrazo.updateHitbox();
@@ -202,8 +207,10 @@ class Logica extends BaseJuego
 	override public function update() {
 		super.update();
 		
-		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio)) {
-			// Si el juego no arrancó y se pisó el area de inicio
+		var popupVisible = (popupBienHecho.visible || popupMalHecho.visible);
+		
+		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio) && !popupVisible) {
+			// Si el juego no arrancó, se pisó el area de inicio y no hay cartel de fin de juego visible
 			trace("Juego iniciado");
 			ultimaPosicion.x = FlxG.mouse.x;
 			ultimaPosicion.y = FlxG.mouse.y;
