@@ -110,7 +110,7 @@ class SeleccionUsuario extends BaseEstado
 				btnUsuario.x = (FlxG.width / 2) - (btnUsuario.width / 2);
 				btnUsuario.y = FlxG.height * 0.23 + altura;
 				var txtUsuario = new FlxText(btnUsuario.x + btnUsuario.width * 0.25,
-									 btnUsuario.y, 0, usuario.username, textSize);
+									 btnUsuario.y, 0, usuario.first_name, textSize);
 				txtUsuario.font = AssetPaths.carter__ttf;
 				txtUsuario.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
 				txtUsuario.y = btnUsuario.y + (btnUsuario.height / 2) - (txtUsuario.height / 2) - (txtUsuario.size * 0.3);

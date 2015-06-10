@@ -35,7 +35,7 @@ class Reg
 	
 	// API
 	public static var usuarioActual : String;
-	public static var idsUsuario : Array<Int> = [3, 4];
+	public static var idsUsuario : Array<Int> = [3, 4, 6, 7];
 	
 	
 	public static var deviceId : String = 'TESTDEVICE';
@@ -94,7 +94,7 @@ class Reg
 	public static var maxLvlKaraoke : Int = 0;
 	public static var maxLvlTrazos : Int = 0;
 	
-	public static var umbralTrazos : Float = 97;
+	public static var umbralTrazos : Float = 75;
 	public static var umbralRitmo : Float = 85;
 	
 	/**
