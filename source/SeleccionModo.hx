@@ -1,8 +1,12 @@
 package ;
+import flixel.addons.ui.FlxInputText;
 import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import openfl.text.TextField;
+import openfl.text.TextFieldType;
+import openfl.text.TextFormat;
 
 
 class SeleccionModo extends BaseEstado
@@ -36,6 +40,23 @@ class SeleccionModo extends BaseEstado
 		txtModoRegistrado.y = btnModoRegistrado.y + (btnModoRegistrado.height / 2) - (txtModoRegistrado.height / 2) - (txtModoRegistrado.size * 0.3);
 		add(btnModoRegistrado);
 		add(txtModoRegistrado);
+		
+		var textfield = new TextField();
+		textfield.x = 50;
+        textfield.y = 50;
+        textfield.type = TextFieldType.INPUT;
+        textfield.textColor = 0x000000;
+        textfield.border = true;
+        textfield.borderColor = 0xFFFF00;
+        textfield.background = true;
+        textfield.backgroundColor = 0xFFFFFF;
+        textfield.width = 200;
+        textfield.height = 40;
+        textfield.setTextFormat(new TextFormat(null, 32));
+		
+		textfield.needsSoftKeyboard = true;
+		
+		//FlxG.addChildBelowMouse(textfield);
 	}
 	
 	function btnModoLibreOnClick()
