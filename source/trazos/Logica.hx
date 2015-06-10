@@ -35,8 +35,9 @@ class Logica extends BaseJuego
 	var momentoInicioEjercicio : Date;
 	var momentoFinEjercicio : Date;
 	
-	var popupBienHecho : FlxButton;
-	var popupMalHecho : FlxButton;
+	var popupBienHecho : FlxSprite;
+	var popupMalHecho : FlxSprite;
+	var botonPopup : FlxButton;
 	
 	//donde vamos a mostrar lo que dibuja el usuario.
 	var canvas : FlxSprite;
@@ -53,11 +54,12 @@ class Logica extends BaseJuego
 		super.create();
 		var alturaDelTrazo : Int = 120;
 		var escala : Float = 1;
-		
+
 		if (Logica.numeroNivel > Reg.maxLvlTrazos) {
 			// No dejamos iniciar el juego en un nivel más alto que el máximo alcanzado
 			Logica.numeroNivel = Reg.maxLvlTrazos;
 		}
+	    agregarTitulo("SIGUE EL TRAZO");
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
 		
 		
@@ -94,20 +96,24 @@ class Logica extends BaseJuego
 		// END NOTE>
 		
 		// Cartel de bien hecho
-		popupBienHecho = new FlxButton(0, 0, '', popupBienHechoOnClick);
-		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
-		popupBienHecho.updateHitbox();
-		popupBienHecho.setPosition(FlxG.width - popupBienHecho.width * 1.2, FlxG.height - popupBienHecho.height * 1.2);
+		popupBienHecho = new FlxSprite(0, 0, AssetPaths.popup_ejercicio_bien__png);
+		popupBienHecho.setPosition(FlxG.width / 2 - popupBienHecho.width, (FlxG.height - popupBienHecho.height) * 0.4);
 		popupBienHecho.visible = false;
 		add(popupBienHecho);
 		
 		// Cartel de mal hecho
-		popupMalHecho = new FlxButton(0, 0, '', popupMalHechoOnClick);
-		popupMalHecho.loadGraphic(AssetPaths.popup_ejercicio_mal__png);
+		popupMalHecho = new FlxSprite(0, 0, AssetPaths.popup_ejercicio_mal__png);
 		popupMalHecho.updateHitbox();
-		popupMalHecho.setPosition(FlxG.width - popupMalHecho.width * 1.2, FlxG.height - popupMalHecho.height * 1.2);
+		popupMalHecho.setPosition(FlxG.width / 2 - popupMalHecho.width, (FlxG.height - popupMalHecho.height) * 0.4);
 		popupMalHecho.visible = false;
 		add(popupMalHecho);
+		
+		botonPopup = new FlxButton(0, 0, '', botonPopupOnClick);
+		botonPopup.loadGraphic(AssetPaths.tilde__png);
+		botonPopup.updateHitbox();
+		botonPopup.setPosition(popupBienHecho.x + popupBienHecho.width - botonPopup.width / 2, popupBienHecho.y * 1.1);
+		botonPopup.visible = false;
+		add(botonPopup);
 		
 		// Le damos un fondo al menú desplegable
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
@@ -171,21 +177,21 @@ class Logica extends BaseJuego
 		if (exito) {
 			// Si no soltó el dedo, calculamos el puntaje. Sino queda en cero
 			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
-			if (puntaje >= 70) {
+			if (puntaje >= Reg.umbralTrazos) {
 				// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
-				popupBienHecho.visible = true;
+				mostrarBienHecho();
 				if (Logica.numeroNivel == Reg.maxLvlTrazos) {
 					// Sólo si estamos en el lvl más alto avanzamos
 					Reg.avanzarLvlTrazos();
 				}
 			}
 			else {
-				popupMalHecho.visible = true;
+				mostrarMalHecho();
 			}
 		}
 		else {
 			puntaje = 0;
-			popupMalHecho.visible = true;
+			mostrarMalHecho();
 		}
 		
 		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
@@ -193,15 +199,22 @@ class Logica extends BaseJuego
 		ServicioPosta.instancia.postPlay(puntaje, Reg.idAppTrazos, Reg.idNivelesTrazos[Logica.numeroNivel], tiempoDeJuego);
 	}
 	
-	function popupBienHechoOnClick() {
-		popupBienHecho.visible = false;
-		// Cuando se le da al popup se recarga el nivel actual
+	function botonPopupOnClick() {
 		FlxG.switchState(new Logica());
 	}
 	
-	function popupMalHechoOnClick()	{
-		popupMalHecho.visible = false;
-		FlxG.switchState(new Logica());
+	function mostrarBienHecho() {
+		popupBienHecho.visible = true;
+		botonPopup.loadGraphic(AssetPaths.tilde__png);
+		botonPopup.updateHitbox();
+		botonPopup.visible = true;
+	}
+	
+	function mostrarMalHecho() {
+		popupMalHecho.visible = true;
+		botonPopup.loadGraphic(AssetPaths.cruz__png);
+		botonPopup.updateHitbox();
+		botonPopup.visible = true;
 	}
 	
 	override public function update() {

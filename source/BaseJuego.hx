@@ -4,7 +4,8 @@ import flixel.FlxState;
 import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.group.FlxSpriteGroup;
-
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 
 
@@ -36,7 +37,17 @@ class BaseJuego extends BaseEstado
 		
 		agregarMenuDesplegable();
 	}
-	
+
+	function agregarTitulo(titulo:String) {
+		var nombreJuego = new FlxText(0, encabezado.height * 0.25);
+		nombreJuego.size = 38; // HARDCODED
+		nombreJuego.text = titulo;
+		nombreJuego.font = AssetPaths.carter__ttf;
+		nombreJuego.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
+		nombreJuego.x = FlxG.width / 2 - nombreJuego.fieldWidth / 2;	// Centramos al medio, manteniendo la altura
+		add(nombreJuego);
+    }
+
 	function agregarMenuDesplegable() {
 		menuPosicionX = FlxG.width * 0.01;
 		// Botón mostrar menu ->

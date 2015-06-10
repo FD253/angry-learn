@@ -61,6 +61,7 @@ class Logica extends BaseJuego {
 	override public function create() {
 		super.create();
 		
+        agregarTitulo("KARAOKE");
 		setearNivelEjercicioDesdeMaxLevel();
 		
 		trace(Reg.ejercicioKaraokeActual, Reg.nivelKaraokeActual);
