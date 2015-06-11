@@ -292,7 +292,7 @@ class Logica extends BaseJuego
 			}
 			
 			trace("resultado: ", resultado);
-			Reg.puntosRitmo += Std.int(resultado);
+			Reg.puntosRitmo += Std.int(resultado/3);
 			
 			btnJugar.visible = false;
 			btnJugar.active = true;
