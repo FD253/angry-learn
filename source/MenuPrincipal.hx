@@ -150,6 +150,7 @@ class MenuPrincipal extends BaseEstado
 		globoPuntaje.visible = false;
 		btnIniciarJuego.visible = false;
 		juegoSeleccionado = null;
+        contenedorPreview.visible = false;
 	}
 	
 	function mostrarPreview(imagen : String) {
