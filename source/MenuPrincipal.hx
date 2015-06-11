@@ -21,6 +21,7 @@ enum Juego {
 class MenuPrincipal extends BaseEstado
 {
 	var juegoSeleccionado : Juego;
+	var contenedorPreview : FlxSpriteGroup = new FlxSpriteGroup();
 	var previewJuego : FlxSprite = new FlxSprite();
 	
 	var panelNiveles : FlxSpriteGroup;
@@ -59,8 +60,13 @@ class MenuPrincipal extends BaseEstado
 								 FlxG.height * 0.15);
 		add(panelNiveles);
 		
-		previewJuego.visible = false;
-		add(previewJuego);
+		contenedorPreview.add(new FlxSprite(0, 0, AssetPaths.preview_fondo__png));
+		contenedorPreview.visible = false;
+		add(contenedorPreview);
+		var anchoEspacio = panelNiveles.x; // El espacio a la izquierda del panel de botones de nivel
+		var mitadPanelNiveles = panelNiveles.y + panelNiveles.height / 2;
+		contenedorPreview.setPosition((anchoEspacio - contenedorPreview.width) / 2, mitadPanelNiveles - contenedorPreview.height / 2);
+		contenedorPreview.add(previewJuego);
 		
 		var textSize = 30;
 		var espacioEntreBotones = 15;
@@ -147,15 +153,15 @@ class MenuPrincipal extends BaseEstado
 	}
 	
 	function mostrarPreview(imagen : String) {
+		contenedorPreview.remove(previewJuego, true);  // Lo quitamos para que se posicione bien de forma relativa al fondo luego con el add() splice=true por bug de flixel
 		previewJuego.loadGraphic(imagen);
 		previewJuego.updateHitbox();
 		
-		var anchoEspacio = panelNiveles.x * 0.9; // El 80% del espacio a la izquierda del panel de botones de nivel
-		var mitadPanelNiveles = panelNiveles.y + panelNiveles.height / 2;
+		// Lo centramos dentro del contenedor
+		previewJuego.setPosition((contenedorPreview.width - previewJuego.width) / 2, (contenedorPreview.height - previewJuego.height) / 2);
 		
-		previewJuego.setPosition((anchoEspacio - previewJuego.width) / 2, mitadPanelNiveles - previewJuego.height / 2);
-		
-		previewJuego.visible = true;
+		contenedorPreview.add(previewJuego);
+		contenedorPreview.visible = true;
 	}
 	
 	function btnKaraokeOnClick() {
@@ -234,7 +240,7 @@ class MenuPrincipal extends BaseEstado
 			// Si no se fuera del panel selector, reiniciar las imágenes de los botones
 			trace('click fuera del panel');
 			reiniciarBotones();
-			previewJuego.visible = false;
+			contenedorPreview.visible = false;
 		}
 		#end
 	}
