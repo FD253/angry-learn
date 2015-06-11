@@ -44,6 +44,7 @@ class Logica extends BaseJuego
 	var txtNumeroDeSecuencia : FlxText;	// Muesta cuál de las secuencias del ejercicio actual se está jugando
 	
 	var enCurso : Bool = false;
+	var esperandoPrimerToque : Bool = false;
 	
 	var acumulador = 0;	// Se emplea para recorrer la secuencia de pulsos del ejercicio (Para grabar y escuchar)
 	var secuenciaUsuario : Array<Int>; // Creamos un array para grabar lo que hace el usuario
@@ -377,16 +378,36 @@ class Logica extends BaseJuego
 		}
 	}
 	
+	function computarClick() {
+		secuenciaUsuario[acumulador] += 1;
+		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+		txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
+		trace("click");
+	}
+	
+	function avancePrimerMedioIntervalo(timer : FlxTimer) {
+		// Esto se ejecuta medio intervalo después luego de haber pulsado el boton de pulsos
+		// Ni bien termina este "medio intervalo" muerto, se hace lo siguiente:
+		acumulador += 1;	// Avanzamos al siguiente
+		// E iniciamos el contador de verdad... pero con un intervalo menos porque este medio ya cuenta como uno
+		new FlxTimer(ejercicio.secuencias[secuenciaActual].intervalo, avanceGrabacion, ejercicio.secuencias[secuenciaActual].pulsos.length - 1);
+	}
+	
 	function btnToquesOnClick() {
 		// Grabamos en un array
 		if (enCurso) {
-				secuenciaUsuario[acumulador] += 1;
-				FlxG.sound.play(AssetPaths.ritmo_bell__wav);
-				txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
-				trace("click");
+				computarClick();
 		}
 		else {
-			//FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+			// Si no está en curso y el botón de Jugar está invisible, quiere decir que se está esperando para empezar.
+			// El primer toque pone el juego en curso
+			if (esperandoPrimerToque) {
+				esperandoPrimerToque = false;
+				enCurso = true;
+				// Iniciamos un ciclo que dura sólo medio intervalo para sincronizar los toques con las casillas, éste se encarga de arrancar el timer "de verdad" para el resto de la secuencia
+				new FlxTimer((ejercicio.secuencias[secuenciaActual].intervalo / 2), avancePrimerMedioIntervalo, 1);
+				computarClick(); // Le tomamos esta primera pulsación
+			}
 		}
 	}
 	
@@ -419,13 +440,14 @@ class Logica extends BaseJuego
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		secuenciaUsuario = [for (x in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) 0];
+		esperandoPrimerToque = true;
 		
-		trace('inicio de retardo');
-		tmrPrincipal = new FlxTimer(		// Esto es sólo para mostrar el texto 1 .. 2 .. 3 .. Go!
-			0.2,	// Delay en segundos
-			inicioRetardado,	// Handler
-			4	// Loops
-		);
+		//trace('inicio de retardo');
+		//tmrPrincipal = new FlxTimer(		// Esto es sólo para mostrar el texto 1 .. 2 .. 3 .. Go!
+			//0.2,	// Delay en segundos
+			//inicioRetardado,	// Handler
+			//4	// Loops
+		//);
 	}	
 	
 }
