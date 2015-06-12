@@ -376,8 +376,8 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
-		
 		ServicioPosta.instancia.postPlay(100.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
+        Reg.puntosKaraoke += 100;
 		Reg.maxLvlKaraoke += 1;
 		
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
