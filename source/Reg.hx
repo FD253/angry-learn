@@ -128,10 +128,7 @@ class Reg
 	
 	public static function setearModoLibre() {
 		usuarioActual = "";
-		//nivelRitmoActual = 0;
-		//ejercicioRitmoActual = 0;
-		//nivelKaraokeActual = 0;
-		//ejercicioKaraokeActual = 0;
+		nombreUsuarioActual = "MODO LIBRE";
 		
 		maxLvlRitmo = 8;
 		maxLvlKaraoke = 11;
