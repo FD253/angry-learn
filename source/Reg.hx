@@ -35,6 +35,7 @@ class Reg
 	
 	// API
 	public static var usuarioActual : String;
+	public static var nombreUsuarioActual : String = '';
 	public static var idsUsuario : Array<Int> = [3, 4, 6, 7];
 	
 	
@@ -96,6 +97,10 @@ class Reg
 	
 	public static var umbralTrazos : Float = 95;
 	public static var umbralRitmo : Float = 85;
+	
+	
+	
+	public static var botonMenuTextSize : Int = 30;	// Tamaño de texto a usar para los botones del menu principal
 	
 	/**
 	 * Generic bucket for storing different FlxSaves.

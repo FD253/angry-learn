@@ -21,6 +21,8 @@ class SeleccionUsuario extends BaseEstado
 	override public function create() 
 	{
 		super.create();
+		cuadroUsuario.visible = false;
+		nombreUsuario.visible = false;
 		var btnReiniciar = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
 											   FlxG.width * 0.015,	// 1.5% del ancho del juego
 											   function() {
@@ -93,12 +95,12 @@ class SeleccionUsuario extends BaseEstado
 		var listaUsuarios = Json.parse(e.target.data);
 		trace(listaUsuarios.objects[0].id);
 		var altura = 0;
-		var textSize = 30;
 		for (usuario in listaUsuarios.objects) {
 			if (Reg.idsUsuario.indexOf(usuario.id) != -1 ) {
 				// Nos fijamos que los usuarios que tenemos hardcodeados estén en el backend
 				var btnUsuario = new FlxButton(0, 0, null, function() {
 					Reg.usuarioActual = usuario.resource_uri;
+					Reg.nombreUsuarioActual = usuario.first_name;
 					ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
 					ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
 					
@@ -110,10 +112,10 @@ class SeleccionUsuario extends BaseEstado
 				btnUsuario.x = (FlxG.width / 2) - (btnUsuario.width / 2);
 				btnUsuario.y = FlxG.height * 0.23 + altura;
 				var txtUsuario = new FlxText(btnUsuario.x + btnUsuario.width * 0.25,
-									 btnUsuario.y, 0, usuario.first_name, textSize);
+									 btnUsuario.y, 0, usuario.first_name, Reg.botonMenuTextSize);
 				txtUsuario.font = AssetPaths.carter__ttf;
 				txtUsuario.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
-				txtUsuario.y = btnUsuario.y + (btnUsuario.height / 2) - (txtUsuario.height / 2) - (txtUsuario.size * 0.3);
+				txtUsuario.y = btnUsuario.y + (btnUsuario.height - txtUsuario.height) / 3; //- (txtUsuario.size * 0.3);
 
 				add(btnUsuario);
 				add(txtUsuario);

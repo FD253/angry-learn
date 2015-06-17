@@ -16,6 +16,8 @@ class SeleccionModo extends BaseEstado
 	override public function create() 
 	{
 		super.create();
+		cuadroUsuario.visible = false;
+		nombreUsuario.visible = false;
 		var textSize = 30;
 		btnModoLibre = new FlxButton(10, 10, null, btnModoLibreOnClick);
 		btnModoLibre.loadGraphic(AssetPaths.selector_normal__png);
