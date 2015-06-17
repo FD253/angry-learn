@@ -21,10 +21,44 @@ class BaseJuego extends BaseEstado
 	
 	var menuPosicionX : Float;
 	
+	var cuadroPuntajeTotal : FlxSprite;
+	var textoPuntajeTotal : FlxText;
+	
+	var cuadroPuntajeParcial : FlxSprite;
+	var textoPuntajeParcial : FlxText;
+	
 	override public function create() {
 		super.create();
+
+		cuadroPuntajeTotal = new FlxSprite(FlxG.width - FlxG.width * 0.07, FlxG.height * 0.02, AssetPaths.cuadro_puntaje__png);
+		cuadroPuntajeTotal.x -= cuadroPuntajeTotal.width;
+		add(cuadroPuntajeTotal);
+		textoPuntajeTotal = new FlxText(cuadroPuntajeTotal.x, cuadroPuntajeTotal.y, cuadroPuntajeTotal.width, "", Std.int(Reg.botonMenuTextSize * 0.75));
+		textoPuntajeTotal.font = AssetPaths.carter__ttf;
+		textoPuntajeTotal.autoSize = false;
+		textoPuntajeTotal.wordWrap = false;
+		textoPuntajeTotal.alignment = "center";
+		textoPuntajeTotal.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		textoPuntajeTotal.y = cuadroPuntajeTotal.y + (cuadroPuntajeTotal.height - textoPuntajeTotal.height) / 3;
+		add(textoPuntajeTotal);
 		
-		// Botón para ir atrás (Al menú de juego)
+		cuadroPuntajeParcial = cuadroPuntajeTotal.clone();
+		cuadroPuntajeParcial.setPosition(800, 350);
+		cuadroPuntajeParcial.visible = false;
+		cuadroPuntajeParcial.loadGraphic(AssetPaths.fondo_globo_puntaje__png);
+		add(cuadroPuntajeParcial);
+		
+		textoPuntajeParcial = new FlxText(cuadroPuntajeParcial.x , cuadroPuntajeParcial.y, cuadroPuntajeParcial.width, "0", Std.int(Reg.botonMenuTextSize * 0.75));
+		textoPuntajeParcial.font = AssetPaths.carter__ttf;
+		textoPuntajeParcial.autoSize = false;
+		textoPuntajeParcial.wordWrap = false;
+		textoPuntajeParcial.alignment = "center";
+		textoPuntajeParcial.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		textoPuntajeParcial.y = cuadroPuntajeParcial.y + (cuadroPuntajeParcial.height - textoPuntajeParcial.height) / 3;
+		textoPuntajeParcial.visible = false;
+		add(textoPuntajeParcial);
+
+		
 		var botonAtras = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
 									   FlxG.width * 0.015,	// 1.5% del ancho del juego
 									   botonAtrasOnClick);
@@ -116,5 +150,14 @@ class BaseJuego extends BaseEstado
 	function botonAtrasOnClick() {
 		FlxG.switchState(new MenuPrincipal());
 	}
+
+	function actualizarPuntajeTotal(puntajeTotal:Int) {
+		textoPuntajeTotal.text = Std.string(puntajeTotal);
+	}
 	
+	function actualizarPuntajeParcial(puntajeParcial:Int) {
+		textoPuntajeParcial.text = Std.string(puntajeParcial);
+		cuadroPuntajeParcial.visible = true;
+		textoPuntajeParcial.visible = true;
+	}
 }

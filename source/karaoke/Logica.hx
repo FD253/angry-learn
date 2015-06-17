@@ -57,9 +57,12 @@ class Logica extends BaseJuego {
 	
 	var botonesDeNivel : Array<FlxButton>;
 	
-	
+	var puntajeCorrecto : Float;
+
 	override public function create() {
 		super.create();
+		puntajeCorrecto = 100.0;
+		actualizarPuntajeTotal(Reg.puntosKaraoke);
 		
         agregarTitulo("KARAOKE");
 		setearNivelEjercicioDesdeMaxLevel();
@@ -344,11 +347,15 @@ class Logica extends BaseJuego {
 		mostrarBtnsTipoLetra();
 	}
 	
-
+	function ocultarPuntajeParcial() {
+		cuadroPuntajeParcial.visible = false;
+		textoPuntajeParcial.visible = false;
+	}
+	
 	function comenzar() {
 		
 		timeInicio = Date.now();
-		
+		ocultarPuntajeParcial();
 		ocultarBtnComenzar();
 		ocultarBtnsCalific();
 		ocultarBtnsTipoLetra();
@@ -370,15 +377,21 @@ class Logica extends BaseJuego {
 		mostrarBtnComenzar();
 		ocultarBtnsCalific();
 	}
+
+	function actualizarPuntaje(puntajeObtenido:Int) {
+	    Reg.puntosKaraoke += puntajeObtenido;
+		actualizarPuntajeTotal(Reg.puntosKaraoke);
+		actualizarPuntajeParcial(puntajeObtenido);
+	}
 	
 	function ejercicioCorrecto() {
 		calcularTiempoEmpleado();		
 		ocultarBtnsCalific();
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
-		ServicioPosta.instancia.postPlay(100.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
-        Reg.puntosKaraoke += 100;
+		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		Reg.maxLvlKaraoke += 1;
+		actualizarPuntaje(Std.int(puntajeCorrecto));
 		
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
 			trace('reg.ejKaraoke actual ' + Reg.ejercicioKaraokeActual);
@@ -444,6 +457,7 @@ class Logica extends BaseJuego {
 		//mostrarBtnComenzar();
 		reinciarOffset();
 		ServicioPosta.instancia.postPlay(0.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
+		actualizarPuntaje(0);
 	}
 
 	function guardarPosDentroItem(pos:Int) {
