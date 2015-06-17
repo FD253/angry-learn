@@ -435,7 +435,7 @@ class Logica extends BaseJuego
 	}
 	
 	function btnJugarOnClick() {
-		btnJugar.active = false;
+		btnJugar.visible = false;
 		btnEscuchar.visible = false;
 		acumulador = 0;
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
