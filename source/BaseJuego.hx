@@ -13,6 +13,8 @@ import flixel.tweens.FlxTween;
 class BaseJuego extends BaseEstado
 {
 	
+	var nombreJuego : FlxText;
+	
 	var menuDesplegable : FlxSpriteGroup; // En cada juego en particular, hacer .add del fondo y las cosas que van en él
 	var btnMenuDesplegar : FlxButton;
 	var btnMenuContraer : FlxButton;
@@ -73,7 +75,7 @@ class BaseJuego extends BaseEstado
 	}
 
 	function agregarTitulo(titulo:String) {
-		var nombreJuego = new FlxText(0, encabezado.height * 0.25);
+		nombreJuego = new FlxText(0, encabezado.height * 0.25);
 		nombreJuego.size = 38; // HARDCODED
 		nombreJuego.text = titulo;
 		nombreJuego.font = AssetPaths.carter__ttf;

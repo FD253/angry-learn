@@ -149,8 +149,8 @@ class Logica extends BaseJuego
 		for (nivel in Nivel.niveles) {
 			var xEspacio = (menuDesplegable.width - xInicial - anchoBoton * Nivel.niveles.length) / Nivel.niveles.length;
 			var x = xInicial + (anchoBoton + xEspacio) * Nivel.niveles.indexOf(nivel);
-			var textoNivel = new FlxText(x, 15, 0, "Nivel " + (Nivel.niveles.indexOf(nivel) + 1));
-			textoNivel.size = 18;
+			var textoNivel = new FlxText(x, 8, 0, "Nivel " + (Nivel.niveles.indexOf(nivel) + 1), 20);
+			textoNivel.font = AssetPaths.carter__ttf;
 			menuDesplegable.add(textoNivel);
 			for (ejercicio in nivel.ejercicios) {
 				var yEspacio = (menuDesplegable.height - yInicial - altoBoton * nivel.ejercicios.length) / nivel.ejercicios.length;
@@ -180,7 +180,7 @@ class Logica extends BaseJuego
 	
 	function agregarInterfaz() {
 		var mitadAncho = FlxG.width / 2;
-		var alturaBotonesSuperiores = 75;
+		var alturaBotonesSuperiores = 95;
 		
 		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
 		
@@ -201,7 +201,7 @@ class Logica extends BaseJuego
 		// Panel de niveles
 		
 		// Botón de toques
-		btnToques = new FlxButton((FlxG.width / 2), (FlxG.height * 0.4), '', btnToquesOnClick);
+		btnToques = new FlxButton((FlxG.width / 2), (alturaBotonesSuperiores + FlxG.height * 0.3), '', btnToquesOnClick);
 		btnToques.loadGraphic(AssetPaths.boton__png, true, 297, 305); // HARDCODED
 		btnToques.x = btnToques.x - btnToques.width / 2;
 		btnToques.y = btnToques.y - btnToques.height / 2;
@@ -225,8 +225,8 @@ class Logica extends BaseJuego
 		txtNumeroDeSecuencia.size = 40;
 		txtNumeroDeSecuencia.alignment = "center";
 		txtNumeroDeSecuencia.font = AssetPaths.carter__ttf;
-		txtNumeroDeSecuencia.setPosition(FlxG.width - txtNumeroDeSecuencia.width - FlxG.width * 0.1,
-										 txtNumeroDeSecuencia.height * 0.05);
+		txtNumeroDeSecuencia.setPosition(cuadroPuntajeTotal.x + cuadroPuntajeTotal.width, nombreJuego.y);
+		txtNumeroDeSecuencia.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
 		actualizarNumeroDeSecuenciaActual();
 		add(txtNumeroDeSecuencia);
 		
@@ -413,6 +413,7 @@ class Logica extends BaseJuego
 	
 	function popupBienHechoOnClick() {
 		popupBienHecho.visible = false;
+		FlxG.switchState(new Logica());
 	}
 	
 	function popupMalHechoOnClick()	{
@@ -441,13 +442,6 @@ class Logica extends BaseJuego
 		formatoTween = new FlxTextFormat(FlxColor.GOLDEN);
 		secuenciaUsuario = [for (x in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) 0];
 		esperandoPrimerToque = true;
-		
-		//trace('inicio de retardo');
-		//tmrPrincipal = new FlxTimer(		// Esto es sólo para mostrar el texto 1 .. 2 .. 3 .. Go!
-			//0.2,	// Delay en segundos
-			//inicioRetardado,	// Handler
-			//4	// Loops
-		//);
 	}	
 	
 }

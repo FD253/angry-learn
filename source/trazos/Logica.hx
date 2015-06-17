@@ -126,8 +126,8 @@ class Logica extends BaseJuego
 		for (columna in 1...4) {
 			var xEspacio = (menuDesplegable.width - xInicial - anchoBoton * 3) / 3;
 			var x = xInicial + (anchoBoton + xEspacio) * (columna - 1);
-			var textoNivel = new FlxText(x, 15, 0, "Nivel " + Std.string(columna));
-			textoNivel.size = 18;
+			var textoNivel = new FlxText(x, 8, 0, "Nivel " + Std.string(columna), 20);
+			textoNivel.font = AssetPaths.carter__ttf;
 			menuDesplegable.add(textoNivel);
 			for (fila in 1...4) {
 				var numeroDeNivel = ((columna - 1) * 3 + fila - 1);
