@@ -92,6 +92,7 @@ class Logica extends BaseJuego {
 		
 		var xInicial : Int = 162;
 		var y: Int = 500;
+		var yCorrectoIncorrecto : Int = 180;
 				
 		var mitad: Float = FlxG.width / 2;
 		
@@ -115,24 +116,27 @@ class Logica extends BaseJuego {
 		
 		mostrarBtnsTipoLetra();
 		
-		btnIncorrecto = new FlxUIButton(550, 160 , null, ejercicioIncorrecto);
-		btnIncorrecto.loadGraphic(AssetPaths.incorrecto__png);
+		btnIncorrecto = new FlxUIButton(0, 0 , null, ejercicioIncorrecto);
+		btnIncorrecto.loadGraphic(AssetPaths.incorrectoCruz__png);
+		btnIncorrecto.setPosition(FlxG.width / 4 + btnIncorrecto.width, yCorrectoIncorrecto);
 		add(btnIncorrecto); 
 		ocultarBtnIncorrecto();
 		
-		btnComenzar = new FlxUIButton(85, 160 , null, comenzar);
+		btnComenzar = new FlxUIButton(0, 0, null, comenzar);
 		btnComenzar.loadGraphic(AssetPaths.comenzar__png);
+		btnComenzar.setPosition(mitad - btnComenzar.width / 2, yCorrectoIncorrecto);
 		add(btnComenzar);
 		ocultarBtnComenzar();
 		
-		btnCorrecto = new FlxUIButton(650, 160, null, ejercicioCorrecto);
-		btnCorrecto.loadGraphic(AssetPaths.correcto__png);
+		btnCorrecto = new FlxUIButton(0, 0, null, ejercicioCorrecto);
+		btnCorrecto.loadGraphic(AssetPaths.correctoTilde__png);
+		btnCorrecto.setPosition(FlxG.width / 4 * 3 - btnCorrecto.width * 2, yCorrectoIncorrecto);
 		ocultarBtnCorrecto();
 		add(btnCorrecto);
 		
-		btnCorrectoParcial = new FlxUIButton(650, 160, null, subEjercicioCorrecto);
-		btnCorrectoParcial.loadGraphic(AssetPaths.correcto__png);
-		//btnCorrectoParcial.visible = false;
+		btnCorrectoParcial = new FlxUIButton(0, 0, null, subEjercicioCorrecto);
+		btnCorrectoParcial.loadGraphic(AssetPaths.correctoTilde__png);
+		btnCorrectoParcial.setPosition(FlxG.width / 4 * 3 - btnCorrecto.width * 2, yCorrectoIncorrecto);
 		add(btnCorrectoParcial);
 		ocultarBtnCorrectoParcial();
 		
