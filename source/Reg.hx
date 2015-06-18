@@ -85,7 +85,7 @@ class Reg
 		'/api/v1/level/30/'		// 9
 	];
 	
-	public static function avanzarLvlTrazos() {
+	public static function avanzarMaxLvlTrazos() {
 		if (maxLvlTrazos < (Nivel.niveles.length - 1)) {
 			maxLvlTrazos += 1;
 		}
@@ -98,6 +98,34 @@ class Reg
 	public static var umbralTrazos : Float = 95;
 	public static var umbralRitmo : Float = 85;
 	
+	
+	public static var EJERCICIOS_POR_NIVEL = 3;
+	
+	public static function numeroDeNivelSegunArrayDeEjercicios(indiceEjercicio : Int) {
+		// indiceEjercicio es un número que arranca en 0, como los índices de los arrays
+		// Utilidad para obtener el número de nivel al que pertenece un ejercicio... Esto suponiendo
+		// que se tiene un gran array con todos los ejercicios (Como en el juego de Trazos)
+		// Y que hay tantos ejercicios por nivel como indica la variable EJERCICIOS_POR_NIVEL
+		
+		var resultado = indiceEjercicio / EJERCICIOS_POR_NIVEL;
+		Std.int(resultado);
+		
+		// Devolvemos el número de nivel real... Arrancando en 1
+		return resultado + 1;
+	}
+	
+	public static function numeroDeEjercicioSegunArrayDeEjercicios(indiceEjercicio : Int) {
+		// indiceEjercicio es un número que arranca en 0, como los índices de los arrays
+		// Utilidad para obtener el número de EJERCICIO dentro del nivel en que se está...
+		// Esto suponiendo que se tiene un gran array con todos los ejercicios (Como en el juego de Trazos)
+		// Y que hay tantos ejercicios por nivel como indica la variable EJERCICIOS_POR_NIVEL
+		
+		var resultado = indiceEjercicio / EJERCICIOS_POR_NIVEL;
+		Std.int(resultado);
+		
+		// Devolvemos el número de nivel real... Arrancando en 1
+		return resultado + 1;
+	}
 	
 	
 	public static var botonMenuTextSize : Int = 30;	// Tamaño de texto a usar para los botones del menu principal

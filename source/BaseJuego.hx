@@ -19,7 +19,9 @@ class BaseJuego extends BaseEstado
 	var btnMenuDesplegar : FlxButton;
 	var btnMenuContraer : FlxButton;
 	
-	var barraProgreso : FlxSprite;
+	var barraProgresoFondo : FlxSprite;
+	var barraProgresoRelleno : FlxSprite;
+	var barraProgresoRellenoAncho : Float;	// El ancho original del relleno, seteado durante el create
 	
 	var animacionEnCurso : Bool = false;
 	
@@ -30,6 +32,21 @@ class BaseJuego extends BaseEstado
 	
 	var cuadroPuntajeParcial : FlxSprite;
 	var textoPuntajeParcial : FlxText;
+	
+	
+	function actualizarProgreso(porcentaje : Float) {
+		// Setea el progreso en la barra en base al porcentaje pasado como parámetro
+		// El porcentaje es un número entre 0 y 100
+		if (porcentaje < 5 || porcentaje > 100) {
+			// Si es menos del 5% o más del 100, mostramos sólo el 5%
+			barraProgresoRelleno.setGraphicSize(Std.int(barraProgresoRellenoAncho * 0.05), Std.int(barraProgresoRelleno.height));
+			barraProgresoRelleno.updateHitbox();
+		}
+		else {
+			barraProgresoRelleno.setGraphicSize(Std.int(barraProgresoRellenoAncho * porcentaje / 100), Std.int(barraProgresoRelleno.height));
+			barraProgresoRelleno.updateHitbox();
+		}
+	}
 	
 	override public function create() {
 		super.create();
@@ -69,9 +86,18 @@ class BaseJuego extends BaseEstado
 		botonAtras.loadGraphic(AssetPaths.boton_atras__png);
 		add(botonAtras);
 		
-		barraProgreso = new FlxSprite(FlxG.width, 0, AssetPaths.barra_progreso_fondo__png);
-		barraProgreso.setPosition((FlxG.width - barraProgreso.width) / 2, encabezado.height * 0.9);//encabezado.height + barraProgreso.height * 0.8);
-		add(barraProgreso);
+		barraProgresoFondo = new FlxSprite(FlxG.width, 0, AssetPaths.barra_progreso_fondo__png);
+		barraProgresoFondo.setPosition((FlxG.width - barraProgresoFondo.width) / 2, encabezado.height * 0.9);
+		add(barraProgresoFondo);
+		
+		barraProgresoRelleno = new FlxSprite(0, 0, AssetPaths.barra_progreso_relleno__png);
+		barraProgresoRellenoAncho = barraProgresoRelleno.width;
+		barraProgresoRelleno.setPosition(barraProgresoFondo.x + (barraProgresoFondo.width - barraProgresoRelleno.width) / 2, barraProgresoFondo.y + (barraProgresoFondo.height - barraProgresoRelleno.height) / 2);
+		barraProgresoRelleno.setGraphicSize(Std.int(barraProgresoFondo.width * 0.05), Std.int(barraProgresoRelleno.height));
+		barraProgresoRelleno.updateHitbox();
+		
+		add(barraProgresoRelleno);
+
 		
 		agregarMenuDesplegable();
 	}

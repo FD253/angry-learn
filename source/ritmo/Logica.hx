@@ -88,9 +88,12 @@ class Logica extends BaseJuego
 			Reg.nivelRitmoActual = nivel;
 			Reg.ejercicioRitmoActual = ejercicio;
 		}
-			
+		
 		ejercicio = Nivel.niveles[Reg.nivelRitmoActual].ejercicios[Reg.ejercicioRitmoActual];  // Buscamos el nivel que antes se debe haber definido en Reg
 		secuenciaActual = 0; // Arrancamos en la primera secuencia de este ejercicio (Como es un array la primera es la 0)
+		
+		// Según qué ejercicio es, mostramos el progreso en la barra
+		actualizarProgreso(100 / 3 * Reg.ejercicioRitmoActual);
 		
 		feedbackVisual = feedbackVisualInicio;
 		
@@ -325,6 +328,7 @@ class Logica extends BaseJuego
 					Reg.maxLvlRitmo += 1; // Habilito al usuario para que después pueda cambiar a mano el ejercicio
 					
 					if (Reg.ejercicioRitmoActual == 2) {
+						actualizarProgreso(100);	// Mostramos el 100
 						Reg.ejercicioRitmoActual = 0;
 						
 						if (Reg.nivelRitmoActual == 2) {
