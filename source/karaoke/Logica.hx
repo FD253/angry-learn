@@ -148,6 +148,8 @@ class Logica extends BaseJuego {
 		posicionForAUsar = 0;
 		posicionForGuardada = 0;
 		posicionDentroEjercicio = 0;
+		
+		actualizarProgreso(100 / 3 * Reg.ejercicioKaraokeActual);
 	}
 	
 	// PRIVATE METHODS
@@ -402,22 +404,25 @@ class Logica extends BaseJuego {
 		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		actualizarPuntaje(Std.int(puntajeCorrecto));
 		var timer : FlxTimer;
+		if (Reg.ejercicioKaraokeActual == 2) { 
+			actualizarProgreso(100);	// Mostramos el 100
+		}
 		timer = new FlxTimer(3, avanzarEjercicio);
 	}
 	
 	function avanzarEjercicio(timer:FlxTimer) {
-		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
-			Reg.ejercicioKaraokeActual += 1;
-			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) {
-				Reg.maxLvlKaraoke += 1;
+		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { //ejercicio no ultimo del nivel?
+			Reg.ejercicioKaraokeActual += 1;	//avanza ejercicio
+			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) { //mayor que el mayor guardado?
+				Reg.maxLvlKaraoke += 1;			//nuevo mayor
 			}
 		}
 		else {
-			if (Reg.ejercicioKaraokeActual == (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
-				if (Reg.nivelKaraokeActual == 3) {
+			if (Reg.ejercicioKaraokeActual == (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { //maximo del nivel?
+				if (Reg.nivelKaraokeActual == 3) {	//ultimo nivel?
 					trace("GANASTE!");
 				}
-				else {
+				else {	//no ultimo nivel?
 					Reg.maxLvlKaraoke += 1;
 					Reg.nivelKaraokeActual += 1;
 					Reg.ejercicioKaraokeActual = 0;
