@@ -124,6 +124,9 @@ class Reg
 		puntosRitmo = 0;
 		puntosKaraoke = 0;
 		
+		maxLvlRitmo = 0;
+		maxLvlKaraoke = 0;
+		maxLvlTrazos = 0;
 	}
 	
 	public static function setearModoLibre() {
