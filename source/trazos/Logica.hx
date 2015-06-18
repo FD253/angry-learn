@@ -62,6 +62,7 @@ class Logica extends BaseJuego
 	    agregarTitulo("SIGUE EL TRAZO");
 		nivel = Nivel.nuevoNivel(Logica.numeroNivel);
 		
+		actualizarProgreso(100 / 3 * (Reg.numeroDeEjercicioSegunArrayDeEjercicios(Logica.numeroNivel) - 1));
 		
 		nivel.spriteTrazo.setGraphicSize(Std.int(escala * nivel.spriteTrazo.width));
 		nivel.spriteTrazo.updateHitbox();
@@ -205,7 +206,7 @@ class Logica extends BaseJuego
 	
 	function mostrarBienHecho() {
 		popupBienHecho.visible = true;
-		actualizarProgreso(100 / Reg.numeroDeEjercicioSegunArrayDeEjercicios(Logica.numeroNivel));
+		actualizarProgreso(100 / 3 * Reg.numeroDeEjercicioSegunArrayDeEjercicios(Logica.numeroNivel));
 		botonPopup.loadGraphic(AssetPaths.tilde__png);
 		botonPopup.updateHitbox();
 		botonPopup.visible = true;

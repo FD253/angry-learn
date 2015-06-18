@@ -101,20 +101,19 @@ class Reg
 	
 	public static var EJERCICIOS_POR_NIVEL = 3;
 	
-	public static function numeroDeNivelSegunArrayDeEjercicios(indiceEjercicio : Int) {
+	public static function numeroDeNivelSegunArrayDeEjercicios(indiceEjercicio : Int) : Int {
 		// indiceEjercicio es un número que arranca en 0, como los índices de los arrays
 		// Utilidad para obtener el número de nivel al que pertenece un ejercicio... Esto suponiendo
 		// que se tiene un gran array con todos los ejercicios (Como en el juego de Trazos)
 		// Y que hay tantos ejercicios por nivel como indica la variable EJERCICIOS_POR_NIVEL
 		
 		var resultado = indiceEjercicio / EJERCICIOS_POR_NIVEL;
-		Std.int(resultado);
 		
 		// Devolvemos el número de nivel real... Arrancando en 1
-		return resultado + 1;
+		return Std.int(resultado) + 1;
 	}
 	
-	public static function numeroDeEjercicioSegunArrayDeEjercicios(indiceEjercicio : Int) {
+	public static function numeroDeEjercicioSegunArrayDeEjercicios(indiceEjercicio : Int) : Int {
 		// indiceEjercicio es un número que arranca en 0, como los índices de los arrays
 		// Utilidad para obtener el número de EJERCICIO dentro del nivel en que se está...
 		// Esto suponiendo que se tiene un gran array con todos los ejercicios (Como en el juego de Trazos)
