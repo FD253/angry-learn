@@ -169,6 +169,10 @@ class Logica extends BaseJuego {
 		}
 	}
 	
+	function setearNivelEjercicioDesdeActualMasUno() {
+		Reg.ejercicioKaraokeActual += 1;
+	}
+	
 	function definirMenuDesplegable() {
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable_karaoke__png));
 		botonesDeNivel = new Array<FlxButton>();
@@ -396,25 +400,33 @@ class Logica extends BaseJuego {
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
 		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
-		Reg.maxLvlKaraoke += 1;
+		
 		actualizarPuntaje(Std.int(puntajeCorrecto));
+		//var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
+		//var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
+		//menuDesplegable.add(estrella);
+		//estrella.setPosition(botonDeEjercicioActual.x - estrella.width * 1.5, botonDeEjercicioActual.y);		
+				
 		
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
-			trace('reg.ejKaraoke actual ' + Reg.ejercicioKaraokeActual);
-			trace('Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length)) ' + Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length);
 			Reg.ejercicioKaraokeActual += 1;
-			reinciarOffset();
-			item = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
-			textItem.text = quitarPuntosItem(item);
-			reiniciarBtnsTipoLetra();
-			textItem.clearFormats();
-			mostrarBtnsTipoLetra();
+			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) {
+				Reg.maxLvlKaraoke += 1;
+			}
 		}
 		else {
-			setearNivelEjercicioDesdeMaxLevel();
-			FlxG.switchState(new Logica());
+			if (Reg.ejercicioKaraokeActual == (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
+				if (Reg.nivelKaraokeActual == 3) {
+					trace("GANASTE!");
+				}
+				else {
+					Reg.maxLvlKaraoke += 1;
+					Reg.nivelKaraokeActual += 1;
+					Reg.ejercicioKaraokeActual = 0;
+				}
+			}
 		}
-		
+		FlxG.switchState(new Logica());
 	}
 
 	function mostrarBtnIncorrecto() {
