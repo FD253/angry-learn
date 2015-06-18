@@ -179,7 +179,6 @@ class Logica extends BaseJuego
 			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
 			if (puntaje >= Reg.umbralTrazos) {
 				// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
-				actualizarProgreso(50);
 				mostrarBienHecho();
 				if (Logica.numeroNivel == Reg.maxLvlTrazos) {
 					// Sólo si estamos en el lvl más alto avanzamos
@@ -206,6 +205,7 @@ class Logica extends BaseJuego
 	
 	function mostrarBienHecho() {
 		popupBienHecho.visible = true;
+		actualizarProgreso(100 / Reg.numeroDeEjercicioSegunArrayDeEjercicios(Logica.numeroNivel));
 		botonPopup.loadGraphic(AssetPaths.tilde__png);
 		botonPopup.updateHitbox();
 		botonPopup.visible = true;

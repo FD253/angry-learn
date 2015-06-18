@@ -120,11 +120,10 @@ class Reg
 		// Esto suponiendo que se tiene un gran array con todos los ejercicios (Como en el juego de Trazos)
 		// Y que hay tantos ejercicios por nivel como indica la variable EJERCICIOS_POR_NIVEL
 		
-		var resultado = indiceEjercicio / EJERCICIOS_POR_NIVEL;
-		Std.int(resultado);
+		var nivel = numeroDeNivelSegunArrayDeEjercicios(indiceEjercicio);
 		
-		// Devolvemos el número de nivel real... Arrancando en 1
-		return resultado + 1;
+		var numeroEjercicio = indiceEjercicio + 1 - (nivel - 1) * EJERCICIOS_POR_NIVEL;	// The magic formula
+		return numeroEjercicio;
 	}
 	
 	
