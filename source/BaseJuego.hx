@@ -19,6 +19,8 @@ class BaseJuego extends BaseEstado
 	var btnMenuDesplegar : FlxButton;
 	var btnMenuContraer : FlxButton;
 	
+	var barraProgreso : FlxSprite;
+	
 	var animacionEnCurso : Bool = false;
 	
 	var menuPosicionX : Float;
@@ -67,16 +69,16 @@ class BaseJuego extends BaseEstado
 		botonAtras.loadGraphic(AssetPaths.boton_atras__png);
 		add(botonAtras);
 		
-		//var barraProgreso = new FlxSprite(0, encabezado.height * 0.5, AssetPaths.barra_progreso_fondo__png);
-		//barraProgreso.x = FlxG.width - barraProgreso.width - 7;
-		//add(barraProgreso);
+		barraProgreso = new FlxSprite(FlxG.width, 0, AssetPaths.barra_progreso_fondo__png);
+		barraProgreso.setPosition((FlxG.width - barraProgreso.width) / 2, encabezado.height * 0.9);//encabezado.height + barraProgreso.height * 0.8);
+		add(barraProgreso);
 		
 		agregarMenuDesplegable();
 	}
 
 	function agregarTitulo(titulo:String) {
-		nombreJuego = new FlxText(0, encabezado.height * 0.25);
-		nombreJuego.size = 38; // HARDCODED
+		nombreJuego = new FlxText(0, -5);
+		nombreJuego.size = 36; // HARDCODED
 		nombreJuego.text = titulo;
 		nombreJuego.font = AssetPaths.carter__ttf;
 		nombreJuego.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
@@ -90,7 +92,7 @@ class BaseJuego extends BaseEstado
 		btnMenuDesplegar = new FlxButton(0, 0, '', btnMenuDesplegarOnClick);
 		btnMenuDesplegar.loadGraphic(AssetPaths.boton_menu_desplegar__png);
 		btnMenuDesplegar.setPosition(menuPosicionX,
-									 FlxG.height - btnMenuDesplegar.height - FlxG.height * 0.2);
+									 FlxG.height - btnMenuDesplegar.height * 2.4);
 		add(btnMenuDesplegar);
 		
 		menuDesplegable = new FlxSpriteGroup(menuPosicionX, btnMenuDesplegar.y);

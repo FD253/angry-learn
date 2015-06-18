@@ -69,6 +69,8 @@ class Logica extends BaseJuego {
 		
 		trace(Reg.ejercicioKaraokeActual, Reg.nivelKaraokeActual);
 		definirMenuDesplegable();
+		btnMenuDesplegarOnClick();
+		
 		var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
 		botonDeEjercicioActual.text = botonDeEjercicioActual.text + " <<<";
 		for (boton in botonesDeNivel) {
