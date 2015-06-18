@@ -400,14 +400,12 @@ class Logica extends BaseJuego {
 		posicionDentroItemGuardada = 0;
 		reiniciarPosicionDentroEjercicio();
 		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
-		
 		actualizarPuntaje(Std.int(puntajeCorrecto));
-		//var estrella = new FlxSprite(0, 0, AssetPaths.estrella_menu_ejercicios__png);
-		//var botonDeEjercicioActual = botonesDeNivel[((Reg.nivelKaraokeActual* 3) + Reg.ejercicioKaraokeActual)];
-		//menuDesplegable.add(estrella);
-		//estrella.setPosition(botonDeEjercicioActual.x - estrella.width * 1.5, botonDeEjercicioActual.y);		
-				
-		
+		var timer : FlxTimer;
+		timer = new FlxTimer(3, avanzarEjercicio);
+	}
+	
+	function avanzarEjercicio(timer:FlxTimer) {
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) {
 			Reg.ejercicioKaraokeActual += 1;
 			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) {
