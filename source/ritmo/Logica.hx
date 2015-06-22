@@ -334,7 +334,6 @@ class Logica extends BaseJuego
 						if (Reg.nivelRitmoActual == 2) {
 							trace("TODO: No tenemos más niveles. Qué hacemos?");
 							//TODO!
-							FlxG.switchState(new Logo());
 							// Ojo que no hace switch state porque termina este if y entre lo que tarda ejecuta el switch state de abajo
 						}
 						else {
@@ -353,7 +352,7 @@ class Logica extends BaseJuego
 				secuenciaActual = 0;
 				puntajeDeEjercicio = 0;
 				// Cambiamos de estado (ejercicio puede ser otro ahora... O el mismo si no superó puntaje)
-				//FlxG.switchState(new Logica());
+				
 			}
 			else {
 				// Avanzamos a la siguiente secuencia de este ejercicio sin cambiar de estado
