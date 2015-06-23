@@ -263,7 +263,7 @@ class Logica extends BaseJuego
 			txtRepresentacionSecuencia.clearFormats();
 		}
 		if (ejercicio.secuencias[secuenciaActual].pulsos[acumulador] == 1 && timer.loopsLeft > 0) {
-			FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+			FlxG.sound.play(AssetPaths.coin__wav);
 			txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 		}
 		acumulador += 1;
@@ -383,7 +383,7 @@ class Logica extends BaseJuego
 	
 	function computarClick() {
 		secuenciaUsuario[acumulador] += 1;
-		FlxG.sound.play(AssetPaths.ritmo_bell__wav);
+		FlxG.sound.play(AssetPaths.coin__wav);
 		txtRepresentacionSecuencia.addFormat(formatoTween, acumulador, acumulador + 1);
 		trace("click");
 	}
