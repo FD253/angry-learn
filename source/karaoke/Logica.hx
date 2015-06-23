@@ -402,10 +402,15 @@ class Logica extends BaseJuego {
 		reiniciarPosicionDentroEjercicio();
 		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		actualizarPuntaje(Std.int(puntajeCorrecto));
+		if (Reg.ejercicioKaraokeActual == 2) { 
+			actualizarProgreso(100);	// Mostramos el 100
+		}
+		else {
+			actualizarProgreso(100 / 3 * (Reg.ejercicioKaraokeActual + 1));
+		}
 		mostrarResultado(Std.int(puntajeCorrecto), true, avanzarEjercicio);
 		//var timer : FlxTimer;
-		//if (Reg.ejercicioKaraokeActual == 2) { 
-			//actualizarProgreso(100);	// Mostramos el 100
+
 		//}
 		//timer = new FlxTimer(3, avanzarEjercicio);
 	}
