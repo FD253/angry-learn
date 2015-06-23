@@ -198,7 +198,7 @@ class BaseJuego extends BaseEstado
 
 		var boton =  new FlxButton(0, 0, "", btnOnClick);
 		
-		if (estado == true) { //correcto
+		if (ganado == true) { //correcto
 			boton.loadGraphic(AssetPaths.gran_tilde__png);
 			FlxG.sound.play(AssetPaths.bien__wav);
 		}
