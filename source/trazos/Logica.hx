@@ -143,6 +143,7 @@ class Logica extends BaseJuego
 		
 		enCurso = false;	// Indicamos que el usuario no está jugando (para que update() no cuente)
 		btnMenuDesplegarOnClick();
+		actualizarPuntajeTotal(Reg.puntosTrazos);
 	}
 	
 	private function finalizarJuego(exito : Bool) {
@@ -154,16 +155,14 @@ class Logica extends BaseJuego
 		if (exito) {
 			// Si no soltó el dedo, calculamos el puntaje. Sino queda en cero
 			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
+			Reg.puntosTrazos += Std.int(puntaje);
+			
 			if (puntaje >= Reg.umbralTrazos) {
-				// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
-				if (Logica.numeroNivel == Reg.maxLvlTrazos) {
-					// Sólo si estamos en el lvl más alto avanzamos
-					Reg.avanzarMaxLvlTrazos();
-				}
-				mostrarResultado(Std.int(puntaje), true, botonPopupOnClick);
+				terminoBien(puntaje);
 			}
 			else {
 				mostrarResultado(Std.int(puntaje), false, botonPopupOnClick);
+				actualizarPuntajeTotal(Reg.puntosTrazos);
 			}
 		}
 		else {
@@ -174,6 +173,22 @@ class Logica extends BaseJuego
 		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
 		var tiempoDeJuego = (momentoFinEjercicio.getTime() - momentoInicioEjercicio.getTime()) / 1000;
 		ServicioPosta.instancia.postPlay(puntaje, Reg.idAppTrazos, Reg.idNivelesTrazos[Logica.numeroNivel], tiempoDeJuego);
+	}
+	
+	function terminoBien(puntaje : Float) {
+		actualizarProgreso(100 / Reg.EJERCICIOS_POR_NIVEL * (Logica.numeroNivel + 1));
+		
+		// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
+		if (Logica.numeroNivel == Reg.maxLvlTrazos) {
+			// Sólo si estamos en el lvl más alto avanzamos
+			Reg.avanzarMaxLvlTrazos();
+		}
+		// Preparamos el juego para que avance al ejericio que sigue si es posible
+		if (Logica.numeroNivel < Nivel.niveles.length - 1) {
+			Logica.numeroNivel += 1;
+		}
+		mostrarResultado(Std.int(puntaje), true, botonPopupOnClick);
+		actualizarPuntajeTotal(Reg.puntosTrazos);
 	}
 	
 	function botonPopupOnClick() {

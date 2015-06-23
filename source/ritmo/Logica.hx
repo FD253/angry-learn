@@ -54,9 +54,6 @@ class Logica extends BaseJuego
 	var btnJugar : FlxButton;
 	var btnToques : FlxButton;
 	
-	var popupBienHecho : FlxButton;
-	var popupMalHecho : FlxButton;
-	
 	var txtRepresentacionSecuencia : FlxText;	// Esto va a mostrar la secuencia de la forma "00 00 00" para que el usuario la vea
 	var formatoTween : FlxTextFormat;
 	
@@ -111,6 +108,7 @@ class Logica extends BaseJuego
 				estrella.setPosition(boton.x - estrella.width * 1.5, boton.y); // La movemos un poco a la izq del boton
 			}
 		}
+		actualizarPuntajeTotal(Reg.puntosRitmo);
 		btnMenuDesplegarOnClick();
 	}
 	
@@ -234,23 +232,6 @@ class Logica extends BaseJuego
 		add(txtNumeroDeSecuencia);
 		
 		add(botonesInterfaz);
-		
-		
-		// Cartel de bien hecho
-		popupBienHecho = new FlxButton(0, 0, '', popupBienHechoOnClick);
-		popupBienHecho.loadGraphic(AssetPaths.popup_ejercicio_bien__png);
-		popupBienHecho.updateHitbox();
-		popupBienHecho.setPosition(FlxG.width - popupBienHecho.width * 1.2, FlxG.height - popupBienHecho.height * 1.2);
-		popupBienHecho.visible = false;
-		add(popupBienHecho);
-		
-		// Cartel de mal hecho
-		popupMalHecho = new FlxButton(0, 0, '', popupMalHechoOnClick);
-		popupMalHecho.loadGraphic(AssetPaths.popup_ejercicio_mal__png);
-		popupMalHecho.updateHitbox();
-		popupMalHecho.setPosition(FlxG.width - popupMalHecho.width * 1.2, FlxG.height - popupMalHecho.height * 1.2);
-		popupMalHecho.visible = false;
-		add(popupMalHecho);
 	}
 	
 	function actualizarNumeroDeSecuenciaActual() {
@@ -295,7 +276,8 @@ class Logica extends BaseJuego
 			}
 			
 			trace("resultado: ", resultado);
-			Reg.puntosRitmo += Std.int(resultado/3);
+			Reg.puntosRitmo += Std.int(resultado / 3);
+			actualizarPuntajeTotal(Std.int(Reg.puntosRitmo));
 			
 			btnJugar.visible = false;
 			btnJugar.active = true;
@@ -343,10 +325,10 @@ class Logica extends BaseJuego
 					else {
 						Reg.ejercicioRitmoActual += 1;
 					}
-					popupBienHecho.visible = true;  // Mostramos cartel de bien hecho
+					mostrarResultado(Std.int(puntajeDeEjercicio / 3), true, popupBienHechoOnClick);
 				}
 				else {
-					popupMalHecho.visible = true;
+					mostrarResultado(Std.int(puntajeDeEjercicio / 3), false, popupMalHechoOnClick);
 				}
 				
 				secuenciaActual = 0;
@@ -415,12 +397,11 @@ class Logica extends BaseJuego
 	}
 	
 	function popupBienHechoOnClick() {
-		popupBienHecho.visible = false;
 		FlxG.switchState(new Logica());
 	}
 	
 	function popupMalHechoOnClick()	{
-		popupMalHecho.visible = false;
+		FlxG.switchState(new Logica());
 	}
 	
 	function btnEscucharOnClick() {
