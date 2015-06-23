@@ -393,7 +393,6 @@ class Logica extends BaseJuego {
 	function actualizarPuntaje(puntajeObtenido:Int) {
 	    Reg.puntosKaraoke += puntajeObtenido;
 		actualizarPuntajeTotal(Reg.puntosKaraoke);
-		actualizarPuntajeParcial(puntajeObtenido);
 	}
 	
 	function ejercicioCorrecto() {
@@ -403,14 +402,15 @@ class Logica extends BaseJuego {
 		reiniciarPosicionDentroEjercicio();
 		ServicioPosta.instancia.postPlay(puntajeCorrecto, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		actualizarPuntaje(Std.int(puntajeCorrecto));
-		var timer : FlxTimer;
-		if (Reg.ejercicioKaraokeActual == 2) { 
-			actualizarProgreso(100);	// Mostramos el 100
-		}
-		timer = new FlxTimer(3, avanzarEjercicio);
+		mostrarResultado(Std.int(puntajeCorrecto), true, avanzarEjercicio);
+		//var timer : FlxTimer;
+		//if (Reg.ejercicioKaraokeActual == 2) { 
+			//actualizarProgreso(100);	// Mostramos el 100
+		//}
+		//timer = new FlxTimer(3, avanzarEjercicio);
 	}
 	
-	function avanzarEjercicio(timer:FlxTimer) {
+	function avanzarEjercicio() {
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { //ejercicio no ultimo del nivel?
 			Reg.ejercicioKaraokeActual += 1;	//avanza ejercicio
 			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) { //mayor que el mayor guardado?
@@ -478,7 +478,13 @@ class Logica extends BaseJuego {
 		//mostrarBtnComenzar();
 		reinciarOffset();
 		ServicioPosta.instancia.postPlay(0.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
+		mostrarResultado(Std.int(0), false,ocultarResultado);
 		actualizarPuntaje(0);
+	}
+	
+	function ocultarResultado() {
+		resultado.visible = false;
+		FlxG.switchState(new Logica());
 	}
 
 	function guardarPosDentroItem(pos:Int) {

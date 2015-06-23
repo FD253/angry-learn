@@ -24,7 +24,7 @@ class BaseJuego extends BaseEstado
 	var barraProgresoRellenoAncho : Float;	// El ancho original del relleno, seteado durante el create
 	
 	var animacionEnCurso : Bool = false;
-	
+	var resultado :FlxSpriteGroup;
 	var menuPosicionX : Float;
 	
 	var cuadroPuntajeTotal : FlxSprite;
@@ -50,7 +50,7 @@ class BaseJuego extends BaseEstado
 	
 	override public function create() {
 		super.create();
-
+		resultado =	new FlxSpriteGroup(0,0);
 		cuadroPuntajeTotal = new FlxSprite(FlxG.width - FlxG.width * 0.07, FlxG.height * 0.02, AssetPaths.cuadro_puntaje__png);
 		cuadroPuntajeTotal.x -= cuadroPuntajeTotal.width;
 		add(cuadroPuntajeTotal);
@@ -64,10 +64,10 @@ class BaseJuego extends BaseEstado
 		add(textoPuntajeTotal);
 		
 		cuadroPuntajeParcial = cuadroPuntajeTotal.clone();
-		cuadroPuntajeParcial.setPosition(800, 350);
+	
 		cuadroPuntajeParcial.visible = false;
 		cuadroPuntajeParcial.loadGraphic(AssetPaths.fondo_globo_puntaje__png);
-		add(cuadroPuntajeParcial);
+		
 		
 		textoPuntajeParcial = new FlxText(cuadroPuntajeParcial.x , cuadroPuntajeParcial.y, cuadroPuntajeParcial.width, "0", Std.int(Reg.botonMenuTextSize * 0.75));
 		textoPuntajeParcial.font = AssetPaths.carter__ttf;
@@ -77,7 +77,7 @@ class BaseJuego extends BaseEstado
 		textoPuntajeParcial.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
 		textoPuntajeParcial.y = cuadroPuntajeParcial.y + (cuadroPuntajeParcial.height - textoPuntajeParcial.height) / 3;
 		textoPuntajeParcial.visible = false;
-		add(textoPuntajeParcial);
+	
 
 		
 		var botonAtras = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
@@ -189,5 +189,31 @@ class BaseJuego extends BaseEstado
 		textoPuntajeParcial.text = Std.string(puntajeParcial);
 		cuadroPuntajeParcial.visible = true;
 		textoPuntajeParcial.visible = true;
+	}
+	
+	function mostrarResultado(puntajeParcial:Int, estado:Bool, btnOnClick : Void -> Void) {
+		var fondo = new FlxSprite(0, 0, AssetPaths.resultado_fondo__png);
+		resultado.add(fondo);
+		
+
+		var boton =  new FlxButton(0, 0, "", btnOnClick);
+		
+		if (estado == true) { //correcto
+			boton.loadGraphic(AssetPaths.gran_tilde__png);	
+		}
+		else {
+			boton.loadGraphic(AssetPaths.gran_cruz__png);
+		}
+		
+		resultado.add(boton);
+		boton.setPosition( (fondo.width - boton.width) / 2 , (fondo.height / 2 - boton.height / 2));
+		resultado.setPosition((FlxG.width - resultado.width) / 2, (FlxG.height - resultado.height) / 2);
+		actualizarPuntajeParcial(puntajeParcial);
+		cuadroPuntajeParcial.setPosition((fondo.width - cuadroPuntajeParcial.width) / 2 , fondo.height - cuadroPuntajeParcial.height - fondo.height * 0.05);
+		textoPuntajeParcial.setPosition((fondo.width - textoPuntajeParcial.width) / 2 , cuadroPuntajeParcial.y - cuadroPuntajeParcial.height * 0.02);
+		resultado.add(cuadroPuntajeParcial);
+		resultado.add(textoPuntajeParcial);
+		resultado.visible = true;
+		add(resultado);
 	}
 }
