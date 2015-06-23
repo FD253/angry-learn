@@ -35,10 +35,6 @@ class Logica extends BaseJuego
 	var momentoInicioEjercicio : Date;
 	var momentoFinEjercicio : Date;
 	
-	var popupBienHecho : FlxSprite;
-	var popupMalHecho : FlxSprite;
-	var botonPopup : FlxButton;
-	
 	//donde vamos a mostrar lo que dibuja el usuario.
 	var canvas : FlxSprite;
 	var estiloLinea : LineStyle;
@@ -95,26 +91,6 @@ class Logica extends BaseJuego
 		members.unshift(nivel.spriteTrazo);
 		members.unshift(nivel.spriteFondo);
 		// END NOTE>
-		
-		// Cartel de bien hecho
-		popupBienHecho = new FlxSprite(0, 0, AssetPaths.popup_ejercicio_bien__png);
-		popupBienHecho.setPosition(FlxG.width / 2 - popupBienHecho.width, (FlxG.height - popupBienHecho.height) * 0.4);
-		popupBienHecho.visible = false;
-		add(popupBienHecho);
-		
-		// Cartel de mal hecho
-		popupMalHecho = new FlxSprite(0, 0, AssetPaths.popup_ejercicio_mal__png);
-		popupMalHecho.updateHitbox();
-		popupMalHecho.setPosition(FlxG.width / 2 - popupMalHecho.width, (FlxG.height - popupMalHecho.height) * 0.4);
-		popupMalHecho.visible = false;
-		add(popupMalHecho);
-		
-		botonPopup = new FlxButton(0, 0, '', botonPopupOnClick);
-		botonPopup.loadGraphic(AssetPaths.tilde__png);
-		botonPopup.updateHitbox();
-		botonPopup.setPosition(popupBienHecho.x + popupBienHecho.width - botonPopup.width / 2, popupBienHecho.y * 1.1);
-		botonPopup.visible = false;
-		add(botonPopup);
 		
 		// Le damos un fondo al menú desplegable
 		menuDesplegable.add(new FlxSprite(0, 0, AssetPaths.fondo_menu_desplegable__png));
@@ -180,19 +156,19 @@ class Logica extends BaseJuego
 			puntaje = (puntosAcertados / (puntosFallados + puntosAcertados) * 100);
 			if (puntaje >= Reg.umbralTrazos) {
 				// Sólo lo dejamos avanzar si tuvo más de cierto puntaje y estamos en el nivel más alto
-				mostrarBienHecho();
 				if (Logica.numeroNivel == Reg.maxLvlTrazos) {
 					// Sólo si estamos en el lvl más alto avanzamos
 					Reg.avanzarMaxLvlTrazos();
 				}
+				mostrarResultado(Std.int(puntaje), true, botonPopupOnClick);
 			}
 			else {
-				mostrarMalHecho();
+				mostrarResultado(Std.int(puntaje), false, botonPopupOnClick);
 			}
 		}
 		else {
 			puntaje = 0;
-			mostrarMalHecho();
+			mostrarResultado(Std.int(puntaje), false, botonPopupOnClick);
 		}
 		
 		trace("p_acierto " + puntosAcertados + " p_fallido " + puntosFallados + " porcentaje " + (puntosAcertados / (puntosFallados + puntosAcertados) * 100));
@@ -204,25 +180,10 @@ class Logica extends BaseJuego
 		FlxG.switchState(new Logica());
 	}
 	
-	function mostrarBienHecho() {
-		popupBienHecho.visible = true;
-		actualizarProgreso(100 / 3 * Reg.numeroDeEjercicioSegunArrayDeEjercicios(Logica.numeroNivel));
-		botonPopup.loadGraphic(AssetPaths.tilde__png);
-		botonPopup.updateHitbox();
-		botonPopup.visible = true;
-	}
-	
-	function mostrarMalHecho() {
-		popupMalHecho.visible = true;
-		botonPopup.loadGraphic(AssetPaths.cruz__png);
-		botonPopup.updateHitbox();
-		botonPopup.visible = true;
-	}
-	
 	override public function update() {
 		super.update();
 		
-		var popupVisible = (popupBienHecho.visible || popupMalHecho.visible);
+		var popupVisible = resultado.visible;
 		
 		if (!enCurso && pixelPerfectPointCheck(FlxG.mouse.screenX, FlxG.mouse.screenY, nivel.areaInicio) && !popupVisible) {
 			// Si el juego no arrancó, se pisó el area de inicio y no hay cartel de fin de juego visible
