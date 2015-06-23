@@ -191,7 +191,7 @@ class BaseJuego extends BaseEstado
 		textoPuntajeParcial.visible = true;
 	}
 	
-	function mostrarResultado(puntajeParcial:Int, estado:Bool, btnOnClick : Void -> Void) {
+	function mostrarResultado(puntajeParcial:Int, ganado:Bool, btnOnClick : Void -> Void) {
 		var fondo = new FlxSprite(0, 0, AssetPaths.resultado_fondo__png);
 		resultado.add(fondo);
 		
