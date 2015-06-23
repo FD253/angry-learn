@@ -11,6 +11,7 @@ import flixel.FlxState;
 // Sonido de mal, Creative Commons 3 - http://www.freesound.org/people/Autistic%20Lucario/sounds/142608/
 // Sonido de bien, CC3 - http://www.freesound.org/people/GabrielAraujo/sounds/242501/
 // Sonido todo completado http://www.freesound.org/people/mickleness/sounds/269198/ GPL
+// coin, CC3 - http://www.freesound.org/people/TheDweebMan/sounds/277215/
 
 class Main extends Sprite 
 {
