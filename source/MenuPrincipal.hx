@@ -97,7 +97,7 @@ class MenuPrincipal extends BaseEstado
 		btnRitmo.y = btnTrazos.y + btnTrazos.height + espacioEntreBotones;
 		var txtRitmo = new FlxText(btnRitmo.x + btnRitmo.width * 0.25,
 									 btnRitmo.y,
-									 0, 'RITMO LECTOR', textSize);
+									 0, 'SIGUE EL RITMO', textSize);
 		txtRitmo.font = AssetPaths.carter__ttf;
 		txtRitmo.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
 		txtRitmo.y = btnRitmo.y + (btnRitmo.height / 2) - (txtRitmo.height / 2) - (txtRitmo.size * 0.3);

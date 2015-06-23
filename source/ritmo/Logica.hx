@@ -72,7 +72,7 @@ class Logica extends BaseJuego
 	override public function create() {
 		super.create();
 		trace('creating state');
-	    agregarTitulo("RITMO LECTOR");	
+	    agregarTitulo("SIGUE EL RITMO");	
 		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
 			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
 			// TODO: acá hay un bichito:

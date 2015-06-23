@@ -8,6 +8,10 @@ import flash.Lib;
 import flixel.FlxGame;
 import flixel.FlxState;
 
+// Sonido de mal, Creative Commons 3 - http://www.freesound.org/people/Autistic%20Lucario/sounds/142608/
+// Sonido de bien, CC3 - http://www.freesound.org/people/GabrielAraujo/sounds/242501/
+// Sonido todo completado http://www.freesound.org/people/mickleness/sounds/269198/ GPL
+
 class Main extends Sprite 
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
