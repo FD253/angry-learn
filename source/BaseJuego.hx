@@ -33,6 +33,9 @@ class BaseJuego extends BaseEstado
 	var cuadroPuntajeParcial : FlxSprite;
 	var textoPuntajeParcial : FlxText;
 	
+	var fondo : FlxSprite;
+	
+	var boton : FlxButton;
 	
 	function actualizarProgreso(porcentaje : Float) {
 		// Setea el progreso en la barra en base al porcentaje pasado como parámetro
@@ -50,7 +53,7 @@ class BaseJuego extends BaseEstado
 	
 	override public function create() {
 		super.create();
-		resultado =	new FlxSpriteGroup(0,0);
+
 		cuadroPuntajeTotal = new FlxSprite(FlxG.width - FlxG.width * 0.07, FlxG.height * 0.02, AssetPaths.cuadro_puntaje__png);
 		cuadroPuntajeTotal.x -= cuadroPuntajeTotal.width;
 		add(cuadroPuntajeTotal);
@@ -78,7 +81,17 @@ class BaseJuego extends BaseEstado
 		textoPuntajeParcial.y = cuadroPuntajeParcial.y + (cuadroPuntajeParcial.height - textoPuntajeParcial.height) / 3;
 		textoPuntajeParcial.visible = false;
 	
-
+		resultado =	new FlxSpriteGroup(0, 0);
+		fondo = new FlxSprite(0, 0, AssetPaths.resultado_fondo__png);
+		resultado.add(fondo);
+		
+		resultado.setPosition((FlxG.width - resultado.width) / 2, (FlxG.height - resultado.height) / 2);
+		cuadroPuntajeParcial.setPosition((fondo.width - cuadroPuntajeParcial.width) / 2 , fondo.height - cuadroPuntajeParcial.height - fondo.height * 0.05);
+		textoPuntajeParcial.setPosition((fondo.width - textoPuntajeParcial.width) / 2 , cuadroPuntajeParcial.y - cuadroPuntajeParcial.height * 0.02);
+		resultado.add(cuadroPuntajeParcial);
+		resultado.add(textoPuntajeParcial);
+		resultado.visible = false;
+		
 		
 		var botonAtras = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
 									   FlxG.width * 0.015,	// 1.5% del ancho del juego
@@ -192,12 +205,8 @@ class BaseJuego extends BaseEstado
 	}
 	
 	function mostrarResultado(puntajeParcial:Int, ganado:Bool, btnOnClick : Void -> Void) {
-		var fondo = new FlxSprite(0, 0, AssetPaths.resultado_fondo__png);
-		resultado.add(fondo);
-		
-
-		var boton =  new FlxButton(0, 0, "", btnOnClick);
-		
+		actualizarPuntajeParcial(puntajeParcial);
+		boton = new FlxButton(0, 0, "", btnOnClick);
 		if (ganado == true) { //correcto
 			boton.loadGraphic(AssetPaths.gran_tilde__png);
 			FlxG.sound.play(AssetPaths.bien__wav);
@@ -207,14 +216,8 @@ class BaseJuego extends BaseEstado
 			FlxG.sound.play(AssetPaths.error__wav);
 		}
 		
-		resultado.add(boton);
 		boton.setPosition( (fondo.width - boton.width) / 2 , (fondo.height / 2 - boton.height / 2));
-		resultado.setPosition((FlxG.width - resultado.width) / 2, (FlxG.height - resultado.height) / 2);
-		actualizarPuntajeParcial(puntajeParcial);
-		cuadroPuntajeParcial.setPosition((fondo.width - cuadroPuntajeParcial.width) / 2 , fondo.height - cuadroPuntajeParcial.height - fondo.height * 0.05);
-		textoPuntajeParcial.setPosition((fondo.width - textoPuntajeParcial.width) / 2 , cuadroPuntajeParcial.y - cuadroPuntajeParcial.height * 0.02);
-		resultado.add(cuadroPuntajeParcial);
-		resultado.add(textoPuntajeParcial);
+		resultado.add(boton);
 		resultado.visible = true;
 		add(resultado);
 	}
