@@ -181,23 +181,25 @@ class Logica extends BaseJuego
 	
 	function agregarInterfaz() {
 		var mitadAncho = FlxG.width / 2;
-		var alturaBotonesSuperiores = 95;
+		var alturaBotonesSuperiores = 120;
 		
 		// Los botones van a altura fija y de lado siempre con respecto a la mitdas del ancho del juego (O entre sí horizontalmente)
 		
 		// Botón jugar
 		btnJugar = new FlxButton(0, 0, '', btnJugarOnClick);
-		btnJugar.loadGraphic(AssetPaths.boton_jugar__png);
-		btnJugar.setPosition(mitadAncho - btnJugar.width - 20, alturaBotonesSuperiores);
-		botonesInterfaz.add(btnJugar);
+		btnJugar.loadGraphic(AssetPaths.boton_jugar__png);		
 		// El usuario no puede jugar de entrada. Tiene que haber escuchado la secuencia antes
 		btnJugar.visible = false;
 		
 		// Botón escuchar
 		btnEscuchar = new FlxButton(0, 0, '', btnEscucharOnClick);
 		btnEscuchar.loadGraphic(AssetPaths.boton_escuchar__png);
-		btnEscuchar.setPosition(btnJugar.x - btnEscuchar.width - 40, alturaBotonesSuperiores);
+		
+		btnEscuchar.setPosition(mitadAncho - (btnEscuchar.width + btnJugar.width + 20) / 2 - 40, alturaBotonesSuperiores);
+		btnJugar.setPosition(btnEscuchar.width + btnEscuchar.x + 20, alturaBotonesSuperiores);
+		
 		botonesInterfaz.add(btnEscuchar);
+		botonesInterfaz.add(btnJugar);
 		
 		// Panel de niveles
 		
