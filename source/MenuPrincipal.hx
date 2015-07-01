@@ -156,6 +156,7 @@ class MenuPrincipal extends BaseEstado
 	function mostrarPreview(imagen : String) {
 		contenedorPreview.remove(previewJuego, true);  // Lo quitamos para que se posicione bien de forma relativa al fondo luego con el add() splice=true por bug de flixel
 		previewJuego.loadGraphic(imagen);
+		previewJuego.setGraphicSize(420, 239);
 		previewJuego.updateHitbox();
 		
 		// Lo centramos dentro del contenedor
