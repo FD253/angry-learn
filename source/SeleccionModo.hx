@@ -4,15 +4,14 @@ import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import openfl.text.TextField;
-import openfl.text.TextFieldType;
-import openfl.text.TextFormat;
+import KeyboardTextField;
 
 
 class SeleccionModo extends BaseEstado
 {
 	var btnModoLibre : FlxButton;
 	var btnModoRegistrado : FlxButton;
+	var t : KeyboardTextField;
 	override public function create() 
 	{
 		super.create();
@@ -43,23 +42,16 @@ class SeleccionModo extends BaseEstado
 		add(btnModoRegistrado);
 		add(txtModoRegistrado);
 		
-		var textfield = new TextField();
-		textfield.x = 50;
-        textfield.y = 50;
-        textfield.type = TextFieldType.INPUT;
-        textfield.textColor = 0x000000;
-        textfield.border = true;
-        textfield.borderColor = 0xFFFF00;
-        textfield.background = true;
-        textfield.backgroundColor = 0xFFFFFF;
-        textfield.width = 200;
-        textfield.height = 40;
-        textfield.setTextFormat(new TextFormat(null, 32));
-		
-		textfield.needsSoftKeyboard = true;
-		
-		//FlxG.addChildBelowMouse(textfield);
+		t = KeyboardTextField.getKeyboardField();
+		t.x = 80;
+		t.y = 70;
+		FlxG.addChildBelowMouse(t);	
 	}
+	override public function destroy() {
+		super.destroy();
+		FlxG.removeChild(t);
+	}
+	
 	
 	function btnModoLibreOnClick()
 	{
