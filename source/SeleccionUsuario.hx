@@ -41,6 +41,7 @@ class SeleccionUsuario extends BaseEstado
 		textoError.autoSize = false;
 		textoError.alignment = "center";
 		textoError.fieldWidth = FlxG.width;
+		
 		textoError.updateHitbox();
 		mensajeError.add(textoError);		
 		
