@@ -65,13 +65,10 @@ class SeleccionModo extends BaseEstado
 		
 		add(grupo);
 		
-		var p = txtModoLibre.getScreenXY();
-		
 		t = KeyboardTextField.getKeyboardField();
-		t.x = p.x;
-		t.y = p.y;
-		//t.x = FlxG.width / 2 - grupo.width / 2 ;
-		//t.y = FlxG.height / 2 - grupo.height / 2; 
+		t.x = (FlxG.stage.stageWidth - t.width) / 2;
+		t.y = (FlxG.stage.stageHeight - t.height) * 0.7;
+		
 		FlxG.addChildBelowMouse(t);
 	}
 	override public function destroy() {
