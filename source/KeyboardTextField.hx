@@ -9,6 +9,8 @@ class KeyboardTextField extends TextField
 {
 	public static function getKeyboardField() : KeyboardTextField{
 		var textfield = new KeyboardTextField();
+		textfield.defaultTextFormat = new TextFormat("Arial", 32);
+		//textfield.setTextFormat(new TextFormat(null, 32));
 		textfield.type = TextFieldType.INPUT;
         textfield.textColor = 0x000000;
         textfield.border = true;
@@ -17,8 +19,10 @@ class KeyboardTextField extends TextField
         textfield.backgroundColor = 0xFFFFFF;
         textfield.width = 200;
         textfield.height = 40;
-        textfield.setTextFormat(new TextFormat(null, 32));
+        #if (android)
 		textfield.needsSoftKeyboard = true;
+		//textfield.moveForSoftKeyboard = true;
+		#end
 		return textfield;
 	}
 }
