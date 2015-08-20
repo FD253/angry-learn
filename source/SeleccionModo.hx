@@ -9,7 +9,8 @@ import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
 import openfl.events.Event;
 import haxe.Json;
-
+import flash.events.Event;
+import openfl.events.FocusEvent;
 
 class SeleccionModo extends BaseEstado
 {
@@ -87,9 +88,25 @@ class SeleccionModo extends BaseEstado
 		p.x = u.x;
 		p.y = u.y + u.height + 10;
 		
+		u.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
+		p.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
+		
+		u.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
+		p.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
+	
+			
 		FlxG.addChildBelowMouse(u);
 		FlxG.addChildBelowMouse(p);
 	}
+	
+	function handleFocusIn(event:FocusEvent) {
+		trace("up");
+	}
+	
+	function handleFocusOut(event:FocusEvent) {
+		trace("down");
+	}
+	
 	override public function destroy() {
 		super.destroy();
 		FlxG.removeChild(u);
