@@ -7,6 +7,8 @@ import flixel.util.FlxColor;
 import KeyboardTextField;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
+import openfl.events.Event;
+import haxe.Json;
 
 
 class SeleccionModo extends BaseEstado
@@ -14,15 +16,27 @@ class SeleccionModo extends BaseEstado
 	var fondo : FlxSprite;
 	var btnModoLibre : FlxButton;
 	var btnModoRegistrado : FlxButton;
-	var t : KeyboardTextField;
+	var u : KeyboardTextField;
+	var p : KeyboardTextField;
 	var grupo : FlxSpriteGroup;
 	
 	override public function create() 
 	{
 		super.create();
 		
+		var btnReiniciar = new FlxButton(encabezado.height * 0.4, // 40% del alto de la barra naranja superior
+											   FlxG.width * 0.015,	// 1.5% del ancho del juego
+											   function() {
+												   Reg.reiniciarMaximos();
+												   FlxG.resetGame();
+												   });
+		btnReiniciar.loadGraphic(AssetPaths.boton_reiniciar__png);
+		btnReiniciar.setGraphicSize(Std.int(btnReiniciar.height * 0.7));
+		btnReiniciar.updateHitbox();
+		add(btnReiniciar);
+		
 		grupo = new FlxSpriteGroup();
-				
+		
 		fondo = new FlxSprite(0, 0, AssetPaths.fondo_panel__png);
 		grupo.add(fondo);
 		
@@ -65,17 +79,22 @@ class SeleccionModo extends BaseEstado
 		
 		add(grupo);
 		
-		t = KeyboardTextField.getKeyboardField();
-		t.x = (FlxG.stage.stageWidth - t.width) / 2;
-		t.y = (FlxG.stage.stageHeight - t.height) * 0.7;
+		u = KeyboardTextField.getKeyboardField();
+		u.x = (FlxG.stage.stageWidth - u.width) / 2;
+		u.y = (FlxG.stage.stageHeight - u.height) * 0.7;
 		
-		FlxG.addChildBelowMouse(t);
+		p = KeyboardTextField.getKeyboardField();
+		p.x = u.x;
+		p.y = u.y + u.height + 10;
+		
+		FlxG.addChildBelowMouse(u);
+		FlxG.addChildBelowMouse(p);
 	}
 	override public function destroy() {
 		super.destroy();
-		FlxG.removeChild(t);
+		FlxG.removeChild(u);
+		FlxG.removeChild(p);
 	}
-	
 	
 	function btnModoLibreOnClick()
 	{
@@ -84,9 +103,27 @@ class SeleccionModo extends BaseEstado
 		FlxG.switchState(new MenuPrincipal());
 	}
 	
+	function manejadorLogueo(e : Event) {
+		
+		var data = Json.parse(e.target.data);
+		trace(data);
+		if (data.success == true) {
+			Reg.apiKey = data.api_key;
+			Reg.modoDeJuego = Reg.REGISTRADO;
+			FlxG.switchState(new SeleccionUsuario());
+		} else {
+			var error = new MensajeError();
+			add(error);
+			error.textoError.text = "USUARIO O CLAVE INCORRECTOS";
+			u.visible = false;
+			p.visible = false;
+			grupo.visible = false;
+			error.visible = true;
+		}
+	}
+	
 	function btnModoRegistradoOnClick()
 	{
-		Reg.modoDeJuego = Reg.REGISTRADO;
-		FlxG.switchState(new SeleccionUsuario());
+		ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);
 	}
 }
