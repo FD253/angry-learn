@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	<!------------------------------APPLICATION SETTINGS---------------------------->
+	<template path="templates/AndroidManifest.xml" rename="AndroidManifest.xml" />
 	
 	<app title="angry-learn" file="angry-learn" main="Main" version="0.0.3" company="UCSE" />
 	
