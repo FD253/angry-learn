@@ -22,7 +22,6 @@ class ServicioPosta {
 	//http://demo-api-juegos.herokuapp.com/api/v1/juego/?format=json&api_username=croldan&api_key=33038804fc87018da64435810462096e99f2439e
 	private inline static var ruta_base : String = "https://ucseapijuegos.herokuapp.com/api/v1/";
 	private inline static var formato : String = "json";
-	private inline static var api_key : String = "ddbaec6ee3f8fca507320c8ae3ed7c40e01e958b";
 	private inline static var api_username : String = "apiuser";
 	private inline static var password : String = "UserAPI2015$";
 	
@@ -30,6 +29,7 @@ class ServicioPosta {
 	private inline static var ruta_user : String = "user/";
 	private inline static var ruta_play : String = "play/";
 	private inline static var ruta_puntajes: String = "points/";
+	private inline static var ruta_login : String = ruta_user + "login/";
 	
 	private function new() {
 		
@@ -50,7 +50,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario)+'/' + ruta_puntajes + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario)+'/' + ruta_puntajes + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
 		trace(ruta);
 		
 		
@@ -72,7 +72,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
 		trace(ruta);
 		
 		var request : URLRequest = new URLRequest(ruta);
@@ -80,6 +80,33 @@ class ServicioPosta {
 		trace(request);
 		request.method = URLRequestMethod.GET;
 		
+		cargador.load(request);
+	}
+	
+	
+	public function loguearUsuario(usuario : String, clave : String, callback : Event -> Void) {
+		var cargador:URLLoader = new URLLoader();
+		cargador.addEventListener(Event.COMPLETE, callback);
+		cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+		cargador.addEventListener(IOErrorEvent.IO_ERROR, callback);
+		cargador.addEventListener(Event.OPEN, openHandler);
+		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		var ruta : String = ruta_base + ruta_login + '?format=' + formato;
+		trace(ruta);
+		
+		var params : Dynamic = { };
+		params.username = usuario;
+		params.password = clave;
+		trace(params);
+		
+		var request:URLRequest = new URLRequest(ruta);
+		
+		request.method = URLRequestMethod.POST;
+		request.data = Json.stringify(params);
+		request.contentType = 'application/json';
+		trace(request.data);
+		trace(request.contentType);
 		cargador.load(request);
 	}
 	
@@ -92,7 +119,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + '?format='+ServicioPosta.formato + '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
 		trace(ruta);
 		
 		
@@ -108,7 +135,7 @@ class ServicioPosta {
 	static var timeoutTimer : FlxTimer;
 	
 	public function postPlay(puntaje : Float, appId : String, levelId : String, usedTime : Float):Void {
-		if (Reg.usuarioActual != "") { //Si existe usuario actual (se está usando el modo registrado)
+		if (Reg.modoDeJuego == Reg.REGISTRADO) {
 			var cargador:URLLoader = new URLLoader();
 			cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
 			cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
@@ -138,7 +165,7 @@ class ServicioPosta {
 			trace(Json.stringify(params));
 			
 			var request:URLRequest = new URLRequest(ruta);
-			request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + api_key));
+			request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + Reg.apiKey));
 			request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
 			request.method = URLRequestMethod.POST;
 			request.data = Json.stringify(params);

@@ -31,6 +31,7 @@ class Reg
 	public static var LIBRE = "libre";
 	
 	public static var modoDeJuego : String;
+	public static var apiKey : String;
 	
 	
 	// API
