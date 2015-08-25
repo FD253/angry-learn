@@ -89,12 +89,13 @@ class SeleccionModo extends BaseEstado
 		p.x = u.x;
 		p.y = u.y + u.height + 10;
 		
+		#if android
 		u.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
 		p.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
 		
 		u.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
 		p.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
-	
+		#end
 			
 		FlxG.addChildBelowMouse(u);
 		FlxG.addChildBelowMouse(p);
