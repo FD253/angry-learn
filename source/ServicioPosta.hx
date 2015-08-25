@@ -16,14 +16,15 @@ import haxe.Json;
 
 class ServicioPosta {
 	
+	public function new() {	}
+	
 	public static var instancia(get, null) : ServicioPosta;
 	//http://demo-api-juegos.herokuapp.com/api/v1/?format=json&api_username=croldan&api_key=33038804fc87018da64435810462096e99f2439e
 	//http://demo-api-juegos.herokuapp.com/api/v1/juego/schema/?format=json&api_username=croldan&api_key=33038804fc87018da64435810462096e99f2439e
 	//http://demo-api-juegos.herokuapp.com/api/v1/juego/?format=json&api_username=croldan&api_key=33038804fc87018da64435810462096e99f2439e
-	private inline static var ruta_base : String = "https://ucseapijuegos.herokuapp.com/api/v1/";
+	private inline static var ruta_api : String = "api/v1/";
+	private inline static var ruta_base : String = "https://ucseapijuegos.herokuapp.com/" + ruta_api;
 	private inline static var formato : String = "json";
-	private inline static var api_username : String = "apiuser";
-	private inline static var password : String = "UserAPI2015$";
 	
 	private inline static var ruta_level : String = "level/";
 	private inline static var ruta_user : String = "user/";
@@ -31,10 +32,11 @@ class ServicioPosta {
 	private inline static var ruta_puntajes: String = "points/";
 	private inline static var ruta_login : String = ruta_user + "login/";
 	
-	private function new() {
-		
+	public static function obtenerUriUsuario(idUsuario : String) : String {
+		// A partir de un id de usuario numérico (pasado como string porque así devuelve la API)
+		// construimos y devolvemos la URI del recurso user
+		return "/" + ruta_api + ruta_user + idUsuario + "/";
 	}
-	
 	private static function get_instancia():ServicioPosta {
 		if (null == instancia) {
 			instancia = new ServicioPosta();
@@ -50,7 +52,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario)+'/' + ruta_puntajes + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario)+'/' + ruta_puntajes + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + Reg.usernameActual ;
 		trace(ruta);
 		
 		
@@ -72,7 +74,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + Reg.obtenerIdResource(usuario) + '/levels/' + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + Reg.usernameActual ;
 		trace(ruta);
 		
 		var request : URLRequest = new URLRequest(ruta);
@@ -119,7 +121,7 @@ class ServicioPosta {
 		cargador.addEventListener(Event.OPEN, openHandler);
 		cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 		cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-		var ruta : String = ruta_base + ruta_user + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + ServicioPosta.api_username ;
+		var ruta : String = ruta_base + ruta_user + '?format='+ServicioPosta.formato + '&api_key=' + Reg.apiKey + '&api_username=' + Reg.usernameActual ;
 		trace(ruta);
 		
 		
@@ -135,17 +137,21 @@ class ServicioPosta {
 	static var timeoutTimer : FlxTimer;
 	
 	public function postPlay(puntaje : Float, appId : String, levelId : String, usedTime : Float):Void {
+		trace(Reg.usernameActual, Reg.nombreUsuarioActual, Reg.apiKey, Reg.usuarioActual);
 		if (Reg.modoDeJuego == Reg.REGISTRADO) {
 			var cargador:URLLoader = new URLLoader();
-			cargador.addEventListener(Event.COMPLETE, function(e:Event) {});
+			cargador.addEventListener(Event.COMPLETE, function(e:Event) {
+				trace("Event COMPLETE post play");
+			} );
 			cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
 			cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
+				trace(e.target.data);
 				FlxG.resetGame(); // Si el server no se pudo alcanzar guardando el juego, chau
-			});//ioErrorHandler);
+			});
 			cargador.addEventListener(Event.OPEN, openHandler);
 			cargador.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 			cargador.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-			var ruta : String = ruta_base + ruta_play ; //+ '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
+			var ruta : String = ruta_base + ruta_play; //+ '&api_key=' + ServicioPosta.api_key + '&api_username=' + ServicioPosta.api_username ;
 			trace(ruta);
 			var params : Dynamic = { };
 			params.device_app_version = Reg.deviceAppVersion;
@@ -165,7 +171,7 @@ class ServicioPosta {
 			trace(Json.stringify(params));
 			
 			var request:URLRequest = new URLRequest(ruta);
-			request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + api_username + ":" + Reg.apiKey));
+			request.requestHeaders.push(new URLRequestHeader("Authorization", "ApiKey " + Reg.usernameActual + ":" + Reg.apiKey));
 			request.requestHeaders.push(new URLRequestHeader("Content-Type", "application/json"));
 			request.method = URLRequestMethod.POST;
 			request.data = Json.stringify(params);

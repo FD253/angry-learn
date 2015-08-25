@@ -57,36 +57,9 @@ class SeleccionUsuario extends BaseEstado
 		ServicioPosta.instancia.obtenerUsuarios(mostrarUsuarios, mostrarError);
 	}
 	
-	public function setearPuntaje(e: Event) {
-		//var data = StringTools.replace(e.target.data, '[', '{');
-		//data = StringTools.replace(data, ']', '}');
-		var listaPuntajes = Json.parse(e.target.data);
-		
-		trace(listaPuntajes[0]);
-		for (puntaje in listaPuntajes) {
-			var app = '/api/v1/app/' + Std.string(puntaje.app) + '/';
-			switch (app) 
-			{
-				case Reg.idAppKaraoke: Reg.puntosKaraoke = Std.int(puntaje.points);
-				case Reg.idAppTrazos: Reg.puntosTrazos = Std.int(puntaje.points);
-				case Reg.idAppRitmo: Reg.puntosRitmo = Std.int(puntaje.points);
-			}
-		}
-	}
 	
-	public function setearMaximosNiveles(e: Event) {
-		var listaMaximosNiveles = Json.parse(e.target.data);
-		trace(listaMaximosNiveles[0]);
-		for (maxNivel in listaMaximosNiveles) {
-			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
-			switch (app) 
-			{
-				case Reg.idAppKaraoke :Reg.maxLvlKaraoke = Std.int(maxNivel.higger_level - 1);
-				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level-1);
-				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
-			}
-		}
-	}
+	
+
 	
 	public function mostrarError(e : Event) {
 		mensajeError.visible = true;
