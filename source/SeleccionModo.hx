@@ -20,6 +20,7 @@ class SeleccionModo extends BaseEstado
 	var u : KeyboardTextField;
 	var p : KeyboardTextField;
 	var grupo : FlxSpriteGroup;
+	var focusIn : Bool;
 	
 	override public function create() 
 	{
@@ -66,7 +67,7 @@ class SeleccionModo extends BaseEstado
 		btnModoRegistrado = new FlxButton(10, 40, null, btnModoRegistradoOnClick);
 		btnModoRegistrado.loadGraphic(AssetPaths.modo__png);
 		btnModoRegistrado.x = (fondo.width / 2) - (btnModoRegistrado.width / 2);
-		btnModoRegistrado.y = fondo.height * 0.23 + 100;
+		btnModoRegistrado.y = fondo.height * 0.23 + 300;
 		var txtModoRegistrado = new FlxText(btnModoRegistrado.x + btnModoRegistrado.width * 0.25,
 									 btnModoRegistrado.y, 0, "USUARIO REGISTRADO" , textSize);
 		txtModoRegistrado.font = AssetPaths.carter__ttf;
@@ -82,7 +83,7 @@ class SeleccionModo extends BaseEstado
 		
 		u = KeyboardTextField.getKeyboardField();
 		u.x = (FlxG.stage.stageWidth - u.width) / 2;
-		u.y = (FlxG.stage.stageHeight - u.height) * 0.7;
+		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
 		
 		p = KeyboardTextField.getKeyboardField();
 		p.x = u.x;
@@ -100,11 +101,17 @@ class SeleccionModo extends BaseEstado
 	}
 	
 	function handleFocusIn(event:FocusEvent) {
-		trace("up");
+		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2.7 - grupo.height / 2);
+		u.y = (FlxG.stage.stageHeight - u.height) * 0.375;
+		p.y = u.y + u.height + 10;
+		focusIn = true;
 	}
 	
 	function handleFocusOut(event:FocusEvent) {
-		trace("down");
+		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2 - grupo.height / 2);
+		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
+		p.y = u.y + u.height + 10;
+		focusIn = false;
 	}
 	
 	override public function destroy() {
@@ -115,9 +122,11 @@ class SeleccionModo extends BaseEstado
 	
 	function btnModoLibreOnClick()
 	{
-		Reg.setearModoLibre();
-		Reg.modoDeJuego = Reg.LIBRE;
-		FlxG.switchState(new MenuPrincipal());
+		if (focusIn == false) {
+			Reg.setearModoLibre();
+			Reg.modoDeJuego = Reg.LIBRE;
+			FlxG.switchState(new MenuPrincipal());
+		}
 	}
 	
 	function manejadorLogueo(e : Event) {
@@ -141,6 +150,8 @@ class SeleccionModo extends BaseEstado
 	
 	function btnModoRegistradoOnClick()
 	{
-		ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);
+		if (focusIn == false) {
+			ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);	
+		}
 	}
 }
