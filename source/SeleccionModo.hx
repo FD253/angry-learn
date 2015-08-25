@@ -88,6 +88,7 @@ class SeleccionModo extends BaseEstado
 		p = KeyboardTextField.getKeyboardField();
 		p.x = u.x;
 		p.y = u.y + u.height + 10;
+		p.displayAsPassword = true;
 		
 		#if android
 		u.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
