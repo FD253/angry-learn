@@ -9,7 +9,7 @@ class KeyboardTextField extends TextField
 {
 	public static function getKeyboardField() : KeyboardTextField{
 		var textfield = new KeyboardTextField();
-		textfield.defaultTextFormat = new TextFormat("Arial", 32);
+		textfield.defaultTextFormat = new TextFormat("Carter One", 32);
 		//textfield.setTextFormat(new TextFormat(null, 32));
 		textfield.type = TextFieldType.INPUT;
         textfield.textColor = 0x000000;

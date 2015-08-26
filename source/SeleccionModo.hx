@@ -21,6 +21,9 @@ class SeleccionModo extends BaseEstado
 	var p : KeyboardTextField;
 	var grupo : FlxSpriteGroup;
 	var focusIn : Bool;
+	var format : FlxTextFormat;
+	var user : FlxText;
+	var password : FlxText;
 	
 	override public function create() 
 	{
@@ -84,11 +87,27 @@ class SeleccionModo extends BaseEstado
 		u = KeyboardTextField.getKeyboardField();
 		u.x = (FlxG.stage.stageWidth - u.width) / 2;
 		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
+		u.width = 300;
+		
+		user = new FlxText(u.x - 100, u.y+35, 0, "USUARIO", 32);
+		user.font = AssetPaths.carter__ttf;
+		format = new FlxTextFormat(FlxColor.WHITE, true);
+		user.addFormat(format);
+		user.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		add(user);
 		
 		p = KeyboardTextField.getKeyboardField();
 		p.x = u.x;
 		p.y = u.y + u.height + 10;
 		p.displayAsPassword = true;
+		p.width = 300;
+		
+		password= new FlxText(u.x - 100, p.y+35, 0, "CLAVE", 33);
+		password.font = AssetPaths.carter__ttf;
+		format = new FlxTextFormat(FlxColor.WHITE, true);
+		password.addFormat(format);
+		password.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		add(password);		
 		
 		#if android
 		u.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
@@ -106,6 +125,8 @@ class SeleccionModo extends BaseEstado
 		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2.7 - grupo.height / 2);
 		u.y = (FlxG.stage.stageHeight - u.height) * 0.375;
 		p.y = u.y + u.height + 10;
+		user.y = u.y + 35;
+		password.y = p.y + 35;
 		focusIn = true;
 	}
 	
@@ -113,7 +134,10 @@ class SeleccionModo extends BaseEstado
 		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2 - grupo.height / 2);
 		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
 		p.y = u.y + u.height + 10;
+		user.y = u.y + 35;
+		password.y = p.y + 35;
 		focusIn = false;
+		
 	}
 	
 	override public function destroy() {
