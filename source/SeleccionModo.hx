@@ -71,11 +71,16 @@ class SeleccionModo extends BaseEstado
 		btnModoRegistrado.loadGraphic(AssetPaths.modo__png);
 		btnModoRegistrado.x = (fondo.width / 2) - (btnModoRegistrado.width / 2);
 		btnModoRegistrado.y = fondo.height * 0.23 + 300;
-		var txtModoRegistrado = new FlxText(btnModoRegistrado.x + btnModoRegistrado.width * 0.25,
-									 btnModoRegistrado.y, 0, "USUARIO REGISTRADO" , textSize);
+		var txtModoRegistrado = new FlxText(btnModoRegistrado.x, btnModoRegistrado.y,0, "ENTRAR" , textSize);
 		txtModoRegistrado.font = AssetPaths.carter__ttf;
 		txtModoRegistrado.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
 		txtModoRegistrado.y = btnModoRegistrado.y + (btnModoRegistrado.height / 2) - (txtModoRegistrado.height / 2) - (txtModoRegistrado.size * 0.3);
+		txtModoRegistrado.wordWrap = false;
+		txtModoRegistrado.autoSize = false;
+		txtModoRegistrado.fieldWidth = btnModoRegistrado.width;
+		txtModoRegistrado.alignment = "center";
+		
+		
 		
 		grupo.add(btnModoRegistrado);
 		grupo.add(txtModoRegistrado);
