@@ -35,8 +35,9 @@ class Reg
 	
 	
 	// API
-	public static var usuarioActual : String;
+	public static var usuarioActual : String;	// Resource uri
 	public static var nombreUsuarioActual : String = '';
+	public static var usernameActual : String = '';  // El que se usa para el login
 	public static var idsUsuario : Array<Int> = [3, 4, 6, 7];
 	
 	

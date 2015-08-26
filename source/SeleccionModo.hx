@@ -155,6 +155,35 @@ class SeleccionModo extends BaseEstado
 		}
 	}
 	
+	public function setearPuntaje(e: Event) {
+		var listaPuntajes = Json.parse(e.target.data);
+		
+		trace(listaPuntajes[0]);
+		for (puntaje in listaPuntajes) {
+			var app = '/api/v1/app/' + Std.string(puntaje.app) + '/';
+			switch (app) 
+			{
+				case Reg.idAppKaraoke: Reg.puntosKaraoke = Std.int(puntaje.points);
+				case Reg.idAppTrazos: Reg.puntosTrazos = Std.int(puntaje.points);
+				case Reg.idAppRitmo: Reg.puntosRitmo = Std.int(puntaje.points);
+			}
+		}
+	}
+	
+	public function setearMaximosNiveles(e: Event) {
+		var listaMaximosNiveles = Json.parse(e.target.data);
+		trace(listaMaximosNiveles[0]);
+		for (maxNivel in listaMaximosNiveles) {
+			var app = '/api/v1/app/' + Std.string(maxNivel.app) + '/';
+			switch (app) 
+			{
+				case Reg.idAppKaraoke :Reg.maxLvlKaraoke = Std.int(maxNivel.higger_level - 1);
+				case Reg.idAppRitmo: Reg.maxLvlRitmo = Std.int(maxNivel.higger_level-1);
+				case Reg.idAppTrazos: Reg.maxLvlTrazos = Std.int(maxNivel.higger_level - 1);
+			}
+		}
+	}
+	
 	function manejadorLogueo(e : Event) {
 		
 		var data = Json.parse(e.target.data);
@@ -162,7 +191,16 @@ class SeleccionModo extends BaseEstado
 		if (data.success == true) {
 			Reg.apiKey = data.api_key;
 			Reg.modoDeJuego = Reg.REGISTRADO;
-			FlxG.switchState(new SeleccionUsuario());
+			Reg.usuarioActual = ServicioPosta.obtenerUriUsuario(data.user_id);
+			Reg.nombreUsuarioActual = u.text;	// TODO: Usar el first_name, consultando a la API
+			Reg.usernameActual = u.text;
+			
+			ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
+			ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
+			
+			FlxG.switchState(new MenuPrincipal());
+			trace(Reg.usuarioActual);
+
 		} else {
 			var error = new MensajeError();
 			add(error);
