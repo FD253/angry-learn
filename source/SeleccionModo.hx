@@ -169,6 +169,8 @@ class SeleccionModo extends BaseEstado
 			error.textoError.text = "USUARIO O CLAVE INCORRECTOS";
 			u.visible = false;
 			p.visible = false;
+			user.visible = false;
+			password.visible = false;
 			grupo.visible = false;
 			error.visible = true;
 		}
