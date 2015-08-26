@@ -217,6 +217,7 @@ class SeleccionModo extends BaseEstado
 	function btnModoRegistradoOnClick()
 	{
 		if (focusIn == false) {
+			grupo.active = false;
 			ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);	
 		}
 	}
