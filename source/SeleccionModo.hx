@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxSave;
 import KeyboardTextField;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
@@ -14,9 +15,14 @@ import openfl.events.FocusEvent;
 
 class SeleccionModo extends BaseEstado
 {
+	var recordarme : Bool = false;
 	var fondo : FlxSprite;
 	var btnModoLibre : FlxButton;
 	var btnModoRegistrado : FlxButton;
+	
+	var grupoRecordarme : FlxSpriteGroup;
+	var tildeRecordarme : FlxSprite;
+	
 	var u : KeyboardTextField;
 	var p : KeyboardTextField;
 	var grupo : FlxSpriteGroup;
@@ -51,7 +57,7 @@ class SeleccionModo extends BaseEstado
 		btnModoLibre = new FlxButton(10, 10, null, btnModoLibreOnClick);
 		btnModoLibre.loadGraphic(AssetPaths.modo__png);
 		btnModoLibre.x = (fondo.width / 2) - (btnModoLibre.width / 2);
-		btnModoLibre.y = fondo.height * 0.23;
+		btnModoLibre.y = fondo.height * 0.21;
 		var txtModoLibre = new FlxText(btnModoLibre.x ,
 									 btnModoLibre.y, 0, "MODO LIBRE" , textSize);
 		txtModoLibre.font = AssetPaths.carter__ttf;
@@ -70,7 +76,7 @@ class SeleccionModo extends BaseEstado
 		btnModoRegistrado = new FlxButton(10, 40, null, btnModoRegistradoOnClick);
 		btnModoRegistrado.loadGraphic(AssetPaths.modo__png);
 		btnModoRegistrado.x = (fondo.width / 2) - (btnModoRegistrado.width / 2);
-		btnModoRegistrado.y = fondo.height * 0.23 + 300;
+		btnModoRegistrado.y = fondo.height * 0.23 + 305;
 		var txtModoRegistrado = new FlxText(btnModoRegistrado.x, btnModoRegistrado.y,0, "ENTRAR" , textSize);
 		txtModoRegistrado.font = AssetPaths.carter__ttf;
 		txtModoRegistrado.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 3, 1);
@@ -82,6 +88,27 @@ class SeleccionModo extends BaseEstado
 		
 		
 		
+		grupoRecordarme = new FlxSpriteGroup();
+		
+		tildeRecordarme = new FlxButton(0, 0, "", btnTildeOnClick);
+		tildeRecordarme.loadGraphic(AssetPaths.tilde_vacio__png);
+		
+		var txtRecordarme = new FlxText(0, 0, 0, "RECORDARME" , Std.int(textSize * 0.8));
+		txtRecordarme.font = AssetPaths.carter__ttf;
+		txtRecordarme.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		txtRecordarme.autoSize = false;
+		txtRecordarme.alignment = "left";
+		txtRecordarme.fieldWidth = btnModoLibre.width - tildeRecordarme.width;
+		txtRecordarme.y = tildeRecordarme.y + (tildeRecordarme.height / 2) - (txtRecordarme.height / 2);
+		
+		grupoRecordarme.add(tildeRecordarme);
+		grupoRecordarme.add(txtRecordarme);
+		txtRecordarme.x = tildeRecordarme.width + 10;
+		
+		grupoRecordarme.setPosition(btnModoRegistrado.x, btnModoRegistrado.y - grupoRecordarme.height - 10);
+		
+		
+		grupo.add(grupoRecordarme);
 		grupo.add(btnModoRegistrado);
 		grupo.add(txtModoRegistrado);
 		
@@ -121,9 +148,44 @@ class SeleccionModo extends BaseEstado
 		u.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
 		p.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
 		#end
-			
+		
 		FlxG.addChildBelowMouse(u);
 		FlxG.addChildBelowMouse(p);
+		
+		
+		// Si había credenciales guardadas, las usamos
+		if (Reg.credencialesGuardadas()) {
+			recordarme = true;
+			tildeRecordarme.loadGraphic(AssetPaths.tilde__png);
+			Reg.usuarioActual = FlxG.save.data.usuarioActual;
+			Reg.nombreUsuarioActual = FlxG.save.data.nombreUsuarioActual;
+			Reg.usernameActual = FlxG.save.data.usernameActual;
+			Reg.apiKey = FlxG.save.data.apiKey;
+			u.text = Reg.usernameActual;
+			p.text = "asdfghjj";	// Random para que aparezcan asteriscos... No se va a usar total
+		}
+	}
+	
+	function btnTildeOnClick() {
+		if (recordarme) {
+			// No quiere que lo recuerden más... Olvidar todo
+			recordarme = false;
+			tildeRecordarme.loadGraphic(AssetPaths.tilde_vacio__png);
+			u.text = "";
+			p.text = "";
+			
+			Reg.usuarioActual = null;
+			Reg.nombreUsuarioActual = null;
+			Reg.usernameActual = null;
+			Reg.apiKey = null;
+			
+			FlxG.save.erase();
+		}
+		else {
+			// Quiere que lo recuerden
+			recordarme = true;
+			tildeRecordarme.loadGraphic(AssetPaths.tilde__png);
+		}
 	}
 	
 	function handleFocusIn(event:FocusEvent) {
@@ -203,6 +265,15 @@ class SeleccionModo extends BaseEstado
 			ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
 			ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
 			
+			if (recordarme) {
+				FlxG.save.data.usuarioActual = Reg.usuarioActual;
+				FlxG.save.data.nombreUsuarioActual = Reg.nombreUsuarioActual;
+				FlxG.save.data.usernameActual = Reg.usernameActual;
+				FlxG.save.data.apiKey = Reg.apiKey;
+				
+				FlxG.save.flush();
+			}
+			
 			FlxG.switchState(new MenuPrincipal());
 			trace(Reg.usuarioActual);
 
@@ -223,7 +294,17 @@ class SeleccionModo extends BaseEstado
 	{
 		if (focusIn == false) {
 			grupo.active = false;
-			ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);	
+			if (Reg.credencialesGuardadas() == false) {
+				// Si no se recordaba al usuario loguear con lo que hay en los campos de texto
+				ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);
+			} 
+			else {
+				trace('usando credenciales almacenadas');				
+				ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
+				ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
+				
+				FlxG.switchState(new MenuPrincipal());
+			}
 		}
 	}
 }
