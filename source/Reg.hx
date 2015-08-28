@@ -1,5 +1,5 @@
 package;
-
+import flixel.FlxG;
 import flixel.util.FlxSave;
 import trazos.Nivel;
 
@@ -10,7 +10,7 @@ import trazos.Nivel;
  */
 
 class Reg
-{
+{	
 	public static var debug = false;
 	
 	public static var nivelRitmoActual : Int;
@@ -38,7 +38,7 @@ class Reg
 	public static var usuarioActual : String;	// Resource uri
 	public static var nombreUsuarioActual : String = '';
 	public static var usernameActual : String = '';  // El que se usa para el login
-	public static var idsUsuario : Array<Int> = [3, 4, 6, 7];
+	
 	
 	
 	public static var deviceId : String = 'TESTDEVICE';
@@ -102,6 +102,14 @@ class Reg
 	
 	
 	public static var EJERCICIOS_POR_NIVEL = 3;
+	
+	public static function credencialesGuardadas() : Bool {
+		// Indica si se están recordando las credenciales de un usuario (O sea, si tenemos alguna guardada)
+		return (FlxG.save.data.usuarioActual != null && 
+				FlxG.save.data.nombreUsuarioActual != null &&
+				FlxG.save.data.usernameActual != null &&
+				FlxG.save.data.apiKey != null);
+	}
 	
 	public static function numeroDeNivelSegunArrayDeEjercicios(indiceEjercicio : Int) : Int {
 		// indiceEjercicio es un número que arranca en 0, como los índices de los arrays
