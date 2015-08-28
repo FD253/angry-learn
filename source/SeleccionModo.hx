@@ -116,9 +116,11 @@ class SeleccionModo extends BaseEstado
 		add(grupo);
 		
 		userTextInput = KeyboardTextField.getKeyboardField();
-		userTextInput.x = (FlxG.stage.stageWidth - userTextInput.width) / 2;
 		userTextInput.width = 300;
 		userTextInput.width = userTextInput.width * (FlxG.stage.stageWidth / FlxG.width);
+		//userTextInput.x = (FlxG.stage.stageWidth - userTextInput.width) / 2;
+		var porcentajeEnPantalla = 0.35;
+		userTextInput.x = (grupo.x + grupo.width * porcentajeEnPantalla) / FlxG.width * FlxG.stage.stageWidth;
 		userTextInput.height = userTextInput.height * (FlxG.stage.stageHeight / FlxG.height);
 		userTextInput.y = (FlxG.stage.stageHeight - userTextInput.height) * 0.5;
 		userTextInput.defaultTextFormat = new TextFormat("Carter One", 24 * FlxG.stage.stageHeight / FlxG.height);
