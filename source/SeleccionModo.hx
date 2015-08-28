@@ -11,19 +11,20 @@ import openfl.events.Event;
 import haxe.Json;
 import flash.events.Event;
 import openfl.events.FocusEvent;
+import openfl.text.TextFormat;
 
 class SeleccionModo extends BaseEstado
 {
 	var fondo : FlxSprite;
 	var btnModoLibre : FlxButton;
 	var btnModoRegistrado : FlxButton;
-	var u : KeyboardTextField;
-	var p : KeyboardTextField;
+	var userTextInput : KeyboardTextField;
+	var pwdTextInput : KeyboardTextField;
 	var grupo : FlxSpriteGroup;
 	var focusIn : Bool;
 	var format : FlxTextFormat;
-	var user : FlxText;
-	var password : FlxText;
+	var userTextLabel : FlxText;
+	var pwdTextLabel : FlxText;
 	
 	override public function create() 
 	{
@@ -89,66 +90,79 @@ class SeleccionModo extends BaseEstado
 		
 		add(grupo);
 		
-		u = KeyboardTextField.getKeyboardField();
-		u.x = (FlxG.stage.stageWidth - u.width) / 2;
-		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
-		u.width = 300;
+		userTextInput = KeyboardTextField.getKeyboardField();
+		userTextInput.x = (FlxG.stage.stageWidth - userTextInput.width) / 2;
+		userTextInput.width = 300;
+		userTextInput.width = userTextInput.width * (FlxG.stage.stageWidth / FlxG.width);
+		userTextInput.height = userTextInput.height * (FlxG.stage.stageHeight / FlxG.height);
+		userTextInput.y = (FlxG.stage.stageHeight - userTextInput.height) * 0.5;
+		userTextInput.defaultTextFormat = new TextFormat("Carter One", 24 * FlxG.stage.stageHeight / FlxG.height);
+
 		
-		user = new FlxText(u.x - 100, u.y+35, 0, "USUARIO", 32);
-		user.font = AssetPaths.carter__ttf;
+		trace("UsuarioXY ", userTextInput.x, " ", userTextInput.y);
+		userTextLabel = new FlxText(445 , 373, 0, "USUARIO", 31);
+
+		
+		userTextLabel.font = AssetPaths.carter__ttf;
 		format = new FlxTextFormat(FlxColor.WHITE, true);
-		user.addFormat(format);
-		user.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
-		add(user);
+		userTextLabel.addFormat(format);
+		userTextLabel.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		add(userTextLabel);
 		
-		p = KeyboardTextField.getKeyboardField();
-		p.x = u.x;
-		p.y = u.y + u.height + 10;
-		p.displayAsPassword = true;
-		p.width = 300;
+		pwdTextInput = KeyboardTextField.getKeyboardField();
+		pwdTextInput.x = userTextInput.x;
+		pwdTextInput.width = 300;
+		pwdTextInput.width = pwdTextInput.width * (FlxG.stage.stageWidth / FlxG.width);
+		pwdTextInput.height = pwdTextInput.height * (FlxG.stage.stageHeight / FlxG.height);
+		pwdTextInput.y = userTextInput.y + userTextInput.height + 10;
+		pwdTextInput.displayAsPassword = true;
+		pwdTextInput.defaultTextFormat = new TextFormat("Carter One", 24 * FlxG.stage.stageHeight / FlxG.height);
 		
-		password= new FlxText(u.x - 100, p.y+35, 0, "CLAVE", 33);
-		password.font = AssetPaths.carter__ttf;
+		
+		pwdTextLabel = new FlxText(445, (userTextLabel.y + userTextLabel.height + 10), 0, "CLAVE", 31);
+		pwdTextLabel.font = AssetPaths.carter__ttf;
 		format = new FlxTextFormat(FlxColor.WHITE, true);
-		password.addFormat(format);
-		password.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
-		add(password);		
+		pwdTextLabel.addFormat(format);
+		pwdTextLabel.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 2, 1);
+		add(pwdTextLabel);		
 		
 		#if android
-		u.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
-		p.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
+		userTextInput.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
+		pwdTextInput.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
 		
-		u.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
-		p.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
+		userTextInput.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
+		pwdTextInput.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
 		#end
 			
-		FlxG.addChildBelowMouse(u);
-		FlxG.addChildBelowMouse(p);
+		FlxG.addChildBelowMouse(userTextInput);
+		FlxG.addChildBelowMouse(pwdTextInput);
 	}
 	
 	function handleFocusIn(event:FocusEvent) {
 		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2.7 - grupo.height / 2);
-		u.y = (FlxG.stage.stageHeight - u.height) * 0.375;
-		p.y = u.y + u.height + 10;
-		user.y = u.y + 35;
-		password.y = p.y + 35;
+		userTextInput.y = (FlxG.stage.stageHeight - userTextInput.height) * 0.375;
+		pwdTextInput.y = userTextInput.y + userTextInput.height + 10;
+		trace("UserXY2 ", userTextInput.x, " ", userTextInput.y);
+		trace("PassY2 ", pwdTextInput.y);
+		userTextLabel.y = 275;
+		pwdTextLabel.y = userTextLabel.y + userTextLabel.height + 5;
 		focusIn = true;
 	}
 	
 	function handleFocusOut(event:FocusEvent) {
 		grupo.setPosition(FlxG.width / 2 - grupo.width / 2, FlxG.height / 2 - grupo.height / 2);
-		u.y = (FlxG.stage.stageHeight - u.height) * 0.5;
-		p.y = u.y + u.height + 10;
-		user.y = u.y + 35;
-		password.y = p.y + 35;
+		userTextInput.y = (FlxG.stage.stageHeight - userTextInput.height) * 0.5;
+		pwdTextInput.y = userTextInput.y + userTextInput.height + 10;
+		userTextLabel.y = 373;
+		pwdTextLabel.y = userTextLabel.y + userTextLabel.height;
 		focusIn = false;
 		
 	}
 	
 	override public function destroy() {
 		super.destroy();
-		FlxG.removeChild(u);
-		FlxG.removeChild(p);
+		FlxG.removeChild(userTextInput);
+		FlxG.removeChild(pwdTextInput);
 	}
 	
 	function btnModoLibreOnClick()
@@ -197,8 +211,8 @@ class SeleccionModo extends BaseEstado
 			Reg.apiKey = data.api_key;
 			Reg.modoDeJuego = Reg.REGISTRADO;
 			Reg.usuarioActual = ServicioPosta.obtenerUriUsuario(data.user_id);
-			Reg.nombreUsuarioActual = u.text;	// TODO: Usar el first_name, consultando a la API
-			Reg.usernameActual = u.text;
+			Reg.nombreUsuarioActual = userTextInput.text;	// TODO: Usar el first_name, consultando a la API
+			Reg.usernameActual = userTextInput.text;
 			
 			ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);
 			ServicioPosta.instancia.obtenerMaximosNiveles(Reg.usuarioActual, setearMaximosNiveles);
@@ -210,10 +224,10 @@ class SeleccionModo extends BaseEstado
 			var error = new MensajeError();
 			add(error);
 			error.textoError.text = "USUARIO O CLAVE INCORRECTOS";
-			u.visible = false;
-			p.visible = false;
-			user.visible = false;
-			password.visible = false;
+			userTextInput.visible = false;
+			pwdTextInput.visible = false;
+			userTextLabel.visible = false;
+			pwdTextLabel.visible = false;
 			grupo.visible = false;
 			error.visible = true;
 		}
@@ -223,7 +237,7 @@ class SeleccionModo extends BaseEstado
 	{
 		if (focusIn == false) {
 			grupo.active = false;
-			ServicioPosta.instancia.loguearUsuario(u.text, p.text, manejadorLogueo);	
+			ServicioPosta.instancia.loguearUsuario(userTextInput.text, pwdTextInput.text, manejadorLogueo);	
 		}
 	}
 }
