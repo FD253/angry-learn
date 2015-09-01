@@ -28,7 +28,7 @@ class Nivel
 {
 	static var intervalo = 0.4;
 	public static var niveles = [	// Array<Nivel>
-		new Nivel([	// Nivel 1
+		//new Nivel([	// Nivel 1
 			//new Ejercicio([new Secuencia([1,1], 				intervalo),
 						   //new Secuencia([1,1], 					intervalo),
 						   //new Secuencia([1,1], 					intervalo)]),
@@ -92,7 +92,7 @@ class Nivel
 		    new Ejercicio([new Secuencia([1, 1, 1, 0, 1, 0, 1, 1, 0, 1], 		intervalo),
 						   new Secuencia([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1], 				intervalo),
 						   new Secuencia([1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1], 					intervalo)])
-		]),
+		])
 	];
 	
 	public var ejercicios : Array<Ejercicio>;
