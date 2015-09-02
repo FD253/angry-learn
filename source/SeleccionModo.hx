@@ -127,7 +127,8 @@ class SeleccionModo extends BaseEstado
 
 		
 		trace("UsuarioXY ", userTextInput.x, " ", userTextInput.y);
-		userTextLabel = new FlxText(445 , 373, 0, "USUARIO", 31);
+		//userTextLabel = new FlxText(445 , 373, 0, "USUARIO", 31);
+		userTextLabel = new FlxText(grupo.x + grupo.width * 0.05, 373, 0, "USUARIO", 31);
 
 		
 		userTextLabel.font = AssetPaths.carter__ttf;
@@ -146,7 +147,7 @@ class SeleccionModo extends BaseEstado
 		pwdTextInput.defaultTextFormat = new TextFormat("Carter One", 24 * FlxG.stage.stageHeight / FlxG.height);
 		
 		
-		pwdTextLabel = new FlxText(445, (userTextLabel.y + userTextLabel.height + 10), 0, "CLAVE", 31);
+		pwdTextLabel = new FlxText(userTextLabel.x, (userTextLabel.y + userTextLabel.height + 10), 0, "CLAVE", 31);
 		pwdTextLabel.font = AssetPaths.carter__ttf;
 		format = new FlxTextFormat(FlxColor.WHITE, true);
 		pwdTextLabel.addFormat(format);

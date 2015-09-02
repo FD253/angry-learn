@@ -41,8 +41,8 @@ class Reg
 	
 	
 	
-	public static var deviceId : String = 'TESTDEVICE';
-	public static var deviceAppVersion : String = 'TEST VERSION';
+	public static var deviceId : String = 'TABLET SAMSUNG';
+	public static var deviceAppVersion : String = 'BETA';
 
 	public static var idAppRitmo : String = '/api/v1/app/1/';
 	public static var idAppKaraoke : String = '/api/v1/app/2/';
