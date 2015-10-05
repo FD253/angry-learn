@@ -24,7 +24,7 @@ class Nivel
 		]),
 		new Nivel([
 			new Ejercicio(["Ma Me Mi Mo Mu ", "Pa Pe Pi Po Pu ", "Sa Se Si So Su "],mayusculaMinusculaCursiva),
-			new Ejercicio(["Ta To Tu Ti Te ", "Ni Ne Na Un No ", "Lo Le Lu La Li "], mayusculaMinusculaCursiva),
+			new Ejercicio(["Ta To Tu Ti Te ", "Ni Ne Na Nu No ", "Lo Le Lu La Li "], mayusculaMinusculaCursiva),
 			new Ejercicio(["Ma Si Pe Ru Tu ", "Ni So Ta Re Lu ", "Pa Ru Ti Mo "], mayusculaMinusculaCursiva),
 		]),
 		new Nivel([
