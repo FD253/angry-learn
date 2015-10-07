@@ -228,7 +228,7 @@ class Logica extends BaseJuego {
 		sinPuntos = "";
 		//function quitarPuntosYGuionesItem(item:Item):String {
 		for (j in 0...item.texto.length) {			
-			var partes = item.texto[j].split(".");
+			var partes = item.texto[j].split(",");
 			for (i in 0...partes.length) {
 				sinPuntos += partes[i];
 			}
@@ -256,7 +256,7 @@ class Logica extends BaseJuego {
 		for (j in 0...item.texto.length) {
 			var partes = new Array();	
 			for ( i in 0...item.texto[j].length) {
-				if (item.texto[j].substring(i, i + 1) != "." && item.texto[j].substring(i, i + 1) != " ") {
+				if (item.texto[j].substring(i, i + 1) != "," && item.texto[j].substring(i, i + 1) != " ") {
 					subparte += item.texto[j].substring(i, i+1);
 					//var a : String;
 					//a = item.texto.substring(i, i+1);
@@ -503,8 +503,13 @@ class Logica extends BaseJuego {
 		else {
 			btnCorrectoParcial.visible = false;
 		}
-		offset = posicionDentroItemGuardada + 3; //la posicion es donde está frenado. tiene un espacio y despues recien la siguiente letra
-												//bullshit! ////WARNING\\\ ---NUMERO MAGICO--- INVESTIGAR!!
+		if (Reg.nivelKaraokeActual >= 2) {
+			
+			offset = posicionDentroItemGuardada + 4; //la posicion es donde está frenado. tiene un espacio y despues recien la siguiente letra
+		}									//bullshit! ////WARNING\\\ ---NUMERO MAGICO--- INVESTIGAR!!
+		else {
+			offset = posicionDentroItemGuardada + 3;
+		}
 	}
 	
 	function reiniciarPosicionDentroEjercicio() {
@@ -559,13 +564,25 @@ class Logica extends BaseJuego {
 			texto = quitarPuntosItem(item);
 			trace('posicionDentroItemGuardada = ' + posicionDentroItemGuardada);
 			trace('texto.lenght = ' + texto.length);
-			if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 3 == texto.length) {
-				mostrarBtnCorrecto();
-				ocultarBtnCorrectoParcial();
-				trace("fin del ejercicio");
+			if (Reg.nivelKaraokeActual >= 2) {
+				if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 4 == texto.length) {
+					mostrarBtnCorrecto();
+					ocultarBtnCorrectoParcial();
+					trace("fin del ejercicio");
+				}
+				else {
+					mostrarBtnCorrectoParcial();
+				}
 			}
 			else {
-				mostrarBtnCorrectoParcial();
+				if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 3 == texto.length) {
+					mostrarBtnCorrecto();
+					ocultarBtnCorrectoParcial();
+					trace("fin del ejercicio");
+				}
+				else {
+					mostrarBtnCorrectoParcial();
+				}
 			}
 			mostrarBtnIncorrecto();
 		}

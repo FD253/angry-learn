@@ -28,19 +28,19 @@ class Nivel
 			new Ejercicio(["Ma Si Pe Ru Tu ", "Ni So Ta Re Lu ", "Pa Ru Ti Mo "], mayusculaMinusculaCursiva),
 		]),
 		new Nivel([
-			new Ejercicio(["O.so ", "Pa.to ", "Ca.sa "],mayusculaMinusculaCursiva),
-			new Ejercicio(["Au.to ", "Da.do ", "Pa.la ", "Ne.ne "],mayusculaMinusculaCursiva),
-			new Ejercicio(["La ta.za ", "La ma.no ", "El de.do ", "El sa.po "],mayusculaMinusculaCursiva),
+			new Ejercicio(["O,so. ", "Pa,to. ", "Ca,sa. "],mayusculaMinusculaCursiva),
+			new Ejercicio(["Au,to. ", "Da,do. ", "Pa,la. ", "Ne,ne. "],mayusculaMinusculaCursiva),
+			new Ejercicio(["La ta,za. ", "La ma,no. ", "El de,do. ", "El sa,po. "],mayusculaMinusculaCursiva),
 		]),
 		new Nivel([
-			new Ejercicio(["La ca.mi.sa ", "La pe.lo.ta ", "El he.la.do ", "La ma.ce.ta "], mayusculaMinusculaCursiva),
+			new Ejercicio(["La ca,mi,sa. ", "La pe,lo,ta. ", "El he,la,do. ", "La ma,ce,ta. "], mayusculaMinusculaCursiva),
             #if flash
-			new Ejercicio(["El pa.to na.da ", "La pa.lo.ma vue.la ", "Los a.mi.gos rí.en ", "El puen.te al.to "], mayusculaMinusculaCursiva),
-			new Ejercicio(["El ne.ne es.tá con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "   ", " Los pá.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
+			new Ejercicio(["El pa,to na,da. ", "La pa,lo,ma vue,la. ", "Los a,mi,gos rí,en. ", "El puen,te al,to. "], mayusculaMinusculaCursiva),
+			new Ejercicio(["El ne,ne es,tá con,ten,to. ", "El ca,ra,me,lo es dul,ce. ", "Jue,go con mis a,mi,gos.,,,, Los, pá,ja,ros vue,lan en gru,po. "],mayusculaMinusculaCursiva),
             #end
             #if (android || linux)
-			new Ejercicio(["El pa.to na.da ", "La pa.lo.ma vue.la ", "Los a.mi.gos ri.en ", "El puen.te al.to "], mayusculaMinusculaCursiva),
-			new Ejercicio(["El ne.ne es.ta con.ten.to ", "El ca.ra.me.lo es dul.ce ", "Jue.go con mis a.mi.gos ", "   ", " Los pa.ja.ros vue.lan en gru.po "],mayusculaMinusculaCursiva),
+			new Ejercicio(["El pa;to na;da. ", "La pa;lo;ma vue;la. ", "Los a;mi;gos ri;en. ", "El puen;te al;to. "], mayusculaMinusculaCursiva),
+			new Ejercicio(["El ne;ne es;ta con;ten;to. ", "El ca;ra;me;lo es dul;ce. ", "Jue;go con mis a;mi;gos. ", "   ", " Los pa;ja;ros vue;lan en gru;po. "],mayusculaMinusculaCursiva),
             #end
 		]),
 	];
