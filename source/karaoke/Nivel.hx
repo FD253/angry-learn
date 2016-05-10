@@ -18,9 +18,9 @@ class Nivel
 	
 	public static var niveles = [
 		new Nivel([
-			new Ejercicio(["A E I O U ", " A.A E.E I.I O.O ", " A.E I.U E.I E.A "],mayuscula),
+			new Ejercicio(["A E I O U ", " A,A E,E I,I O,O ", " A,E I,U E,I E,A "],mayuscula),
 			new Ejercicio(["S M A S ", " M O L R ", " R M E P "], mayusculaMinuscula),
-			new Ejercicio(["M A N O ", " S A P O ", " P I N O "], mayusculaMinuscula),  //separar en " LETRA " en lugar de "LETRA " <-INVESTIGAR XQ?
+			new Ejercicio(["M A N O ", " S A P O ", " P I N O "], mayusculaMinuscula),
 		]),
 		new Nivel([
 			new Ejercicio(["Ma Me Mi Mo Mu ", "Pa Pe Pi Po Pu ", "Sa Se Si So Su "],mayusculaMinusculaCursiva),
