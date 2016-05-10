@@ -41,8 +41,8 @@ class Reg
 	
 	
 	
-	public static var deviceId : String = 'TESTDEVICE';
-	public static var deviceAppVersion : String = 'TEST VERSION';
+	public static var deviceId : String = 'TABLET NOBLEX';
+	public static var deviceAppVersion : String = 'BETA';
 
 	public static var idAppRitmo : String = '/api/v1/app/1/';
 	public static var idAppKaraoke : String = '/api/v1/app/2/';
@@ -146,7 +146,7 @@ class Reg
 	
 	public static function obtenerIdResource(recurso:String) :String {
 		var cosas = recurso.split('/');
-		cosas.pop(); // Descartamos el "nada" de MIERDA que Haxe toma como que hay al final
+		cosas.pop(); // Descartamos el "nada" que Haxe toma como que hay al final
 		return cosas.pop();
 	}
 	
