@@ -51,9 +51,8 @@ class Logica extends BaseJuego {
 	
 	var silabas = new Array();
 	var posicionDentroItemGuardada :Int;
-	//var silaba : String;
 	var posicionDentroEjercicio: Int;
-	var offset :Int; //compensa lo ya pintado
+	var offset :Int; // Compensa lo ya pintado
 	
 	var botonesDeNivel : Array<FlxButton>;
 	
@@ -89,7 +88,7 @@ class Logica extends BaseJuego {
 		add(textItem);
 		
 		textItem.text = quitarPuntosItem(item);
-		textItem.color = 15000804; // gris 
+		textItem.color = 15000804; // Gris 
 		textItem.font = "assets/fonts/arialbd.ttf";
 		
 		var xInicial : Int = 162;
@@ -143,7 +142,6 @@ class Logica extends BaseJuego {
 		ocultarBtnCorrectoParcial();
 		
 		silabas = obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual]);
-		//silaba = silabas[timer.elapsedLoops - 1];
 		posicionDentroItemGuardada = 0;
 		posicionForAUsar = 0;
 		posicionForGuardada = 0;
@@ -156,7 +154,6 @@ class Logica extends BaseJuego {
 	function setearNivelEjercicioDesdeMaxLevel(){
 		if ((Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual) > Reg.maxLvlKaraoke) {
 			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
-			// TODO: acá hay un bichito:
 			function Modulo(n : Int, d : Int) : Int {
 				var r = n % d;
 				if(r < 0) r+=d;
@@ -164,7 +161,6 @@ class Logica extends BaseJuego {
 			}
 			var ejercicio = Modulo(Reg.maxLvlKaraoke , 3);
 			var nivel = Std.int(Reg.maxLvlKaraoke / 3);
-			//var ejercicio = Math.floor(Reg.maxLvlRitmo / 3);	// El resto de la division-1 es el ejercicio
 			trace (nivel, ejercicio);
 			Reg.nivelKaraokeActual = nivel;
 			Reg.ejercicioKaraokeActual = ejercicio;
@@ -192,7 +188,7 @@ class Logica extends BaseJuego {
 				var yEspacio = (menuDesplegable.height - yInicial - altoBoton * nivel.ejercicios.length) / nivel.ejercicios.length;
 				var y = yInicial + (altoBoton + yEspacio) * nivel.ejercicios.indexOf(ejercicio);
 				var boton = new FlxButton(x, y, 'Ejercicio ' + (nivel.ejercicios.indexOf(ejercicio) + 1), function () { 
-									//Inline, para no crear los handlers a mano
+									// Inline, para no crear los handlers a mano
 									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
 									Reg.nivelKaraokeActual = Nivel.niveles.indexOf(nivel);
 									Reg.ejercicioKaraokeActual = nivel.ejercicios.indexOf(ejercicio);
@@ -206,7 +202,6 @@ class Logica extends BaseJuego {
 				);
 				boton.label.setFormat(AssetPaths.carter__ttf, 17);
 				boton.label.color = FlxColor.BLACK;
-				//boton.label.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLACK, 1.9, 1);
 				boton.loadGraphic(AssetPaths.boton_ejercicio__png);
 				menuDesplegable.add(boton);
 				botonesDeNivel.push(boton); // Lo ponemos en un array para luego marcarlo segun se completan los lvls
@@ -214,31 +209,15 @@ class Logica extends BaseJuego {
 		}
 	}
 	
-	//function quitarGuionesItem(item:Item):List<String> {
-		//var todo : List<String>;
-		//var partes = item.texto.split("-");
-		//for (i in 0...partes.length) {
-			//todo.add(partes[i]);
-		//}
-		//return todo;
-	//}
 	
 	function quitarPuntosItem(item:Ejercicio):String {
 		var sinPuntos : String;
 		sinPuntos = "";
-		//function quitarPuntosYGuionesItem(item:Item):String {
 		for (j in 0...item.texto.length) {			
 			var partes = item.texto[j].split(",");
 			for (i in 0...partes.length) {
 				sinPuntos += partes[i];
 			}
-			//return sinPuntos;
-			//partes = sinPuntos.split("-");
-			//var sinPuntosNiGuiones : String;
-			//for (i in 0...partes.length) {
-				//sinPuntosNiGuiones += partes[i];
-			//}
-			//return sinPuntosNiGuiones;
 		}
 		return sinPuntos;
 	}
@@ -251,15 +230,11 @@ class Logica extends BaseJuego {
 		
 		var texto : String;
 		
-		
-		//#if flash
 		for (j in 0...item.texto.length) {
 			var partes = new Array();	
 			for ( i in 0...item.texto[j].length) {
 				if (item.texto[j].substring(i, i + 1) != "," && item.texto[j].substring(i, i + 1) != " ") {
 					subparte += item.texto[j].substring(i, i+1);
-					//var a : String;
-					//a = item.texto.substring(i, i+1);
 				}
 				else {
 					partes.insert(partes.length, subparte);
@@ -269,28 +244,6 @@ class Logica extends BaseJuego {
 			ret.push(partes);
 		}
 		return ret;
-		//return partes;
-		//#end
-		
-		//#if android
-		//
-		//texto = Utf8.decode(item.texto);
-		//
-		//for ( i in 0...texto.length) {
-			//if (texto.substring(i, i + 1) != "." && texto.substring(i, i + 1) != " " && texto.substring(i, i + 1) != "-") {
-				//subparte += texto.substring(i, i+1);
-				////var a : String;
-				////a = texto.substring(i, i+1);
-			//}
-			//else {
-				//partes.insert(partes.length, subparte);
-				//subparte = "";
-			//}
-		//}
-		//return ret;
-		//#end
-		//
-		//return ret;
 	}
 	
 	function mostrarBtnsTipoLetra() {
@@ -409,25 +362,21 @@ class Logica extends BaseJuego {
 			actualizarProgreso(100 / 3 * (Reg.ejercicioKaraokeActual + 1));
 		}
 		mostrarResultado(Std.int(puntajeCorrecto), true, avanzarEjercicio);
-		//var timer : FlxTimer;
-
-		//}
-		//timer = new FlxTimer(3, avanzarEjercicio);
 	}
 	
 	function avanzarEjercicio() {
-		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { //ejercicio no ultimo del nivel?
-			Reg.ejercicioKaraokeActual += 1;	//avanza ejercicio
-			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) { //mayor que el mayor guardado?
-				Reg.maxLvlKaraoke += 1;			//nuevo mayor
+		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { // Ejercicio no último del nivel?
+			Reg.ejercicioKaraokeActual += 1;	// Avanza ejercicio
+			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) { // Mayor que el mayor guardado?
+				Reg.maxLvlKaraoke += 1;			// Nuevo mayor
 			}
 		}
 		else {
-			if (Reg.ejercicioKaraokeActual == (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { //maximo del nivel?
-				if (Reg.nivelKaraokeActual == 3) {	//ultimo nivel?
+			if (Reg.ejercicioKaraokeActual == (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { // Máximo del nivel?
+				if (Reg.nivelKaraokeActual == 3) {	// Último nivel?
 					trace("GANASTE!");
 				}
-				else {	//no ultimo nivel?
+				else {	// No último nivel?
 					Reg.maxLvlKaraoke += 1;
 					Reg.nivelKaraokeActual += 1;
 					Reg.ejercicioKaraokeActual = 0;
@@ -480,7 +429,6 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		reproducirItem();
 		reiniciarBtnsTipoLetra();
-		//mostrarBtnComenzar();
 		reinciarOffset();
 		ServicioPosta.instancia.postPlay(0.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		ocultarBtnsTipoLetra();
@@ -505,11 +453,12 @@ class Logica extends BaseJuego {
 		}
 		if (Reg.nivelKaraokeActual >= 2) {
 			
-			offset = posicionDentroItemGuardada + 4; //la posicion es donde está frenado. tiene un espacio y despues recien la siguiente letra
-		}									//bullshit! ////WARNING\\\ ---NUMERO MAGICO--- INVESTIGAR!!
+			offset = posicionDentroItemGuardada + 4; // La posicion es donde está frenado. Tiene un espacio y después recien la siguiente letra
+		}
 		else {
 			offset = posicionDentroItemGuardada + 3;
 		}
+
 	}
 	
 	function reiniciarPosicionDentroEjercicio() {
@@ -518,7 +467,6 @@ class Logica extends BaseJuego {
 	
 	function resaltarSilabas(timer :FlxTimer) {
 		var posicionDentroSubItem :Int = 0;
-		//var posicionDentroItem :Int = posicionDentroItemGuardada;
 		var silabas = new Array();
 		var silaba : String;
 		silabas = obtenerPartesItem(Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual]);
@@ -526,12 +474,6 @@ class Logica extends BaseJuego {
 		silaba = silabas[posicionDentroEjercicio][timer.elapsedLoops - 1];
 		color = new FlxTextFormat(FlxColor.AZURE);
 		
-		
-		//while (silabas.length != 0 || silabas[0].charAt(0) == "-") {
-		//}
-		
-		//trace(posicionDentroItemGuardada);
-		//posicionDentroItem = posicionDentroItemGuardada;
 		for (i in 0...silabas[posicionDentroEjercicio].length) {
 			if (i+1 == timer.elapsedLoops) {
 				textItem.addFormat(color, posicionDentroSubItem + offset , posicionDentroSubItem + offset + silabas[posicionDentroEjercicio][i].length);
@@ -540,24 +482,14 @@ class Logica extends BaseJuego {
 			else {
 				if (textItem.text.charAt(posicionDentroSubItem + offset + silabas[posicionDentroEjercicio][i].length) == " "){
 					posicionDentroSubItem += silabas[posicionDentroEjercicio][i].length + 1; 
-					//guardarPosDentroItem(posicionDentroItem);
+
 				}
-				//else if (textItem.text.charAt(posicionDentroItem + silabas[0][i].length) == "-") {
-					//posicionDentroItem += silabas[0][i].length+1; 
-					////timer.active = false;
-					////mostrarBtnCorrectoParcial();
-					////mostrarBtnIncorrecto();
-					////posicionForGuardada = i+1;
-					////break;
-					////guardarPosDentroItem(posicionDentroItem);
-				//}
+
 				else {
 					posicionDentroSubItem += silabas[posicionDentroEjercicio][i].length;
-					//guardarPosDentroItem(posicionDentroItem);/// REPETIDO
 				}
 			}
 		}		
-		//trace(posicionDentroItemGuardada);
 		if (timer.loopsLeft == 0) {
 			var item : Ejercicio = Nivel.niveles[Reg.nivelKaraokeActual].ejercicios[Reg.ejercicioKaraokeActual];
 			var texto : String;

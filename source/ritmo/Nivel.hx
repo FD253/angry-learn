@@ -27,39 +27,7 @@ class Ejercicio
 class Nivel
 {
 	static var intervalo = 0.4;
-	public static var niveles = [	// Array<Nivel>
-		//new Nivel([	// Nivel 1
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1, 1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-		//]),
-		//new Nivel([	// Nivel 1
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1, 1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-		//]),		new Nivel([	// Nivel 1
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1, 1], 					intervalo)]),
-			//new Ejercicio([new Secuencia([1,1], 				intervalo),
-						   //new Secuencia([1,1], 					intervalo),
-						   //new Secuencia([1,1], 					intervalo)]),
-		//]),
+	public static var niveles = [	
 		new Nivel([	// Nivel 1
 			new Ejercicio([new Secuencia([1, 0, 1, 0, 1], 				intervalo),
 						   new Secuencia([1, 1, 0, 1], 					intervalo),

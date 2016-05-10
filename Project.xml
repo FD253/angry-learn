@@ -3,7 +3,7 @@
 	<!------------------------------APPLICATION SETTINGS---------------------------->
 	<template path="templates/AndroidManifest.xml" rename="AndroidManifest.xml" />
 	
-	<app title="angry-learn" file="angry-learn" main="Main" version="0.0.3" company="UCSE" />
+	<app title="yo-puedo" file="yo-puedo" main="Main" version="0.1.1" company="UCSE-DAR" />
 	
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 	<!--or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"!-->

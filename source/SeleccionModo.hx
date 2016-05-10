@@ -275,7 +275,7 @@ class SeleccionModo extends BaseEstado
 			Reg.apiKey = data.api_key;
 			Reg.modoDeJuego = Reg.REGISTRADO;
 			Reg.usuarioActual = ServicioPosta.obtenerUriUsuario(data.user_id);
-			Reg.nombreUsuarioActual = userTextInput.text;	// TODO: Usar el first_name, consultando a la API
+			Reg.nombreUsuarioActual = userTextInput.text;
 			Reg.usernameActual = userTextInput.text;
 			
 			ServicioPosta.instancia.obtenerPuntajes(Reg.usuarioActual, setearPuntaje);

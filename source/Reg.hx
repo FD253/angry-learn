@@ -40,8 +40,8 @@ class Reg
 	public static var usernameActual : String = '';  // El que se usa para el login
 	
 	
-	
-	public static var deviceId : String = 'TABLET SAMSUNG';
+
+	public static var deviceId : String = 'Dev Notebook';
 	public static var deviceAppVersion : String = 'BETA';
 
 	public static var idAppRitmo : String = '/api/v1/app/1/';
@@ -146,7 +146,7 @@ class Reg
 	
 	public static function obtenerIdResource(recurso:String) :String {
 		var cosas = recurso.split('/');
-		cosas.pop(); // Descartamos el "nada" de MIERDA que Haxe toma como que hay al final
+		cosas.pop(); // Descartamos el "nada" que Haxe toma como que hay al final
 		return cosas.pop();
 	}
 	

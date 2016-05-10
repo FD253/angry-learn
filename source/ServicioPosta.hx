@@ -129,7 +129,6 @@ class ServicioPosta {
 			} );
 			cargador.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
 			cargador.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) {
-				//trace(e.target.data);
 				FlxG.resetGame(); // Si el server no se pudo alcanzar guardando la jugada, chau
 			});
 			cargador.addEventListener(Event.OPEN, openHandler);
@@ -141,7 +140,7 @@ class ServicioPosta {
 			params.device_app_version = Reg.deviceAppVersion;
 			params.device_id = Reg.deviceId;
 			params.player = Reg.usuarioActual;
-			params.play_date = Date.now().toString(); // Se jugó cuando se envió. No guardamos datos offline
+			params.play_date = Date.now().toString(); // Se jugó cuando se envió.
 			params.app = appId;
 			params.level = levelId;
 			params.used_time = Std.string(Std.int(usedTime));

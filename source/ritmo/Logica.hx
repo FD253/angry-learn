@@ -72,7 +72,6 @@ class Logica extends BaseJuego
 	    agregarTitulo("SIGUE EL RITMO");	
 		if ((Reg.nivelRitmoActual * 3 + Reg.ejercicioRitmoActual) > Reg.maxLvlRitmo) {
 			// Si se quiere iniciar un estado mayor al que se tiene acceso, se arranca en ese último
-			// TODO: acá hay un bichito:
 			function Modulo(n : Int, d : Int) : Int {
 				var r = n % d;
 				if(r < 0) r+=d;
@@ -205,7 +204,7 @@ class Logica extends BaseJuego
 		
 		// Botón de toques
 		btnToques = new FlxButton((FlxG.width / 2), (alturaBotonesSuperiores + FlxG.height * 0.3), '', btnToquesOnClick);
-		btnToques.loadGraphic(AssetPaths.boton__png, true, 297, 305); // HARDCODED
+		btnToques.loadGraphic(AssetPaths.boton__png, true, 297, 305); 
 		btnToques.x = btnToques.x - btnToques.width / 2;
 		btnToques.y = btnToques.y - btnToques.height / 2;
 		add(btnToques);
@@ -259,20 +258,14 @@ class Logica extends BaseJuego
 			trace(secuenciaUsuario);
 			
 			var errores = 0;
-			// TODO: Contabilizar el acierto
 			for (i in 0...ejercicio.secuencias[secuenciaActual].pulsos.length) {
 				if (ejercicio.secuencias[secuenciaActual].pulsos[i] != secuenciaUsuario[i]) {
 					errores += Std.int(Math.abs(secuenciaUsuario[i] - ejercicio.secuencias[secuenciaActual].pulsos[i]));
 				}
-				//else {
-					//if (secuenciaUsuario[i] = true) {
-						//errores = Std.int(errores / 2);
-					//}
-				//}
 			}
 			var resultado = 100 - (errores / ejercicio.secuencias[secuenciaActual].pulsos.length) * 100; // Porcentaje de aciertos = 100 - porcentaje de erorres
 			
-			// Si lo hizo asquerosamente mal, su puntuación puede ser negativa, así que directamente eso es un CERO
+			// Si lo hizo mal, su puntuación no puede ser negativa, así que directamente eso es un CERO
 			if (resultado < 0) {
 				resultado = 0;
 			}
