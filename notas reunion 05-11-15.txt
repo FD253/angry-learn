@@ -1,9 +1,0 @@
-ritmo	hacer perder directamente después de cada subsecuencia (de juego de nivel) si falla (con que un toque esté mal ya se cuenta como error)
-
-trazos	bajar puntaje para aprobar (FACIL) a 85%?
-
-karaoke	agregar puntos entremedio de las oraciones (cambiar separador por otro símbolo ej ;). 
-		hacer enters entre las oraciones. (COMPLICADO)
-		ver tema de la tipografia en cursiva. (HABLAR CON DIEGO)
-
-selección de juego . el preview engaña y la gente lo toca. VER
