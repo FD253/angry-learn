@@ -52,7 +52,7 @@ class Logica extends BaseJuego {
 	var silabas = new Array();
 	var posicionDentroItemGuardada :Int;
 	var posicionDentroEjercicio: Int;
-	var offset :Int; //compensa lo ya pintado
+	var offset :Int; // Compensa lo ya pintado
 	
 	var botonesDeNivel : Array<FlxButton>;
 	
@@ -88,7 +88,7 @@ class Logica extends BaseJuego {
 		add(textItem);
 		
 		textItem.text = quitarPuntosItem(item);
-		textItem.color = 15000804; // gris 
+		textItem.color = 15000804; // Gris 
 		textItem.font = "assets/fonts/arialbd.ttf";
 		
 		var xInicial : Int = 162;
@@ -188,7 +188,7 @@ class Logica extends BaseJuego {
 				var yEspacio = (menuDesplegable.height - yInicial - altoBoton * nivel.ejercicios.length) / nivel.ejercicios.length;
 				var y = yInicial + (altoBoton + yEspacio) * nivel.ejercicios.indexOf(ejercicio);
 				var boton = new FlxButton(x, y, 'Ejercicio ' + (nivel.ejercicios.indexOf(ejercicio) + 1), function () { 
-									//Inline, para no crear los handlers a mano
+									// Inline, para no crear los handlers a mano
 									trace('nivel: ' + Nivel.niveles.indexOf(nivel) + ', ejercicio: ' + Std.string(nivel.ejercicios.indexOf(ejercicio)));
 									Reg.nivelKaraokeActual = Nivel.niveles.indexOf(nivel);
 									Reg.ejercicioKaraokeActual = nivel.ejercicios.indexOf(ejercicio);
@@ -214,7 +214,7 @@ class Logica extends BaseJuego {
 		var sinPuntos : String;
 		sinPuntos = "";
 		for (j in 0...item.texto.length) {			
-			var partes = item.texto[j].split(".");
+			var partes = item.texto[j].split(",");
 			for (i in 0...partes.length) {
 				sinPuntos += partes[i];
 			}
@@ -233,7 +233,7 @@ class Logica extends BaseJuego {
 		for (j in 0...item.texto.length) {
 			var partes = new Array();	
 			for ( i in 0...item.texto[j].length) {
-				if (item.texto[j].substring(i, i + 1) != "." && item.texto[j].substring(i, i + 1) != " ") {
+				if (item.texto[j].substring(i, i + 1) != "," && item.texto[j].substring(i, i + 1) != " ") {
 					subparte += item.texto[j].substring(i, i+1);
 				}
 				else {
@@ -366,9 +366,9 @@ class Logica extends BaseJuego {
 	
 	function avanzarEjercicio() {
 		if (Reg.ejercicioKaraokeActual < (Nivel.niveles[Reg.nivelKaraokeActual].ejercicios.length -1)) { // Ejercicio no último del nivel?
-			Reg.ejercicioKaraokeActual += 1;	//avanza ejercicio
+			Reg.ejercicioKaraokeActual += 1;	// Avanza ejercicio
 			if (Reg.ejercicioKaraokeActual + Reg.nivelKaraokeActual * 3 > Reg.maxLvlKaraoke) { // Mayor que el mayor guardado?
-				Reg.maxLvlKaraoke += 1;			//nuevo mayor
+				Reg.maxLvlKaraoke += 1;			// Nuevo mayor
 			}
 		}
 		else {
@@ -429,7 +429,6 @@ class Logica extends BaseJuego {
 		ocultarBtnsCalific();
 		reproducirItem();
 		reiniciarBtnsTipoLetra();
-		//mostrarBtnComenzar();
 		reinciarOffset();
 		ServicioPosta.instancia.postPlay(0.0, Reg.idAppKaraoke, Reg.idNivelesKaraoke[Reg.nivelKaraokeActual * 3 + Reg.ejercicioKaraokeActual], calcularTiempoEmpleado());
 		ocultarBtnsTipoLetra();
@@ -452,7 +451,14 @@ class Logica extends BaseJuego {
 		else {
 			btnCorrectoParcial.visible = false;
 		}
-		offset = posicionDentroItemGuardada + 3; // La posicion es donde está frenado. Tiene un espacio y después recién la siguiente letra.
+		if (Reg.nivelKaraokeActual >= 2) {
+			
+			offset = posicionDentroItemGuardada + 4; // La posicion es donde está frenado. Tiene un espacio y después recien la siguiente letra
+		}
+		else {
+			offset = posicionDentroItemGuardada + 3;
+		}
+
 	}
 	
 	function reiniciarPosicionDentroEjercicio() {
@@ -490,13 +496,25 @@ class Logica extends BaseJuego {
 			texto = quitarPuntosItem(item);
 			trace('posicionDentroItemGuardada = ' + posicionDentroItemGuardada);
 			trace('texto.lenght = ' + texto.length);
-			if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 3 == texto.length) {
-				mostrarBtnCorrecto();
-				ocultarBtnCorrectoParcial();
-				trace("fin del ejercicio");
+			if (Reg.nivelKaraokeActual >= 2) {
+				if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 4 == texto.length) {
+					mostrarBtnCorrecto();
+					ocultarBtnCorrectoParcial();
+					trace("fin del ejercicio");
+				}
+				else {
+					mostrarBtnCorrectoParcial();
+				}
 			}
 			else {
-				mostrarBtnCorrectoParcial();
+				if (posicionDentroItemGuardada + 2 == texto.length || posicionDentroItemGuardada + 3 == texto.length) {
+					mostrarBtnCorrecto();
+					ocultarBtnCorrectoParcial();
+					trace("fin del ejercicio");
+				}
+				else {
+					mostrarBtnCorrectoParcial();
+				}
 			}
 			mostrarBtnIncorrecto();
 		}

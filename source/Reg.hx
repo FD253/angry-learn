@@ -40,8 +40,8 @@ class Reg
 	public static var usernameActual : String = '';  // El que se usa para el login
 	
 	
-	
-	public static var deviceId : String = 'TABLET NOBLEX';
+
+	public static var deviceId : String = 'Dev Notebook';
 	public static var deviceAppVersion : String = 'BETA';
 
 	public static var idAppRitmo : String = '/api/v1/app/1/';
