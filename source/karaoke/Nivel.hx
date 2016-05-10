@@ -39,8 +39,8 @@ class Nivel
 			new Ejercicio(["El ne,ne es,tá con,ten,to. ", "El ca,ra,me,lo es dul,ce. ", "Jue,go con mis a,mi,gos.,,,, Los, pá,ja,ros vue,lan en gru,po. "],mayusculaMinusculaCursiva),
             #end
             #if (android || linux)
-			new Ejercicio(["El pa;to na;da. ", "La pa;lo;ma vue;la. ", "Los a;mi;gos ri;en. ", "El puen;te al;to. "], mayusculaMinusculaCursiva),
-			new Ejercicio(["El ne;ne es;ta con;ten;to. ", "El ca;ra;me;lo es dul;ce. ", "Jue;go con mis a;mi;gos. ", "   ", " Los pa;ja;ros vue;lan en gru;po. "],mayusculaMinusculaCursiva),
+			new Ejercicio(["El pa,to na,da. ", "La pa,lo,ma vue,la. ", "Los a,mi,gos ri,en. ", "El puen,te al,to. "], mayusculaMinusculaCursiva),
+			new Ejercicio(["El ne,ne es,ta con,ten,to. ", "El ca,ra,me,lo es dul,ce. ", "Jue,go con mis a,mi,gos.,,,, Los, pa,ja,ros vue,lan en gru,po. "],mayusculaMinusculaCursiva),
             #end
 		]),
 	];

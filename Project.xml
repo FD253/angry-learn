@@ -79,6 +79,8 @@
 	
 	<!--------------------------------CUSTOM---------------------------------------->
 	
+	<haxedef name="network-sandbox"/>
+	
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	<haxedef name="fdb" if="target_flash"/>
 	<assets path="assets" include="*.jpg|*.png" exclude="*.db" /> 
